@@ -38,54 +38,103 @@ const ToolsCategory = () => {
         <div className="bg-white mx-auto rounded-md shadow-md w-full flex flex-col justify-center items-center py-10">
           <p className="bg-[#ebd8b3] p-3 rounded-full"><IoMdRestaurant size={35} color="#CD9B3A" /></p>
           <p>Restaurant</p>
+          <div className="space-x-4">
+            <button className="border-[#CD9B3A] border px-3 py-2 rounded-lg bg-[#E6F0FF]">Delete</button>
+            <button className="bg-[#CD9B3A] text-white px-6 py-2 rounded-lg">Edit</button>
+          </div>
         </div>
         <div className="bg-white mx-auto rounded-md shadow-md w-full flex flex-col justify-center items-center py-10">
           <p className="bg-[#ebd8b3] p-3 rounded-full"><FaBriefcaseMedical size={35} color="#CD9B3A" /></p>
           <p>Medicine</p>
+          <div className="space-x-4">
+            <button className="border-[#CD9B3A] border px-3 py-2 rounded-lg bg-[#E6F0FF]">Delete</button>
+            <button className="bg-[#CD9B3A] text-white px-6 py-2 rounded-lg">Edit</button>
+          </div>
         </div>
         <div className="bg-white mx-auto rounded-md shadow-md w-full flex flex-col justify-center items-center py-10">
           <p className="bg-[#ebd8b3] p-3 rounded-full"><FaHotel size={35} color="#CD9B3A" /></p>
           <p>Hotel</p>
+          <div className="space-x-4">
+            <button className="border-[#CD9B3A] border px-3 py-2 rounded-lg bg-[#E6F0FF]">Delete</button>
+            <button className="bg-[#CD9B3A] text-white px-6 py-2 rounded-lg">Edit</button>
+          </div>
         </div>
        
         <div className="bg-white mx-auto rounded-md shadow-md w-full flex flex-col justify-center items-center py-10">
           <p className="bg-[#ebd8b3] p-3 rounded-full"><FaMartiniGlassEmpty size={35} color="#CD9B3A" /></p>
           <p>Bar</p>
+          <div className="space-x-4">
+            <button className="border-[#CD9B3A] border px-3 py-2 rounded-lg bg-[#E6F0FF]">Delete</button>
+            <button className="bg-[#CD9B3A] text-white px-6 py-2 rounded-lg">Edit</button>
+          </div>
         </div>
         <div className="bg-white mx-auto rounded-md shadow-md w-full flex flex-col justify-center items-center py-10">
           <p className="bg-[#ebd8b3] p-3 rounded-full"><GiTravelDress size={35} color="#CD9B3A" /></p>
           <p>Clothes</p>
+          <div className="space-x-4">
+            <button className="border-[#CD9B3A] border px-3 py-2 rounded-lg bg-[#E6F0FF]">Delete</button>
+            <button className="bg-[#CD9B3A] text-white px-6 py-2 rounded-lg">Edit</button>
+          </div>
         </div>
        
         <div className="bg-white mx-auto rounded-md shadow-md w-full flex flex-col justify-center items-center py-10">
-          <p className="bg-[#ebd8b3] p-3 rounded-full"><MdSportsHandball size={35} color="#CD9B3A" /></p>
+          <p className="
+          bg-[#ebd8b3] p-3 rounded-full"><MdSportsHandball size={35} color="#CD9B3A" /></p>
           <p>Sport</p>
+          <div className="space-x-4">
+            <button className="border-[#CD9B3A] border px-3 py-2 rounded-lg bg-[#E6F0FF]">Delete</button>
+            <button className="bg-[#CD9B3A] text-white px-6 py-2 rounded-lg">Edit</button>
+          </div>
         </div>
         <div className="bg-white mx-auto rounded-md shadow-md w-full flex flex-col justify-center items-center py-10">
           <p className="bg-[#ebd8b3] p-3 rounded-full"><IoMdRestaurant size={35} color="#CD9B3A" /></p>
           <p>Restaurant</p>
+          <div className="space-x-4">
+            <button className="border-[#CD9B3A] border px-3 py-2 rounded-lg bg-[#E6F0FF]">Delete</button>
+            <button className="bg-[#CD9B3A] text-white px-6 py-2 rounded-lg">Edit</button>
+          </div>
         </div>
         <div className="bg-white mx-auto rounded-md shadow-md w-full flex flex-col justify-center items-center py-10">
           <p className="bg-[#ebd8b3] p-3 rounded-full"><FaBriefcaseMedical size={35} color="#CD9B3A" /></p>
           <p>Medicine</p>
+          <div className="space-x-4">
+            <button className="border-[#CD9B3A] border px-3 py-2 rounded-lg bg-[#E6F0FF]">Delete</button>
+            <button className="bg-[#CD9B3A] text-white px-6 py-2 rounded-lg">Edit</button>
+          </div>
         </div>
         <div className="bg-white mx-auto rounded-md shadow-md w-full flex flex-col justify-center items-center py-10">
           <p className="bg-[#ebd8b3] p-3 rounded-full"><FaHotel size={35} color="#CD9B3A" /></p>
           <p>Hotel</p>
+          <div className="space-x-4">
+            <button className="border-[#CD9B3A] border px-3 py-2 rounded-lg bg-[#E6F0FF]">Delete</button>
+            <button className="bg-[#CD9B3A] text-white px-6 py-2 rounded-lg">Edit</button>
+          </div>
         </div>
        
         <div className="bg-white mx-auto rounded-md shadow-md w-full flex flex-col justify-center items-center py-10">
           <p className="bg-[#ebd8b3] p-3 rounded-full"><FaMartiniGlassEmpty size={35} color="#CD9B3A" /></p>
           <p>Bar</p>
+          <div className="space-x-4">
+            <button className="border-[#CD9B3A] border px-3 py-2 rounded-lg bg-[#E6F0FF]">Delete</button>
+            <button className="bg-[#CD9B3A] text-white px-6 py-2 rounded-lg">Edit</button>
+          </div>
         </div>
         <div className="bg-white mx-auto rounded-md shadow-md w-full flex flex-col justify-center items-center py-10">
           <p className="bg-[#ebd8b3] p-3 rounded-full"><GiTravelDress size={35} color="#CD9B3A" /></p>
           <p>Clothes</p>
+          <div className="space-x-4">
+            <button className="border-[#CD9B3A] border px-3 py-2 rounded-lg bg-[#E6F0FF]">Delete</button>
+            <button className="bg-[#CD9B3A] text-white px-6 py-2 rounded-lg">Edit</button>
+          </div>
         </div>
        
         <div className="bg-white mx-auto rounded-md shadow-md w-full flex flex-col justify-center items-center py-10">
           <p className="bg-[#ebd8b3] p-3 rounded-full"><MdSportsHandball size={35} color="#CD9B3A" /></p>
           <p>Sport</p>
+          <div className="space-x-4">
+            <button className="border-[#CD9B3A] border px-3 py-2 rounded-lg bg-[#E6F0FF]">Delete</button>
+            <button className="bg-[#CD9B3A] text-white px-6 py-2 rounded-lg">Edit</button>
+          </div>
         </div>
        
      
