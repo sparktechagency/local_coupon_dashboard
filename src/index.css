@@ -1,0 +1,23 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root {
+    --primary-color: #F0E0C2;
+    --secondary-color: #D7AF61;
+    
+  }
+
+/* @layer utilities{
+    .primary-color {
+        @apply #2AB9A4
+    }
+} */
+
+*::-webkit-scrollbar {
+    display: none;
+  }
+
+  .ant-upload-wrapper .ant-upload-select {
+    display: block !important;
+}
