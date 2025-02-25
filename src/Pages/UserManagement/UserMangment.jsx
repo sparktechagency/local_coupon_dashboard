@@ -104,7 +104,7 @@ const UserManagement = () => {
           <Link to={-1}>
             <FaArrowLeft size={18} className="text-[var(--primary-color)] " />
           </Link>
-          <span className="font-semibold text-[20px]">User</span>
+          <span className="font-semibold text-[20px]">User Management</span>
         </div>
         <div>
           <div className="relative">

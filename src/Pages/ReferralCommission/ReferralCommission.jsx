@@ -90,7 +90,7 @@ const ReferralCommission = () => {
               <FaArrowLeft size={18} className="text-[var(--primary-color)] " />
             </Link>
             <span className="font-semibold text-[20px]">
-              Referral Commission
+              Subscription Plan
             </span>
           </div>
           
