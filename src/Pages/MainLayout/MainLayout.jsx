@@ -7,7 +7,7 @@ const MainLayout = () => {
     return (
         <div className='flex justify-between items-center gap-0 bg-[#F2F2F2] '>
 
-            <div className='w-[300px] bg-[var(--primary-color)]  h-screen overflow-y-scroll  '>
+            <div className='w-[10px] md:w-[300px] bg-[var(--primary-color)]  h-screen overflow-y-scroll  '>
                 <Sidebar />
             </div>
             

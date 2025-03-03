@@ -3,7 +3,6 @@ import profileUser from "./assets/images/profileuser.png";
 import DailyOverViewChart from "./Components/DailyOverViewChart/DailyOverViewChart";
 import IncomeOverview from "./Components/IncomeOverview/IncomeOverview";
 import { Link } from "react-router-dom";
-import ProfileUpdateRequest from "./Components/ProfileUpdateRequest/ProfileUpdateRequest";
 import "./app.css";
 import img1 from "./assets/images/user1.png";
 import img2 from "./assets/images/user2.png";
@@ -151,7 +150,7 @@ function App() {
   return (
     <div>
       {/*  statistics card for dashboard home page */}
-      <div className="grid grid-cols-4 justify-center items-center gap-5">
+      <div className="grid grid-cols-1 md:grid-cols-4 justify-center items-center gap-5">
         {data?.map((item, index) => (
           <div
             className="w-full h-full flex justify-center items-center  flex-col gap-3 py-7 bg-[#FEFEFE] p-2 rounded-md"
@@ -165,16 +164,16 @@ function App() {
       </div>
 
       {/* Chart */}
-      <div className="grid grid-cols-2 mt-5 gap-5">
-        <div className="w-full h-full bg-white p-4 rounded-md">
+      <div className="grid grid-cols-1 md:grid-cols-2 mt-5 gap-5">
+        <div className="w-full h-full bg-white p-0 md:p-4 rounded-md">
           <IncomeOverview />
         </div>
-        <div className="w-full h-full bg-white p-4 rounded-md">
+        <div className="w-full h-full bg-white p-0 md:p-4 rounded-md">
           <DailyOverViewChart />
         </div>
       </div>
 
-      <div className="bg-white shadow-md p-4 mt-5 rounded-md">
+      <div className="bg-white shadow-md p-0 md:p-4 mt-5 rounded-md">
         {/* Referral Overview section */}
         <div className="flex  justify-between items-center my-5 px-2 ">
           <p className="text-xl font-semibold">Recent Transactions Coupons</p>{" "}
@@ -185,6 +184,7 @@ function App() {
           columns={columns}
           className="custom-pagination"
           pagination={false}
+          scroll={{ x: 800 }}
         />
       </div>
     </div>

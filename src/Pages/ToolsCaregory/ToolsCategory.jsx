@@ -16,7 +16,7 @@ const ToolsCategory = () => {
 
   return (
     <div className=" p-4 rounded-md">
-      <div className="flex justify-between item-center ">
+      <div className="md:flex justify-between item-center ">
         <div className="flex items-center gap-2">
           <Link to={-1}>
             <FaArrowLeft size={18} className="text-[var(--secondary-color)] " />
@@ -34,7 +34,7 @@ const ToolsCategory = () => {
         </button>
       </div>
 
-      <div className="grid grid-cols-6 gap-5 mt-10">
+      <div className="grid grid-cols-1 md:grid-cols-6 gap-5 mt-10">
         <div className="bg-white mx-auto rounded-md shadow-md w-full flex flex-col justify-center items-center py-10">
           <p className="bg-[#ebd8b3] p-3 rounded-full"><IoMdRestaurant size={35} color="#CD9B3A" /></p>
           <p>Restaurant</p>

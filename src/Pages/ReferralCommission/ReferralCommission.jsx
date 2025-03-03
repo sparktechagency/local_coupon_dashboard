@@ -1,15 +1,31 @@
 import { Button, Form, Input, Modal, Table } from "antd";
 import TextArea from "antd/es/input/TextArea";
-import React, { useState } from "react";
+import JoditEditor from "jodit-react";
+import React, { useRef, useState } from "react";
 import { CiSearch } from "react-icons/ci";
 import { FaArrowLeft } from "react-icons/fa";
 import { IoAdd } from "react-icons/io5";
 import { Link } from "react-router-dom";
 
 const ReferralCommission = () => {
+  const editor = useRef(null);
+  const [content, setContent] = useState("");
   const [form] = Form.useForm();
   const [openViewModal, setViewModal] = useState(false);
   const [openModal, setOpenModal] = useState(false);
+
+  const config = {
+    readonly: false,
+    placeholder: 'Start typings...',
+    style: {
+        height: 200,
+    },
+    buttons: [
+        'image', 'fontsize', 'bold', 'italic', 'underline', '|',
+        'font', 'brush',
+        'align'
+    ]
+}
 
   const columns = [
     {
@@ -83,23 +99,26 @@ const ReferralCommission = () => {
 
   return (
     <div className="bg-white p-4 rounded-md">
-      <div className="flex justify-between item-center ">
+      <div className="md:flex justify-between item-center ">
         <div>
           <div className="flex items-center gap-2">
             <Link to={-1}>
               <FaArrowLeft size={18} className="text-[var(--primary-color)] " />
             </Link>
-            <span className="font-semibold text-[20px]">
-              Subscription Plan
-            </span>
+            <span className="font-semibold text-[20px]">Subscription Plan</span>
           </div>
-          
         </div>
-          <button onClick={()=> setOpenModal(true)} className="flex items-center  gap-2 bg-[var(--secondary-color)] px-4 py-2 rounded-md text-white"><IoAdd size={20} /> Subscription</button>
+        <button
+          onClick={() => setOpenModal(true)}
+          className="flex items-center mt-2 md:mt-0  gap-2 bg-[var(--secondary-color)] px-4 py-2 rounded-md text-white"
+        >
+          <IoAdd size={20} /> Subscription
+        </button>
       </div>
 
       <div className="mt-5">
-        <Table columns={columns} dataSource={data} pagination={false} />;
+          
+          <Table scroll={{ x: 800 }}  columns={columns} dataSource={data} pagination={false} />;
       </div>
 
       {/* Description Modal */}
@@ -151,13 +170,21 @@ const ReferralCommission = () => {
           >
             <Input />
           </Form.Item>
-          <Form.Item
+          {/* <Form.Item
             name="Duration"
             label="Points Range"
             rules={[{ required: true, message: "Please enter duration" }]}
           >
             <TextArea />
-          </Form.Item>
+          </Form.Item> */}
+          <JoditEditor
+            ref={editor}
+            value={content}
+            config={config}
+            tabIndex={1}
+            // onBlur={newContent => setContent(newContent)}
+            onChange={(newContent) => {}}
+          />
           <div className="flex items-center gap-3">
             <button className="bg-[var(--secondary-color)] text-white w-full py-2 rounded-sm">
               Save

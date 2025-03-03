@@ -107,12 +107,12 @@ const ToolsManagement = () => {
   ];
   return (
     <div className="bg-white shadow-md p-4 rounded-md">
-      <div className="flex justify-between item-center ">
+      <div className="md:flex justify-between item-center ">
         <div className="flex items-center gap-2 mb-5">
           <Link to={-1}>
             <FaArrowLeft size={18} className="text-[var(--secondary-color)] " />
           </Link>
-          <span className="font-semibold text-[20px]">Business Owner List</span>
+          <span className="md:font-semibold text-sm md:text-[20px]">Business Owner List</span>
         </div>
         <div>
           <div className="relative">
@@ -131,6 +131,8 @@ const ToolsManagement = () => {
         <Table
           columns={columns}
           dataSource={data}
+          scroll={{ x: 800 }}
+
           pagination={{
             total: 1239,
             showTotal: (total, range) =>

@@ -54,7 +54,7 @@ const Notification = () => {
             </div>
             <div>
                 <h2 className='text-[18px] font-semibold py-2'>Total 128 Notifications</h2>
-                <Table columns={columns} dataSource={data} pagination={false}
+                <Table columns={columns} scroll={{ x: 800 }} dataSource={data} pagination={false}
                     className="custom-pagination" />
             </div>
         </div>

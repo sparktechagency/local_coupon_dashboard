@@ -79,12 +79,12 @@ const dataSource = [
 const WithdrawRequest = () => {
   return (
     <div className="bg-white p-5">
-    <div className="flex justify-between item-center ">
+    <div className="md:flex justify-between item-center my-2 ">
       <div className="flex items-center gap-2">
         <Link to={-1}>
           <FaArrowLeft size={18} className="text-[var(--primary-color)] " />
         </Link>
-        <span className="font-semibold text-[20px]">Premium Subscribers</span>
+        <span className="font-semibold md:text-[20px]">Premium Subscribers</span>
       </div>
       <div>
         <div className="relative">
@@ -100,19 +100,19 @@ const WithdrawRequest = () => {
       </div>
     </div>
 
-    <Table dataSource={dataSource} columns={columns} pagination={false} />
-    <div className="mt-2 flex items-center justify-center">
+    <Table dataSource={dataSource} scroll={{ x: 800 }} columns={columns} pagination={false} />
+    {/* <div className="mt-2 md:file:flex items-center justify-center">
       <Pagination
         //   current={current}
         //   onChange={onChange}
-        total={11}
+        total={5}
         pageSize={1}
         showSizeChanger={false}
         showTotal={(total, range) =>
           `Showing ${range[0]}-${range[1]} out of ${total}`
         }
       />
-    </div>
+    </div> */}
   </div>
   )
 }

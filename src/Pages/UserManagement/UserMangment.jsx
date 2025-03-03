@@ -99,12 +99,12 @@ const UserManagement = () => {
 
   return (
     <div className="p-5 bg-white rounded-md">
-      <div className="flex justify-between item-center ">
+      <div className="mdflex justify-between item-center ">
         <div className="flex items-center gap-2">
           <Link to={-1}>
             <FaArrowLeft size={18} className="text-[var(--primary-color)] " />
           </Link>
-          <span className="font-semibold text-[20px]">User Management</span>
+          <span className="font-semibold md:text-[20px] mb-2 md:mb-0">User Management</span>
         </div>
         <div>
           <div className="relative">
@@ -126,6 +126,7 @@ const UserManagement = () => {
           dataSource={dataSource}
           columns={columns}
           className="custom-pagination"
+          scroll={{ x: 800 }}
           pagination={{
             pageSize: 5,
             showTotal: (total, range) =>
