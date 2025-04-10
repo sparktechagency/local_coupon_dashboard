@@ -11,7 +11,7 @@ import { TbFilePercent } from "react-icons/tb";
 
 const Sidebar = () => {
   const [openIndex, setOpenIndex] = useState(null);
-  const [isOpen, setIsOpen] = useState(false); // For mobile sidebar toggle
+  const [isOpen, setIsOpen] = useState(false); 
 
   const contentRefs = useRef([]);
   const { pathname } = useLocation();

@@ -137,7 +137,7 @@ const Login = () => {
                                 height: "52px",
                                 fontWeight: "400px",
                                 fontSize: "18px",
-                                background: "#2AB9A4",
+                                background: "",
                                 marginTop: "56px",
                                 
                             }}
