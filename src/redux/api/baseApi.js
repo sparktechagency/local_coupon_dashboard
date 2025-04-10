@@ -3,7 +3,7 @@ import { createApi, fetchBaseQuery } from '@reduxjs/toolkit/query/react'
 const baseQuery = fetchBaseQuery({
     baseUrl : 'http://10.0.60.129:3001',
     prepareHeaders  :  (headers)=>{
-        const token = JSON.parse(localStorage.getItem('token'));
+        const token = JSON.parse(localStorage.getItem('coupon_token'));
         if(token){
             headers.set('Authorization' , `Bearer ${token}`)
         }
