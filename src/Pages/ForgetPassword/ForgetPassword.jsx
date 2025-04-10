@@ -11,7 +11,7 @@ const ForgetPassword = () => {
         <div className="bg-white flex justify-center items-center gap-0 "
             style={{
                 width: "100%",
-                background: "#2AB9A4",
+                background: "#F0E0C2",
                 height: "100vh",
             }}
         >

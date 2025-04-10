@@ -19,7 +19,7 @@ const navigate = useNavigate()
         toast.success(payload?.message)
         console.log(payload?.data?.accessToken);
         if(payload?.data){
-            localStorage.setItem('coupon_token' , payload?.data?.accessToken)
+            localStorage.setItem('coupon_token' ,JSON.stringify( payload?.data?.accessToken))
             navigate("/")
         }
       })
