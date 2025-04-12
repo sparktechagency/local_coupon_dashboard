@@ -81,7 +81,7 @@ const ForgetPassword = () => {
                                 style={{ color: "#FFF" }}
                                 to="/auth/otp"
                             >
-                                Countinue
+                                Continue
                             </Link>
 
                         </Button>

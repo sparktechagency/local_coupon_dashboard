@@ -11,28 +11,32 @@ import referrals from "./assets/images/business.png";
 import { Table } from "antd";
 import kfc from './assets/images/kfc.png'
 import { MdBlockFlipped } from "react-icons/md";
+import { useGetDashboardQuery } from "./redux/api/dahsboadHomeApi";
 function App() {
+
+  const {data :  getDashboardInfo} = useGetDashboardQuery()
+  console.log(getDashboardInfo?.data);
   //
   const data = [
     {
       title: "Total User",
       icon: profileUser,
-      count: "8250",
+      count: getDashboardInfo?.data?.total_users,
     },
     {
       title: "Premium User",
       icon: activeUser,
-      count: "650",
+      count:getDashboardInfo?.data?.premium_users,
     },
     {
       title: "Total Business Owners",
       icon: referrals,
-      count: "52,650",
+      count: getDashboardInfo?.data?.business_owners,
     },
     {
       title: "Total Coupon",
       icon: income,
-      count: "82,650",
+      count: getDashboardInfo?.data?.coupons,
     },
   ];
 
