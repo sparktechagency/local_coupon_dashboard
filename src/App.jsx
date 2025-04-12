@@ -12,10 +12,16 @@ import { Table } from "antd";
 import kfc from './assets/images/kfc.png'
 import { MdBlockFlipped } from "react-icons/md";
 import { useGetDashboardQuery } from "./redux/api/dahsboadHomeApi";
+import { useState } from "react";
 function App() {
+  const [subscriptionYear , setSubscriptionYear] = useState(new Date().getFullYear())
+  // Handle Subscription growth year
+  const handleChangeYear = (value) => {
+    setSubscriptionYear(value)
+  };
 
-  const {data :  getDashboardInfo} = useGetDashboardQuery()
-  console.log(getDashboardInfo?.data);
+  const {data :  getDashboardInfo} = useGetDashboardQuery({  subscription_year:subscriptionYear})
+  // console.log(getDashboardInfo?.data?.subscription_growth);
   //
   const data = [
     {
@@ -170,7 +176,7 @@ function App() {
       {/* Chart */}
       <div className="grid grid-cols-1 md:grid-cols-2 mt-5 gap-5">
         <div className="w-full h-full bg-white p-0 md:p-4 rounded-md">
-          <IncomeOverview />
+          <IncomeOverview subscriptionGrowth={getDashboardInfo?.data?.subscription_growth} handleChangeYear={handleChangeYear} />
         </div>
         <div className="w-full h-full bg-white p-0 md:p-4 rounded-md">
           <DailyOverViewChart />

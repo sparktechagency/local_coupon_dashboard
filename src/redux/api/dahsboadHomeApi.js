@@ -3,9 +3,9 @@ import { baseApi } from "./baseApi";
 const dashboardApi = baseApi.injectEndpoints({
     endpoints : (builder)=>({
         getDashboard : builder.query({
-            query : ()=>{
+            query : ({subscription_year})=>{
                 return{
-                   url : `/admin/dashboard?subscription_year=2025` ,
+                   url : `/admin/dashboard?subscription_year=${subscription_year}` ,
                    method : "GET"
                 }
             }
