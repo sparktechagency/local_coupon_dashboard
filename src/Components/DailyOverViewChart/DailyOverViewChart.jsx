@@ -11,102 +11,27 @@ import {
   ResponsiveContainer,
 } from "recharts";
 
-const DailyOverViewChart = () => {
-  const data = [
-    {
-      name: "Jan",
-      uv: 4000,
-      pv: 2400,
-      amt: 2400,
-    },
-    {
-      name: "Feb",
-      uv: 3000,
-      pv: 1398,
-      amt: 2210,
-    },
-    {
-      name: "Mar",
-      uv: 2000,
-      pv: 9800,
-      amt: 2290,
-    },
-    {
-      name: "Apr",
-      uv: 2780,
-      pv: 3908,
-      amt: 2000,
-    },
-    {
-      name: "May",
-      uv: 1890,
-      pv: 4800,
-      amt: 2181,
-    },
-    {
-      name: "Jun",
-      uv: 2390,
-      pv: 3800,
-      amt: 2500,
-    },
-    {
-      name: "Jul",
-      uv: 3490,
-      pv: 4300,
-      amt: 2100,
-    },
-    {
-      name: "Aug",
-      uv: 3490,
-      pv: 4300,
-      amt: 2100,
-    },
-    {
-      name: "Sept",
-      uv: 1340,
-      pv: 3430,
-      amt: 2100,
-    },
-    {
-      name: "Oct",
-      uv: 1740,
-      pv: 1430,
-      amt: 2100,
-    },
-    {
-      name: "Nov",
-      uv: 5740,
-      pv: 3430,
-      amt: 2100,
-    },
-    {
-      name: "Dec",
-      uv: 4740,
-      pv: 8430,
-      amt: 2100,
-    },
-  ];
-  const handleChange = (value) => {
-    console.log(`selected ${value}`);
-  };
-  const items = [
-    {
-      label: 2023,
-      key: "2023",
-    },
-    {
-      label: 2024,
-      key: "2024",
-    },
-    {
-      label: 2025,
-      key: "2025",
-    },
-    {
-      label: 2026,
-      key: "2026",
-    },
-  ];
+const DailyOverViewChart = ({userGrowth ,handleUserGrowth}) => {
+  // console.log(userGrowth?.chart?.data[0]);
+
+  const combineData = userGrowth?.chart?.labels?.map((month , i)=>{
+    return {
+      name : month,
+      Active : userGrowth?.chart?.data[0]?.[i],
+      Inactive :  userGrowth?.chart?.data[1]?.[i]
+    }
+  })
+ 
+
+  const currentYear = new Date().getFullYear()
+
+  const items = Array.from({length : 4}, (_ , i)=>{
+    const year = currentYear - 1 + i
+    return {
+        label : year,
+        value : String(year)
+    }
+  })
   return (
     <>
       <div className="flex justify-between items-center">
@@ -114,9 +39,9 @@ const DailyOverViewChart = () => {
           <p className="text-2xl font-semibold mb-10 ">User Growth</p>
         </div>
         <Select
-          defaultValue="2024"
+          defaultValue={currentYear}
           style={{ width: 120 }}
-          onChange={handleChange}
+          onChange={handleUserGrowth}
           options={items}
         />
       </div>
@@ -125,7 +50,7 @@ const DailyOverViewChart = () => {
           <BarChart
             width={500}
             height={300}
-            data={data}
+            data={combineData}
             margin={{
               top: 5,
               right: 30,
@@ -138,8 +63,8 @@ const DailyOverViewChart = () => {
             <YAxis />
             <Tooltip />
             <Legend />
-            <Bar dataKey="pv"  fill="#D7AF61" />
-            <Bar dataKey="uv" fill="#715520" />
+            <Bar dataKey="Active"  fill="#D7AF61" />
+            <Bar dataKey="Inactive" fill="#715520" />
           </BarChart>
         </ResponsiveContainer>
       </div>

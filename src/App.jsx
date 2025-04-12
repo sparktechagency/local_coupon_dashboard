@@ -15,13 +15,20 @@ import { useGetDashboardQuery } from "./redux/api/dahsboadHomeApi";
 import { useState } from "react";
 function App() {
   const [subscriptionYear , setSubscriptionYear] = useState(new Date().getFullYear())
+  const [userYear , setUserYear] = useState(new Date().getFullYear())
   // Handle Subscription growth year
   const handleChangeYear = (value) => {
     setSubscriptionYear(value)
   };
 
-  const {data :  getDashboardInfo} = useGetDashboardQuery({  subscription_year:subscriptionYear})
-  // console.log(getDashboardInfo?.data?.subscription_growth);
+  // Handle user growth year function
+
+  const handleUserGrowth = (value) => {
+    setUserYear(value)
+  };
+
+  const {data :  getDashboardInfo} = useGetDashboardQuery({  subscription_year:subscriptionYear , user_year :userYear })
+  // console.log(getDashboardInfo?.data?.user_growth);
   //
   const data = [
     {
@@ -179,7 +186,7 @@ function App() {
           <IncomeOverview subscriptionGrowth={getDashboardInfo?.data?.subscription_growth} handleChangeYear={handleChangeYear} />
         </div>
         <div className="w-full h-full bg-white p-0 md:p-4 rounded-md">
-          <DailyOverViewChart />
+          <DailyOverViewChart userGrowth = {getDashboardInfo?.data?.user_growth} handleUserGrowth={handleUserGrowth} />
         </div>
       </div>
 
