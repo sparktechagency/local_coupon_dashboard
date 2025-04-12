@@ -1,19 +1,39 @@
-import { Form, Input, Modal } from "antd";
+import {  Button, Form, Input, Modal, Upload } from "antd";
 import React, { useState } from "react";
-import { FaArrowLeft, FaBriefcaseMedical, FaHotel } from "react-icons/fa";
+import { FaArrowLeft} from "react-icons/fa";
 import { Link } from "react-router-dom";
 import { GoPlus } from "react-icons/go";
-import { IoMdRestaurant } from "react-icons/io";
-import { FaMartiniGlassEmpty } from "react-icons/fa6";
-import { GiTravelDress } from "react-icons/gi";
-import { MdSportsHandball } from "react-icons/md";
-import { useGetAllCategoryQuery } from "../../redux/api/categoryApi";
+import {
+  useAddCategoryMutation,
+  useGetAllCategoryQuery,
+} from "../../redux/api/categoryApi";
+import { UploadOutlined } from "@ant-design/icons";
+import { toast } from "sonner";
 const ToolsCategory = () => {
+  const [form] = Form.useForm()
   const { data: getAllCategory } = useGetAllCategoryQuery();
+  const [createCategory , {isLoading}] = useAddCategoryMutation();
   const [openModal, setOpenModal] = useState(false);
   const [categoryName, setCategoryName] = useState("");
 
-  console.log(getAllCategory?.data);
+  // console.log(getAllCategory?.data);
+
+  const handleUploadCategory = (value) => {
+    const formData = new FormData();
+    formData.append("name", value?.categoryName);
+    if (value.categoryIcon && value.categoryIcon.length > 0) {
+      const file = value.categoryIcon[0].originFileObj;
+      formData.append("icon", file);
+    }
+    createCategory(formData)
+      .unwrap()
+      .then((payload) => {
+        toast.success(payload?.message)
+        setOpenModal(false)
+        form.resetFields()
+      })
+      .catch((error) => toast.error(error?.data?.message));
+  };
 
   return (
     <div className=" p-4 rounded-md">
@@ -38,9 +58,12 @@ const ToolsCategory = () => {
       <div className="grid grid-cols-1 md:grid-cols-6 gap-5 mt-10">
         {getAllCategory?.data?.map((category, i) => {
           return (
-            <div key={i+1} className="bg-white mx-auto rounded-md shadow-md w-full flex flex-col justify-center items-center py-10">
+            <div
+              key={i + 1}
+              className="bg-white mx-auto rounded-md shadow-md w-full flex flex-col justify-center items-center py-10"
+            >
               <p className="bg-[#ebd8b3] p-2 rounded-full">
-                <img src={category?.icon_url}  className="h-14" alt="" />
+                <img src={category?.icon_url} className="h-14 w-14" alt="" />
               </p>
               <p>{category?.name}</p>
               <div className="space-x-4">
@@ -58,24 +81,39 @@ const ToolsCategory = () => {
 
       <Modal
         open={openModal}
-        onCancel={() => setOpenModal()}
+        onCancel={() => {
+          setOpenModal();
+          form.resetFields()
+        }}
         footer={false}
         centered
       >
         <p className="text-center text-[18px]">{categoryName}</p>
-        <Form layout="vertical">
+        <Form onFinish={handleUploadCategory} form={form} layout="vertical">
           <Form.Item name={"categoryName"} label="Category Name">
             <Input />
           </Form.Item>
-          <Form.Item name={"categoryName"} label="Upload Category Icon">
-            <Input />
+          <Form.Item
+            name="categoryIcon"
+            label="Upload Category Icon"
+            valuePropName="fileList"
+            getValueFromEvent={(e) => e && e.fileList}
+          >
+            <Upload
+              name="icon"
+              listType="picture"
+              maxCount={1}
+              beforeUpload={() => false} // prevent automatic upload
+            >
+              <Button icon={<UploadOutlined />}>Click to Upload</Button>
+            </Upload>
           </Form.Item>
           <div className="flex items-center gap-3">
-            <button className="border border-[var(--secondary-color)] text-[var(--secondary-color)] w-full py-2 rounded-sm">
+            <button type="button" onClick={()=> setOpenModal(false)} className="border border-[var(--secondary-color)] text-[var(--secondary-color)] w-full py-2 rounded-sm">
               Cancel
             </button>
-            <button className="bg-[var(--secondary-color)] text-white w-full py-2 rounded-sm">
-              Add
+            <button disabled={isLoading} className="bg-[var(--secondary-color)] text-white w-full py-2 rounded-sm">
+              {isLoading ? "Uploading.." : "Add"}
             </button>
           </div>
         </Form>
