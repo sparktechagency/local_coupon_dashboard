@@ -3,8 +3,12 @@ import { Button, Form, Input } from "antd";
 import { CiEdit } from "react-icons/ci";
 import profile from '../../assets/images/admin.png'
 import { IoCameraOutline } from "react-icons/io5";
+import { useGetProfileQuery } from "../../redux/api/authApi";
 const admin = false;
 const Profile = () => {
+    const {data : getProfile } =  useGetProfileQuery()
+
+    console.log(getProfile?.data);
     const [image, setImage] = useState();
     const [form] = Form.useForm()
     const [tab, setTab] = useState(new URLSearchParams(window.location.search).get('tab') || "Profile");
@@ -23,10 +27,11 @@ const Profile = () => {
     }
     const onFinish = (values) => {
         if (values?.new_password === values.current_password) {
-            return setPassError('your old password cannot be your new password')
+            return setPassError('Your old password cannot be your new password')
         }
         if (values?.new_password !== values?.confirm_password) {
             return setPassError("Confirm password doesn't match")
+            
         } else {
             setPassError('')
         }
