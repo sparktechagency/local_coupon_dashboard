@@ -9,26 +9,35 @@ import img2 from "./assets/images/user2.png";
 import activeUser from "./assets/images/premium.png";
 import referrals from "./assets/images/business.png";
 import { Table } from "antd";
-import kfc from './assets/images/kfc.png'
+import kfc from "./assets/images/kfc.png";
 import { MdBlockFlipped } from "react-icons/md";
-import { useGetDashboardQuery } from "./redux/api/dahsboadHomeApi";
+import {
+  useGetDashboardQuery,
+  useRecentTransactionQuery,
+} from "./redux/api/dahsboadHomeApi";
 import { useState } from "react";
 function App() {
-  const [subscriptionYear , setSubscriptionYear] = useState(new Date().getFullYear())
-  const [userYear , setUserYear] = useState(new Date().getFullYear())
+  const [subscriptionYear, setSubscriptionYear] = useState(
+    new Date().getFullYear()
+  );
+  const [userYear, setUserYear] = useState(new Date().getFullYear());
   // Handle Subscription growth year
   const handleChangeYear = (value) => {
-    setSubscriptionYear(value)
+    setSubscriptionYear(value);
   };
 
   // Handle user growth year function
 
   const handleUserGrowth = (value) => {
-    setUserYear(value)
+    setUserYear(value);
   };
 
-  const {data :  getDashboardInfo} = useGetDashboardQuery({  subscription_year:subscriptionYear , user_year :userYear })
-  // console.log(getDashboardInfo?.data?.user_growth);
+  const { data: getDashboardInfo } = useGetDashboardQuery({
+    subscription_year: subscriptionYear,
+    user_year: userYear,
+  });
+  const { data: recentTransaction } = useRecentTransactionQuery();
+  console.log(recentTransaction?.data);
   //
   const data = [
     {
@@ -39,7 +48,7 @@ function App() {
     {
       title: "Premium User",
       icon: activeUser,
-      count:getDashboardInfo?.data?.premium_users,
+      count: getDashboardInfo?.data?.premium_users,
     },
     {
       title: "Total Business Owners",
@@ -54,14 +63,27 @@ function App() {
   ];
 
   // table data
+  const formattedData = recentTransaction?.data?.map((transaction) => {
+    return {
+      key: transaction?._id,
+      useName: "Devon Lane",
+      companyName: "KFC",
+      share: 10,
+      download: 1,
+      date: "16 Jan 2025",
+      referrerImg: img1,
+      refereeImg: img2,
+      level: "Level 1",
+    };
+  });
   const dataSource = [
     {
       key: "#12333",
       useName: "Devon Lane",
       companyName: "KFC",
-      share : 10,
-      download : 1,
-      date  :'16 Jan 2025',
+      share: 10,
+      download: 1,
+      date: "16 Jan 2025",
       referrerImg: img1,
       refereeImg: img2,
       level: "Level 1",
@@ -70,9 +92,9 @@ function App() {
       key: "#12334",
       useName: "Devon Lane",
       companyName: "KFC",
-      download : 2,
-      share : 10,
-      date :'16 Jan 2025',
+      download: 2,
+      share: 10,
+      date: "16 Jan 2025",
       referrerImg: img2,
       refereeImg: img1,
       level: "Level 2",
@@ -81,9 +103,9 @@ function App() {
       key: "#12335",
       useName: "Devon Lane",
       companyName: "KFC",
-      download : 2,
-      share : 10,
-      date :'16 Jan 2025',
+      download: 2,
+      share: 10,
+      date: "16 Jan 2025",
       referrerImg: img1,
       refereeImg: img2,
       level: "Level 1",
@@ -97,7 +119,7 @@ function App() {
       dataIndex: "key",
       key: "key",
     },
- 
+
     {
       title: "User Name",
       dataIndex: "useName",
@@ -105,62 +127,63 @@ function App() {
       render: (_, record) => {
         return (
           <div className="flex items-center gap-2">
-         
             <p className="font-medium">{record?.useName}</p>
           </div>
         );
       },
     },
     {
-      title : 'Company Name',
-      dataIndex : 'companyName',
-      key : 'companyName'
+      title: "Company Name",
+      dataIndex: "companyName",
+      key: "companyName",
     },
     {
-      title : 'Coupon',
-      dataIndex : 'coupon',
-      key : 'coupon',
-      render : (_,record)=>{
+      title: "Coupon",
+      dataIndex: "coupon",
+      key: "coupon",
+      render: (_, record) => {
         return (
           <div className="border border-dashed px-2 flex items-center justify-between max-w-[300px] ">
-              <div className="my-auto">
-                <img src={kfc} className="h-10 mt-2" alt="" />
-                <p className="mt-1">Expires 17 Jan 2025</p>
-              </div>
-              <div>
-                <p className="font-bold text-xl">12% off</p>
-              </div>
+            <div className="my-auto">
+              <img src={kfc} className="h-10 mt-2" alt="" />
+              <p className="mt-1">Expires 17 Jan 2025</p>
+            </div>
+            <div>
+              <p className="font-bold text-xl">12% off</p>
+            </div>
           </div>
-        )
-      }
+        );
+      },
     },
     {
-      title : 'Download',
-      dataIndex : 'download',
-      key : 'download'
+      title: "Download",
+      dataIndex: "download",
+      key: "download",
     },
     {
-      title : 'Share',
-      dataIndex : 'share',
-      key : 'share'
+      title: "Share",
+      dataIndex: "share",
+      key: "share",
     },
     {
-      title : 'Date',
-      dataIndex : 'date',
-      key : 'date'
+      title: "Date",
+      dataIndex: "date",
+      key: "date",
     },
-   
+
     {
       title: "Action",
       dataIndex: "action",
       key: "action",
-      render : (_, record)=>{
+      render: (_, record) => {
         return (
           <div>
-            <button className="bg-red-600 p-1 rounded-md shadow-md text-white"><MdBlockFlipped size={25} /></button>
+            <button className="bg-red-600 p-1 rounded-md shadow-md text-white">
+              <MdBlockFlipped size={25} />
+            </button>
           </div>
-        )
-      }
+        );
+      },
     },
   ];
 
@@ -183,10 +206,16 @@ function App() {
       {/* Chart */}
       <div className="grid grid-cols-1 md:grid-cols-2 mt-5 gap-5">
         <div className="w-full h-full bg-white p-0 md:p-4 rounded-md">
-          <IncomeOverview subscriptionGrowth={getDashboardInfo?.data?.subscription_growth} handleChangeYear={handleChangeYear} />
+          <IncomeOverview
+            subscriptionGrowth={getDashboardInfo?.data?.subscription_growth}
+            handleChangeYear={handleChangeYear}
+          />
         </div>
         <div className="w-full h-full bg-white p-0 md:p-4 rounded-md">
-          <DailyOverViewChart userGrowth = {getDashboardInfo?.data?.user_growth} handleUserGrowth={handleUserGrowth} />
+          <DailyOverViewChart
+            userGrowth={getDashboardInfo?.data?.user_growth}
+            handleUserGrowth={handleUserGrowth}
+          />
         </div>
       </div>
 

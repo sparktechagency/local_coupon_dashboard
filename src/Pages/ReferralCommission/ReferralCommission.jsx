@@ -6,26 +6,35 @@ import { CiSearch } from "react-icons/ci";
 import { FaArrowLeft } from "react-icons/fa";
 import { IoAdd } from "react-icons/io5";
 import { Link } from "react-router-dom";
+import { useGetSubscriptionQuery } from "../../redux/api/SubscriptionApi";
 
 const ReferralCommission = () => {
+  const { data: getSubscription } = useGetSubscriptionQuery();
   const editor = useRef(null);
   const [content, setContent] = useState("");
   const [form] = Form.useForm();
   const [openViewModal, setViewModal] = useState(false);
   const [openModal, setOpenModal] = useState(false);
+  const [subscriptionDetails, setSubscriptionDetails] = useState([]);
 
   const config = {
     readonly: false,
-    placeholder: 'Start typings...',
+    placeholder: "Start typings...",
     style: {
-        height: 200,
+      height: 200,
     },
     buttons: [
-        'image', 'fontsize', 'bold', 'italic', 'underline', '|',
-        'font', 'brush',
-        'align'
-    ]
-}
+      "image",
+      "fontsize",
+      "bold",
+      "italic",
+      "underline",
+      "|",
+      "font",
+      "brush",
+      "align",
+    ],
+  };
 
   const columns = [
     {
@@ -52,11 +61,14 @@ const ReferralCommission = () => {
       title: "Description",
       dataIndex: "description",
       key: "description",
-      render: (_, render) => {
+      render: (_, record) => {
         return (
           <div>
             <button
-              onClick={() => setViewModal(true)}
+              onClick={() => {
+                setViewModal(true);
+                setSubscriptionDetails(record?.description);
+              }}
               className="text-[var(--secondary-color)]"
             >
               View
@@ -80,22 +92,18 @@ const ReferralCommission = () => {
     },
   ];
 
-  const data = [
-    {
-      key: "1",
-      slNo: "01",
-      subscription: "Gold",
-      fee: "$09.00",
-      duration: "Monthly",
-    },
-    {
-      key: "2",
-      slNo: "02",
-      subscription: "Diamond",
-      fee: "$99.99",
-      duration: "Yearly",
-    },
-  ];
+  // console.log(subscriptionDetails);
+
+  const formattedData = getSubscription?.data?.map((subscription, i) => {
+    return {
+      key: subscription?._id,
+      slNo: i + 1,
+      subscription: subscription?.name,
+      fee: subscription?.priceInCents,
+      duration: subscription?.durationInMonths,
+      description: subscription?.info,
+    };
+  });
 
   return (
     <div className="bg-white p-4 rounded-md">
@@ -117,8 +125,13 @@ const ReferralCommission = () => {
       </div>
 
       <div className="mt-5">
-          
-          <Table scroll={{ x: 800 }}  columns={columns} dataSource={data} pagination={false} />;
+        <Table
+          scroll={{ x: 800 }}
+          columns={columns}
+          dataSource={formattedData}
+          pagination={false}
+        />
+        ;
       </div>
 
       {/* Description Modal */}
@@ -129,11 +142,11 @@ const ReferralCommission = () => {
         open={openViewModal}
         onCancel={() => setViewModal(false)}
       >
-        <div className="ml-10">
-          <p className="mt-5">1. Unlock 3 exclusive deals</p>
-          <p>2. extended redemption period</p>
-          <p>3. Bonus Saving opportunity </p>
-          <p>4. Access to premium coupons</p>
+        <div className="ml-10 mt-5">
+          {subscriptionDetails?.map((details, i) => {
+            return <p key={i + 1}>{i + 1}.  {details}</p>;
+          })}
+          
         </div>
       </Modal>
 

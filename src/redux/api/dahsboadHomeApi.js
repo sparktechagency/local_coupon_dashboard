@@ -9,8 +9,16 @@ const dashboardApi = baseApi.injectEndpoints({
                    method : "GET"
                 }
             }
+        }),
+        recentTransaction :  builder.query({
+            query : ()=>{
+                return {
+                    url : `/admin/dashboard/transactions?page=1&limit=10`,
+                    method  :'GET'
+                }
+            }
         })
     })
 })
 
-export const  { useGetDashboardQuery } = dashboardApi; 
+export const  { useGetDashboardQuery , useRecentTransactionQuery } = dashboardApi; 
