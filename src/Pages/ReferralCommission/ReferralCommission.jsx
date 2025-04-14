@@ -1,6 +1,6 @@
 import { Form,  Modal, Popconfirm, Table } from "antd";
 import React, { useRef, useState } from "react";
-import { FaArrowLeft } from "react-icons/fa";
+import { FaArrowLeft, FaRegEdit } from "react-icons/fa";
 import { IoAdd } from "react-icons/io5";
 import { Link } from "react-router-dom";
 import {
@@ -11,6 +11,7 @@ import {
 } from "../../redux/api/SubscriptionApi";
 import { toast } from "sonner";
 import SubscriptionModal from "../../Components/SubscriptionModal/SubscriptionModal";
+import { AiOutlineDelete } from "react-icons/ai";
 
 const ReferralCommission = () => {
   const { data: getSubscription } = useGetSubscriptionQuery();
@@ -103,7 +104,7 @@ const ReferralCommission = () => {
       render: (_, record) => {
         console.log(record?.key);
         return (
-          <div>
+          <div className="flex items-center">
             <button
               onClick={() => {
                 setOpenModal(true);
@@ -111,7 +112,7 @@ const ReferralCommission = () => {
               }}
               className="text-[var(--secondary-color)]  px-6 py-2 rounded-full"
             >
-              Edit
+              <FaRegEdit size={22} />
             </button>
             <Popconfirm
               title="Are you sure delete this subscription?"
@@ -119,7 +120,7 @@ const ReferralCommission = () => {
               cancelText="No"
               onConfirm={() => handleDeleteSubscription(record?.key)}
             >
-              <button>Delete</button>
+              <button><AiOutlineDelete size={22} color="red" /></button>
             </Popconfirm>
           </div>
         );
