@@ -1,8 +1,5 @@
-import { Button, Form, Input, Modal, Popconfirm, Table } from "antd";
-import TextArea from "antd/es/input/TextArea";
-import JoditEditor from "jodit-react";
+import { Form,  Modal, Popconfirm, Table } from "antd";
 import React, { useRef, useState } from "react";
-import { CiSearch } from "react-icons/ci";
 import { FaArrowLeft } from "react-icons/fa";
 import { IoAdd } from "react-icons/io5";
 import { Link } from "react-router-dom";
@@ -130,7 +127,6 @@ const ReferralCommission = () => {
     },
   ];
 
-  // console.log(subscriptionDetails);
 
   const formattedData = getSubscription?.data?.map((subscription, i) => {
     return {
@@ -144,19 +140,7 @@ const ReferralCommission = () => {
   });
 
   const handleCreate = (values) => {
-    const temp = document.createElement("div");
-    temp.innerHTML = content;
-
-    const paragraphs = Array.from(temp.childNodes)
-      .map((node) => node.textContent.trim())
-      .filter(Boolean);
-
-    const formattedData = {
-      ...values,
-      info: paragraphs,
-    };
-
-    createSubscription(formattedData)
+    createSubscription(values)
       .unwrap()
       .then((payload) => {
         toast.success(payload?.message);
@@ -173,6 +157,7 @@ const ReferralCommission = () => {
       .then((res) => {
         toast.success(res?.message);
         setOpenModal(false);
+        form.resetFields()
       })
       .catch((err) => toast.error(err?.data?.message));
   };
@@ -229,67 +214,10 @@ const ReferralCommission = () => {
         setOpenModal={setOpenModal}
         isEditMode={!!selectedSubscription}
         initialValues={selectedSubscription}
+        setSelectedSubscription={setSelectedSubscription}
         onSubmit={selectedSubscription ? handleUpdate : handleCreate}
       />
 
-      {/* <Modal
-        title="Create"
-        footer={false}
-        open={openModal}
-        onCancel={() => {
-          setOpenModal(false)
-          form.resetFields()
-        }}
-      >
-        <Form onFinish={handleCreateSubscription} form={form} layout="vertical">
-          <Form.Item
-            name="name"
-            label="Subscription Plan Name"
-            rules={[
-              {
-                required: true,
-                message: "Please enter Subscription plan name",
-              },
-            ]}
-          >
-            <Input />
-          </Form.Item>
-          <Form.Item
-            name="priceInCents"
-            label="Price"
-            rules={[{ required: true, message: "Please enter price" }]}
-          >
-            <Input type="number" />
-          </Form.Item>
-          <Form.Item
-            name="durationInMonths"
-            label="Duration"
-            rules={[{ required: true, message: "Please enter duration" }]}
-          >
-            <Input type="number" />
-          </Form.Item>
-
-          <JoditEditor
-            ref={editor}
-            value={content}
-            config={config}
-            tabIndex={1}
-            onBlur={(newContent) => setContent(newContent)}
-            onChange={() => {}}
-          />
-          <div className="flex items-center gap-3">
-            <button className="bg-[var(--secondary-color)] text-white w-full py-2 rounded-sm">
-              Save
-            </button>
-            <button type="button" onClick={()=> {
-              setOpenModal(false)
-              form.resetFields()
-            }} className="border bg-red-600 text-white w-full py-2 rounded-sm">
-              Cancel
-            </button>
-          </div>
-        </Form>
-      </Modal> */}
     </div>
   );
 };

@@ -8,6 +8,7 @@ const SubscriptionModal = ({
   initialValues,
   isEditMode = false,
   onSubmit,
+  setSelectedSubscription
 }) => {
   const [form] = Form.useForm();
   const editor = useRef(null);
@@ -45,7 +46,9 @@ const SubscriptionModal = ({
     setOpenModal(false);
     form.resetFields();
     setContent("");
+    setSelectedSubscription(null);
   };
+
 
   return (
     <Modal
