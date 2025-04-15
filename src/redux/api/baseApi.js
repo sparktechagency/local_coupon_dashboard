@@ -1,4 +1,5 @@
 import { createApi, fetchBaseQuery } from '@reduxjs/toolkit/query/react'
+import img from '../../assets/images/place.jpg'
 
 const baseQuery = fetchBaseQuery({
     baseUrl : 'http://10.0.60.129:3001',
@@ -17,3 +18,4 @@ export const baseApi = createApi({
     endpoints : ()=>({})
 })
 export const imageUrl = "http://10.0.60.129:3001"
+export const placeImage = img 

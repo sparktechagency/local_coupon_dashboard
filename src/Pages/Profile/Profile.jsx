@@ -116,7 +116,7 @@ const Profile = () => {
                                 form={form}
                             >
                                     <Form.Item
-                                        name="fullName"
+                                        name="name"
                                         label={<p className="text-[16px]  font-normal">User
                                             Name</p>}
                                     >

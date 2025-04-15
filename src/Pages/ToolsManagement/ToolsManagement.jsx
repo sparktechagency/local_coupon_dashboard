@@ -1,53 +1,35 @@
-import React, { useState } from "react";
-import { Table, Button, Input, Modal, Form, Select, Upload, Avatar } from "antd";
+import React from "react";
 import {
-  DeleteOutlined,
-  EditOutlined,
-  UploadOutlined,
-} from "@ant-design/icons";
+  Table,
+  Button,
+ 
+} from "antd";
 import "antd/dist/reset.css";
 import { Link } from "react-router-dom";
 import { FaArrowLeft } from "react-icons/fa";
 import { CiSearch } from "react-icons/ci";
-import { AddVideoModal } from "../../Components/AddVideoModal/AddVideoModal";
 import { MdBlockFlipped } from "react-icons/md";
+import { useGetBusinessOwnerQuery } from "../../redux/api/usersApi";
+import { placeImage } from "../../redux/api/baseApi";
 
 const ToolsManagement = () => {
-  const data = [
-    {
-      key: "1",
-      sl: "#526525",
-      avatar: "https://randomuser.me/api/portraits/women/1.jpg",
-      name: "Jenny Wilson",
-      company: "KFC",
-      address: "3605 Parker Rd.",
-      email: "weaver@example.com",
-      contact: "(671) 555-0110",
-      location: "Beijing, China",
-    },
-    {
-      key: "2",
-      sl: "#696589",
-      avatar: "https://randomuser.me/api/portraits/men/2.jpg",
-      name: "Wade Warren",
-      company: "KFC",
-      address: "3890 Poplar Dr.",
-      email: "ennings@example.com",
-      contact: "(205) 555-0100",
-      location: "Barisal, Bangladesh",
-    },
-    {
-      key: "3",
-      sl: "#526587",
-      avatar: "https://randomuser.me/api/portraits/men/3.jpg",
-      name: "Foysal Rahman",
-      company: "KFC",
-      address: "7529 E. Pecan St.",
-      email: "cruz@example.com",
-      contact: "(907) 555-0101",
-      location: "Yangon, Myanmar",
-    },
-  ];
+  const { data: getBusinessOwner } = useGetBusinessOwnerQuery();
+  console.log(getBusinessOwner?.data);
+
+  const data = getBusinessOwner?.data?.map((owner) => {
+    return {
+      key: owner?._id,
+      sl: owner?._id,
+      avatar: owner?.picture ? owner?.picture : placeImage ,
+      name: owner?.name,
+      company: owner?.companyName ? owner?.companyName : "N/A" ,
+      address: owner?.companyAddress ? owner?.companyAddress : "N/A",
+      email: owner?.email,
+      contact: owner?.phone,
+      location: owner?.location ? owner?.location : "N/A",
+      isBanned : owner?.isBanned
+    };
+  });
 
   const columns = [
     {
@@ -112,7 +94,9 @@ const ToolsManagement = () => {
           <Link to={-1}>
             <FaArrowLeft size={18} className="text-[var(--secondary-color)] " />
           </Link>
-          <span className="md:font-semibold text-sm md:text-[20px]">Business Owner List</span>
+          <span className="md:font-semibold text-sm md:text-[20px]">
+            Business Owner List
+          </span>
         </div>
         <div>
           <div className="relative">
@@ -132,7 +116,6 @@ const ToolsManagement = () => {
           columns={columns}
           dataSource={data}
           scroll={{ x: 800 }}
-
           pagination={{
             total: 1239,
             showTotal: (total, range) =>
