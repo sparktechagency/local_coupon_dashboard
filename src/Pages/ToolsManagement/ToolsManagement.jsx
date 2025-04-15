@@ -1,33 +1,45 @@
 import React from "react";
-import {
-  Table,
-  Button,
- 
-} from "antd";
+import { Table, Button } from "antd";
 import "antd/dist/reset.css";
 import { Link } from "react-router-dom";
 import { FaArrowLeft } from "react-icons/fa";
 import { CiSearch } from "react-icons/ci";
 import { MdBlockFlipped } from "react-icons/md";
-import { useGetBusinessOwnerQuery } from "../../redux/api/usersApi";
+import {
+  useBlockUnblockUserMutation,
+  useGetBusinessOwnerQuery,
+} from "../../redux/api/usersApi";
 import { placeImage } from "../../redux/api/baseApi";
+import { toast } from "sonner";
 
 const ToolsManagement = () => {
+  const [blockUnBlockUser] = useBlockUnblockUserMutation();
   const { data: getBusinessOwner } = useGetBusinessOwnerQuery();
   console.log(getBusinessOwner?.data);
+
+  const handleBlockOwner = (id) => {
+    console.log(id);
+    const data = {
+      user_id: id,
+    };
+    blockUnBlockUser(data)
+      .unwrap()
+      .then((payload) => toast.success(payload?.message))
+      .catch((error) => toast.error(error?.data?.message));
+  };
 
   const data = getBusinessOwner?.data?.map((owner) => {
     return {
       key: owner?._id,
       sl: owner?._id,
-      avatar: owner?.picture ? owner?.picture : placeImage ,
+      avatar: owner?.picture ? owner?.picture : placeImage,
       name: owner?.name,
-      company: owner?.companyName ? owner?.companyName : "N/A" ,
+      company: owner?.companyName ? owner?.companyName : "N/A",
       address: owner?.companyAddress ? owner?.companyAddress : "N/A",
       email: owner?.email,
       contact: owner?.phone,
       location: owner?.location ? owner?.location : "N/A",
-      isBanned : owner?.isBanned
+      isBanned: owner?.isBanned,
     };
   });
 
@@ -77,13 +89,15 @@ const ToolsManagement = () => {
     {
       title: "Action",
       key: "action",
-      render: () => (
-        <Button
-          type="primary"
-          className="p-4"
-          danger
-          icon={<MdBlockFlipped size={25} />}
-        />
+      render: (_, record) => (
+        <p
+          onClick={() => handleBlockOwner(record?.key)}
+          className={`p-1 rounded-md shadow-md inline-block cursor-pointer ${
+            record?.isBanned ? "bg-gray-300" : "bg-red-500"
+          }`}
+        >
+          <MdBlockFlipped size={25} />
+        </p>
       ),
     },
   ];
