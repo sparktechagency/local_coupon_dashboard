@@ -16,7 +16,7 @@ const ToolsManagement = () => {
   const [page , setPage] = useState(1)
   const [query , setQuery] = useState("")
   const [blockUnBlockUser] = useBlockUnblockUserMutation();
-  const { data: getBusinessOwner } = useGetBusinessOwnerQuery({page ,query});
+  const { data: getBusinessOwner } = useGetBusinessOwnerQuery({page ,query , type : 'business'});
 
   const handleBlockOwner = (id) => {
     const data = {
