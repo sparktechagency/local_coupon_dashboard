@@ -3,9 +3,9 @@ import { baseApi } from "./baseApi";
 const userApi = baseApi.injectEndpoints({
     endpoints : (builder)=>({
         getBusinessOwner : builder.query({
-            query : ()=>{
+            query : ({page ,query})=>{
                 return {
-                    url : '/admin/users?type=business&page=1&limit=10',
+                    url : `/admin/users?type=business&page=${page}&limit=10&query=${query}`,
                     method : 'GET'
                 }
             },

@@ -1,5 +1,5 @@
-import React from "react";
-import { Table, Button } from "antd";
+import React, { useState } from "react";
+import { Table, Button, Pagination } from "antd";
 import "antd/dist/reset.css";
 import { Link } from "react-router-dom";
 import { FaArrowLeft } from "react-icons/fa";
@@ -13,12 +13,12 @@ import { placeImage } from "../../redux/api/baseApi";
 import { toast } from "sonner";
 
 const ToolsManagement = () => {
+  const [page , setPage] = useState(1)
+  const [query , setQuery] = useState("")
   const [blockUnBlockUser] = useBlockUnblockUserMutation();
-  const { data: getBusinessOwner } = useGetBusinessOwnerQuery();
-  console.log(getBusinessOwner?.data);
+  const { data: getBusinessOwner } = useGetBusinessOwnerQuery({page ,query});
 
   const handleBlockOwner = (id) => {
-    console.log(id);
     const data = {
       user_id: id,
     };
@@ -116,6 +116,7 @@ const ToolsManagement = () => {
           <div className="relative">
             <input
               type="text"
+              onChange={(e)=> setQuery(e.target.value)}
               placeholder="Search here..."
               className="w-full pl-10 pr-4 py-2 rounded-md border border-gray-300 focus:border-blue-500 focus:outline-none focus:ring-1 "
             />
@@ -131,14 +132,18 @@ const ToolsManagement = () => {
           dataSource={data}
           scroll={{ x: 800 }}
           pagination={{
-            total: 1239,
-            showTotal: (total, range) =>
-              `Showing ${range[0]}-${range[1]} out of ${total}`,
+            current: getBusinessOwner?.meta?.currentPage,
+            pageSize: getBusinessOwner?.meta?.limit,
+            total: getBusinessOwner?.meta?.totalUsers,
             showSizeChanger: false,
-            defaultCurrent: 1,
-            pageSize: 11,
+            showTotal: (total, range) => `${range[0]}-${range[1]} of ${total} items`,
+            onChange: (page) => {
+              setPage(page);
+            },
           }}
         />
+        {/* <Pagination/> */}
+
       </div>
     </div>
   );
