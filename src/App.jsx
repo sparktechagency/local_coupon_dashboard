@@ -63,7 +63,8 @@ function App() {
   ];
 
   // table data
-  const formattedData = recentTransaction?.data?.map((transaction) => {
+  const formattedData = recentTransaction?.data?.slice(0,3)?.map((transaction) => {
+    console.log(transaction);
     return {
       key: transaction?._id,
       useName: "Devon Lane",
@@ -76,41 +77,7 @@ function App() {
       level: "Level 1",
     };
   });
-  const dataSource = [
-    {
-      key: "#12333",
-      useName: "Devon Lane",
-      companyName: "KFC",
-      share: 10,
-      download: 1,
-      date: "16 Jan 2025",
-      referrerImg: img1,
-      refereeImg: img2,
-      level: "Level 1",
-    },
-    {
-      key: "#12334",
-      useName: "Devon Lane",
-      companyName: "KFC",
-      download: 2,
-      share: 10,
-      date: "16 Jan 2025",
-      referrerImg: img2,
-      refereeImg: img1,
-      level: "Level 2",
-    },
-    {
-      key: "#12335",
-      useName: "Devon Lane",
-      companyName: "KFC",
-      download: 2,
-      share: 10,
-      date: "16 Jan 2025",
-      referrerImg: img1,
-      refereeImg: img2,
-      level: "Level 1",
-    },
-  ];
+ 
 
   // Table data
   const columns = [
@@ -170,21 +137,6 @@ function App() {
       dataIndex: "date",
       key: "date",
     },
-
-    {
-      title: "Action",
-      dataIndex: "action",
-      key: "action",
-      render: (_, record) => {
-        return (
-          <div>
-            <button className="bg-red-600 p-1 rounded-md shadow-md text-white">
-              <MdBlockFlipped size={25} />
-            </button>
-          </div>
-        );
-      },
-    },
   ];
 
   return (
@@ -226,7 +178,7 @@ function App() {
           <Link to={`/all-referral`}>View all</Link>
         </div>
         <Table
-          dataSource={dataSource}
+          dataSource={formattedData}
           columns={columns}
           className="custom-pagination"
           pagination={false}

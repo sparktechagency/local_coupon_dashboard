@@ -17,8 +17,9 @@ const dashboardApi = baseApi.injectEndpoints({
                     method  :'GET'
                 }
             }
-        })
+        }),
+       
     })
 })
 
-export const  { useGetDashboardQuery , useRecentTransactionQuery } = dashboardApi; 
+export const  { useGetDashboardQuery , useRecentTransactionQuery  } = dashboardApi; 

@@ -42,6 +42,15 @@ const subscriptionApi = baseApi.injectEndpoints({
       invalidatesTags : ['subscription']
 
     }),
+
+    getPremiumUser : builder.query({
+      query : ({page , query})=>{
+        return {
+          url : `/admin/users?type=user&page=${page}&limit=10&premium=true&query=${query}`,
+          method : "GET"
+        }
+      }
+    })
   }),
 });
 
@@ -50,4 +59,5 @@ export const {
   useCreateSubscriptionMutation,
   useUpdateSubscriptionMutation,
   useDeleteSubscriptionMutation,
+  useGetPremiumUserQuery
 } = subscriptionApi;
