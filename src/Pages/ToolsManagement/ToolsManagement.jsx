@@ -142,7 +142,6 @@ const ToolsManagement = () => {
             },
           }}
         />
-        {/* <Pagination/> */}
 
       </div>
     </div>

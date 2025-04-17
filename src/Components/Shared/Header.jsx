@@ -21,7 +21,7 @@ const Header = () => {
     </div>
     <div onClick={() => navigate('/profile')} className='flex justify-end items-center gap-1 border-[var(--secondary-color)]  px-4 rounded-md cursor-pointer'>
         <img className='h-10 w-10 rounded-full object-cover' src={getAdminProfile?.data?.picture} alt="" />
-        <p className='font-medium text-white'>{getAdminProfile?.data?.name}</p>
+        <p className='font-medium text-white mt-5'>{getAdminProfile?.data?.name}</p>
     </div>
 </div>
   )

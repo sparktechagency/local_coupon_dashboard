@@ -14,7 +14,6 @@ const ProfileUpdateRequest = ({ dataSource }) => {
         setIsModalOpen(true)
         setRequestuser(data)
     }
-    console.log(requestUser);
 
    // Table data
    const columns = [
@@ -43,23 +42,54 @@ const ProfileUpdateRequest = ({ dataSource }) => {
        key : 'companyName'
      },
      {
-       title : 'Coupon',
-       dataIndex : 'coupon',
-       key : 'coupon',
-       render : (_,record)=>{
-         return (
-           <div className="border border-dashed px-2 flex items-center justify-between max-w-[300px] ">
-               <div className="my-auto">
-                 <img src={kfc} className="h-10 mt-2" alt="" />
-                 <p className="mt-1">Expires 17 Jan 2025</p>
-               </div>
-               <div>
-                 <p className="font-bold text-xl">12% off</p>
-               </div>
-           </div>
-         )
-       }
-     },
+      title: "Coupon",
+      dataIndex: "coupon",
+      key: "coupon",
+      render: (_, record) => {
+        const {
+          couponImage,
+          couponExpire,
+          promoTitle,
+          discountPercent,
+          discountAmount,
+          regularAmount,
+        } = record;
+
+        let displayText = "";
+
+        if (promoTitle) {
+          displayText = promoTitle;
+        } else if (discountPercent) {
+          displayText = `${discountPercent}% Off`;
+        } else if (discountAmount) {
+          displayText = `${discountAmount}`;
+          if (regularAmount) {
+            displayText += ` `;
+          }
+        }
+
+        return (
+          <div className="border border-dashed px-2 py-2 flex items-center justify-between max-w-[300px]">
+            <div>
+              <img src={couponImage} className="h-10 mt-2" alt="Coupon" />
+              <p className="mt-1 text-sm text-gray-500">
+                Expires {couponExpire}
+              </p>
+            </div>
+            <div className="text-right">
+              <p className="font-semibold text-xl">
+                {displayText}
+                {discountAmount && regularAmount && (
+                  <span className="text-gray-500 text-sm line-through ml-1">
+                    {regularAmount}
+                  </span>
+                )}
+              </p>
+            </div>
+          </div>
+        );
+      },
+    },
      {
        title : 'Download',
        dataIndex : 'download',
@@ -76,18 +106,18 @@ const ProfileUpdateRequest = ({ dataSource }) => {
        key : 'date'
      },
     
-     {
-       title: "Action",
-       dataIndex: "action",
-       key: "action",
-       render : (_, record)=>{
-         return (
-           <div>
-             <button className="bg-red-600 p-1 rounded-md shadow-md text-white"><MdBlockFlipped size={25} /></button>
-           </div>
-         )
-       }
-     },
+    //  {
+    //    title: "Action",
+    //    dataIndex: "action",
+    //    key: "action",
+    //    render : (_, record)=>{
+    //      return (
+    //        <div>
+    //          <button className="bg-red-600 p-1 rounded-md shadow-md text-white"><MdBlockFlipped size={25} /></button>
+    //        </div>
+    //      )
+    //    }
+    //  },
    ];
  
     return (

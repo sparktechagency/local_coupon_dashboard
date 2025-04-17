@@ -4,13 +4,9 @@ import DailyOverViewChart from "./Components/DailyOverViewChart/DailyOverViewCha
 import IncomeOverview from "./Components/IncomeOverview/IncomeOverview";
 import { Link } from "react-router-dom";
 import "./app.css";
-import img1 from "./assets/images/user1.png";
-import img2 from "./assets/images/user2.png";
 import activeUser from "./assets/images/premium.png";
 import referrals from "./assets/images/business.png";
 import { Table } from "antd";
-import kfc from "./assets/images/kfc.png";
-import { MdBlockFlipped } from "react-icons/md";
 import {
   useGetDashboardQuery,
   useRecentTransactionQuery,
@@ -37,7 +33,6 @@ function App() {
     user_year: userYear,
   });
   const { data: recentTransaction } = useRecentTransactionQuery();
-  console.log(recentTransaction?.data);
   //
   const data = [
     {
@@ -63,21 +58,24 @@ function App() {
   ];
 
   // table data
-  const formattedData = recentTransaction?.data?.slice(0,3)?.map((transaction) => {
-    console.log(transaction);
-    return {
-      key: transaction?._id,
-      useName: "Devon Lane",
-      companyName: "KFC",
-      share: 10,
-      download: 1,
-      date: "16 Jan 2025",
-      referrerImg: img1,
-      refereeImg: img2,
-      level: "Level 1",
-    };
-  });
- 
+  const formattedData = recentTransaction?.data
+    ?.slice(0, 3)
+    ?.map((transaction) => {
+      return {
+        key: transaction?._id,
+        useName: transaction?.user?.name,
+        companyName: transaction?.coupon?.createdBy?.companyName,
+        couponImage: transaction?.coupon?.photo_url,
+        couponExpire: transaction?.coupon?.end?.split("T")?.[0],
+        share: transaction?.coupon?.shareCount,
+        download: transaction?.coupon?.redeemCount,
+        promoTitle: transaction?.coupon?.promo_title,
+        discountAmount: transaction?.coupon?.discount_amount,
+        regularAmount: transaction?.coupon?.regular_amount,
+        discountPercent: transaction?.coupon?.discount_percentage,
+        date: transaction?.createdAt?.split("T")?.[0],
+      };
+    });
 
   // Table data
   const columns = [
@@ -109,21 +107,52 @@ function App() {
       dataIndex: "coupon",
       key: "coupon",
       render: (_, record) => {
+        const {
+          couponImage,
+          couponExpire,
+          promoTitle,
+          discountPercent,
+          discountAmount,
+          regularAmount,
+        } = record;
+
+        let displayText = "";
+
+        if (promoTitle) {
+          displayText = promoTitle;
+        } else if (discountPercent) {
+          displayText = `${discountPercent}% Off`;
+        } else if (discountAmount) {
+          displayText = `${discountAmount}`;
+          if (regularAmount) {
+            displayText += ` `;
+          }
+        }
+
         return (
-          <div className="border border-dashed px-2 flex items-center justify-between max-w-[300px] ">
-            <div className="my-auto">
-              <img src={kfc} className="h-10 mt-2" alt="" />
-              <p className="mt-1">Expires 17 Jan 2025</p>
-            </div>
+          <div className="border border-dashed px-2 py-2 flex items-center justify-between max-w-[300px]">
             <div>
-              <p className="font-bold text-xl">12% off</p>
+              <img src={couponImage} className="h-10 mt-2" alt="Coupon" />
+              <p className="mt-1 text-sm text-gray-500">
+                Expires {couponExpire}
+              </p>
+            </div>
+            <div className="text-right">
+              <p className="font-semibold text-xl">
+                {displayText}
+                {discountAmount && regularAmount && (
+                  <span className="text-gray-500 text-sm line-through ml-1">
+                    {regularAmount}
+                  </span>
+                )}
+              </p>
             </div>
           </div>
         );
       },
     },
     {
-      title: "Download",
+      title: "RedeemCount",
       dataIndex: "download",
       key: "download",
     },

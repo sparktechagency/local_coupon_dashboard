@@ -11,9 +11,9 @@ const dashboardApi = baseApi.injectEndpoints({
             }
         }),
         recentTransaction :  builder.query({
-            query : ()=>{
+            query : (page)=>{
                 return {
-                    url : `/admin/dashboard/transactions?page=1&limit=10`,
+                    url : `/admin/dashboard/transactions?page=${page}&limit=10`,
                     method  :'GET'
                 }
             }
