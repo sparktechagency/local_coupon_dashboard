@@ -2,7 +2,10 @@ import React, { useState, useRef, useMemo, useEffect } from 'react';
 import JoditEditor from 'jodit-react';
 import { Link } from 'react-router-dom';
 import { IoArrowBackSharp } from 'react-icons/io5';
+import { useGetTernsConditionQuery } from '../../redux/api/settingApi';
 const TremsCondition = () => {
+  const {data : getTermsCondition} = useGetTernsConditionQuery()
+  console.log(getTermsCondition?.data[0]?.content);
   const editor = useRef(null);
   const [content, setContent] = useState('');
   const [isLoading, seLoading] = useState(false)
@@ -21,6 +24,10 @@ const TremsCondition = () => {
           'align'
       ]
   }
+
+  useEffect(()=>{
+    setContent(getTermsCondition?.data[0]?.content)
+  }, [getTermsCondition])
   return (
     <>
       <div className='flex justify-start items-center gap-2 mb-3 relative m-5'>

@@ -30,7 +30,15 @@ const settingApi = baseApi.injectEndpoints({
                 }
             },
             invalidatesTags : ['faq']
+        }),
+        getTernsCondition :  builder.query({
+            query : ()=>{
+                return { 
+                    url : '/legal/terms',
+                    method : 'GET'
+                }
+            }
         })
     })
 })
-export const { useGetFaqQuery , useAddFaqMutation , useDeleteFaqMutation } =  settingApi
+export const { useGetFaqQuery , useAddFaqMutation , useDeleteFaqMutation , useGetTernsConditionQuery } =  settingApi
