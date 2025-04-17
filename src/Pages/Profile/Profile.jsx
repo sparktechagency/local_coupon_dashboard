@@ -1,14 +1,15 @@
-import React, {useState } from "react";
+import React, {useEffect, useState } from "react";
 import { Button, Form, Input } from "antd";
 import { CiEdit } from "react-icons/ci";
 import profile from '../../assets/images/admin.png'
 import { IoCameraOutline } from "react-icons/io5";
 import { useGetProfileQuery } from "../../redux/api/authApi";
+import { placeImage } from "../../redux/api/baseApi";
 const admin = false;
 const Profile = () => {
-    const {data : getProfile } =  useGetProfileQuery()
+    const {data : getAdminProfile } =  useGetProfileQuery()
 
-    console.log(getProfile?.data);
+    console.log(getAdminProfile?.data);
     const [image, setImage] = useState();
     const [form] = Form.useForm()
     const [tab, setTab] = useState(new URLSearchParams(window.location.search).get('tab') || "Profile");
@@ -25,6 +26,17 @@ const Profile = () => {
         setImage(file)
 
     }
+
+    useEffect(() => {
+        const data = {
+          name: getAdminProfile?.data?.name,
+          email: getAdminProfile?.data?.email,
+          contact: getAdminProfile?.data?.phone,
+          address: getAdminProfile?.data?.location || "N/A",
+        };
+        form.setFieldsValue(data);
+      }, [getAdminProfile]);
+    
     const onFinish = (values) => {
         if (values?.new_password === values.current_password) {
             return setPassError('Your old password cannot be your new password')
@@ -55,7 +67,7 @@ const Profile = () => {
                         <input type="file" onInput={handleChange} id='img' style={{ display: "none" }} />
                         <img
                             style={{ width: 140, height: 140, borderRadius: "100%" }}
-                            src={profile}
+                            src={getAdminProfile?.data?.picture ? getAdminProfile?.data?.picture  : placeImage}
                             alt=""
                         />
 
@@ -145,13 +157,14 @@ const Profile = () => {
                                                 color: "#919191",
                                                 outline: "none"
                                             }}
+                                            disabled
                                             className='text-[16px] leading-5'
                                             placeholder={`xyz@gmail.com`}
                                         />
                                     </Form.Item>
 
                                     <Form.Item
-                                        name="mobileNumber"
+                                        name="contact"
                                         label={<p className="text-[#919191] text-[16px] leading-5 font-normal">Contact
                                             no</p>}
                                     >

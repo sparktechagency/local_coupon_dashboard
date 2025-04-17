@@ -8,7 +8,7 @@ import { placeImage } from "../../redux/api/baseApi";
 
 const columns = [
   {
-    title: "SL No.",
+    title: "ID No.",
     dataIndex: "slNo",
     key: "slNo",
   },
@@ -39,22 +39,22 @@ const columns = [
     dataIndex: "fee",
     key: "fee",
   },
-  {
-    title: "Status",
-    dataIndex: "status",
-    key: "status",
-    render: (status) => (
-      <p
-        className={`${
-          status === "Due"
-            ? "border-red-500 border  text-red-600"
-            : "border border-green-500 text-green-500"
-        } text-center w-[80px] py-1 rounded-full`}
-      >
-        {status}
-      </p>
-    ),
-  },
+  // {
+  //   title: "Status",
+  //   dataIndex: "status",
+  //   key: "status",
+  //   render: (status) => (
+  //     <p
+  //       className={`${
+  //         status === "Due"
+  //           ? "border-red-500 border  text-red-600"
+  //           : "border border-green-500 text-green-500"
+  //       } text-center w-[80px] py-1 rounded-full`}
+  //     >
+  //       {status}
+  //     </p>
+  //   ),
+  // },
 ];
 
 const WithdrawRequest = () => {
@@ -62,7 +62,6 @@ const WithdrawRequest = () => {
   const [page, setPage] = useState(1);
   const { data: getPremiumUser } = useGetPremiumUserQuery({ page ,query });
 
-  console.log(getPremiumUser);
 
   const formattedData = getPremiumUser?.data?.map((user) => {
     return {
@@ -70,10 +69,10 @@ const WithdrawRequest = () => {
       slNo: user?._id,
       name: user?.name,
       avatar: user?.picture ? user?.picture : placeImage,
-      duration: "Monthly",
-      plan: "Gold",
-      fee: "$10",
-      status: user?.isSubscribed ? "Paid" : "Due",
+      duration: user?.subscriptionPackage?.durationInMonths,
+      plan: user?.subscriptionPackage?.name,
+      fee: user?.subscriptionPackage?.priceInCents,
+      // status: user?.isSubscribed ? "Paid" : "Due",
     };
   });
   return (
