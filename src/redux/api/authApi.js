@@ -17,7 +17,8 @@ const authApi = baseApi.injectEndpoints({
                 url : "/profile",
                 method : 'GET'
             }
-        }
+        },
+        providesTags : ['profile']
     }),
     updateProfile : builder.mutation({
       query : (data)=>{
@@ -26,7 +27,8 @@ const authApi = baseApi.injectEndpoints({
           method : 'PUT',
           body : data
         }
-      }
+      },
+      invalidatesTags : ["profile"]
     }),
     changePassword :  builder.mutation({
       query : (data)=>{
@@ -36,8 +38,24 @@ const authApi = baseApi.injectEndpoints({
           body : data
         }
       }
+    }),
+    getNotification : builder.query({
+      query :  ()=>{
+        return { 
+          url : '/admin/dashboard/notifications',
+          method : 'GET'
+        }
+      }
+    }),
+    getNotificationCount  : builder.query({
+      query : ()=>{
+        return {
+          url : '/admin/dashboard/notifications?count=true',
+          method : 'GET'
+        }
+      }
     })
   }),
 });
 
-export const { useLoginAdminMutation, useGetProfileQuery , useUpdateProfileMutation , useChangePasswordMutation } = authApi;
+export const { useLoginAdminMutation, useGetProfileQuery , useUpdateProfileMutation , useChangePasswordMutation  , useGetNotificationQuery , useGetNotificationCountQuery} = authApi;
