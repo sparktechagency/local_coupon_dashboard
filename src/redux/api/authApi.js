@@ -18,8 +18,26 @@ const authApi = baseApi.injectEndpoints({
                 method : 'GET'
             }
         }
+    }),
+    updateProfile : builder.mutation({
+      query : (data)=>{
+        return {
+          url : '/profile',
+          method : 'PUT',
+          body : data
+        }
+      }
+    }),
+    changePassword :  builder.mutation({
+      query : (data)=>{
+        return { 
+          url : "/profile/change-password",
+          method : 'POST',
+          body : data
+        }
+      }
     })
   }),
 });
 
-export const { useLoginAdminMutation, useGetProfileQuery } = authApi;
+export const { useLoginAdminMutation, useGetProfileQuery , useUpdateProfileMutation , useChangePasswordMutation } = authApi;
