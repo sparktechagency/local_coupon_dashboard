@@ -37,8 +37,38 @@ const settingApi = baseApi.injectEndpoints({
                     url : '/legal/terms',
                     method : 'GET'
                 }
-            }
-        })
+            },
+            providesTags : ["terms"]
+        }),
+        getPrivacy :  builder.query({
+            query : ()=>{
+                return { 
+                    url : '/legal/privacy',
+                    method : 'GET'
+                }
+            },
+            providesTags : ["privacy"]
+        }),
+        createTermsAndCondition :  builder.mutation({
+            query : (data)=>{
+                return {
+                    url : "/admin/legal/terms",
+                    method : 'POST',
+                    body : data
+                }
+            },
+            invalidatesTags : ["terms"]
+        }),
+        createPrivacy :  builder.mutation({
+            query : (data)=>{
+                return {
+                    url : "/admin/legal/privacy",
+                    method : 'POST',
+                    body : data
+                }
+            },
+            invalidatesTags : ["privacy"]
+        }),
     })
 })
-export const { useGetFaqQuery , useAddFaqMutation , useDeleteFaqMutation , useGetTernsConditionQuery } =  settingApi
+export const { useGetFaqQuery , useAddFaqMutation , useDeleteFaqMutation , useGetTernsConditionQuery  , useCreateTermsAndConditionMutation , useGetPrivacyQuery , useCreatePrivacyMutation } =  settingApi
