@@ -41,8 +41,9 @@ const TremsCondition = () => {
   };
 
   useEffect(() => {
-    setContent(getTermsCondition?.data[0]?.content);
+    setContent(getTermsCondition?.data?.[0]?.content);
   }, [getTermsCondition]);
+
   return (
     <>
       <div className="flex justify-start items-center gap-2 mb-3 relative m-5">
@@ -53,7 +54,7 @@ const TremsCondition = () => {
           >
             <IoArrowBackSharp className="text-[var(--primary-color)]" />
           </Link>{" "}
-          <p className="font-semibold">Terms & Conditions</p>
+          <p className="font-semibold mb-0">Terms & Conditions</p>
         </div>
       </div>
 

@@ -16,11 +16,12 @@ import ToolsManagement from "../Pages/ToolsManagement/ToolsManagement";
 import WithdrawRequest from "../Pages/WithdrawRequest/WithdrawRequest";
 import ReferralCommission from "../Pages/ReferralCommission/ReferralCommission";
 import ToolsCategory from "../Pages/ToolsCaregory/ToolsCategory";
+import PrivateRoutes from "../Components/PrivateRoute/PrivateRoute";
 
 export const router = createBrowserRouter([
     {
         path: '/',
-        element: <MainLayout />,
+        element: <PrivateRoutes> <MainLayout /></PrivateRoutes>,
         children: [
             {
                 path: '/',

@@ -54,8 +54,26 @@ const authApi = baseApi.injectEndpoints({
           method : 'GET'
         }
       }
-    })
+    }),
+    forgetPassword :  builder.mutation({
+      query : (data)=>{
+        return {
+          url : '/auth/forgot-password',
+          method : 'POST',
+          body : data
+        }
+      }
+    }),
+    verifyOtp :  builder.mutation({
+      query : (data)=>{
+        return {
+          url : '/auth/verify-otp',
+          method : 'POST',
+          body : data
+        }
+      }
+    }),
   }),
 });
 
-export const { useLoginAdminMutation, useGetProfileQuery , useUpdateProfileMutation , useChangePasswordMutation  , useGetNotificationQuery , useGetNotificationCountQuery} = authApi;
+export const { useLoginAdminMutation, useGetProfileQuery , useUpdateProfileMutation , useChangePasswordMutation  , useGetNotificationQuery , useGetNotificationCountQuery , useForgetPasswordMutation , useVerifyOtpMutation} = authApi;

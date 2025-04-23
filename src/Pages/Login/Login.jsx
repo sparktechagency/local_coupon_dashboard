@@ -143,13 +143,13 @@ const navigate = useNavigate()
                 Remember me
               </Checkbox>
             </Form.Item>
-            <Link
+            {/* <Link
               className="login-form-forgot "
               style={{}}
               to="/auth/forgot-password"
             >
               Forgot Password
-            </Link>
+            </Link> */}
           </div>
 
           <Form.Item style={{ marginBottom: 0 }}>
