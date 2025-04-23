@@ -3,7 +3,7 @@ import profileUser from "./assets/images/profileuser.png";
 import DailyOverViewChart from "./Components/DailyOverViewChart/DailyOverViewChart";
 import IncomeOverview from "./Components/IncomeOverview/IncomeOverview";
 import { Link } from "react-router-dom";
-import "./app.css";
+import "./App.css";
 import activeUser from "./assets/images/premium.png";
 import referrals from "./assets/images/business.png";
 import { Table } from "antd";
