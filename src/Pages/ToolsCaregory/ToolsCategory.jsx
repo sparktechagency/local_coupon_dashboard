@@ -30,7 +30,6 @@ const ToolsCategory = () => {
     }
     if (selectedCategory?._id) {
       formData.append("id", selectedCategory._id);
-      console.log("yes");
       updateCategory(formData)
         .unwrap()
         .then((payload) => {
@@ -71,7 +70,7 @@ const ToolsCategory = () => {
         <button
           onClick={() => {
             setOpenModal(true);
-            setCategoryName("Add New Category");
+            // setCategoryName("Add New Category");
           }}
           className="flex  mt-5 bg-[var(--secondary-color)] text-white px-4 py-2 rounded-sm shadow-md"
         >
@@ -87,14 +86,15 @@ const ToolsCategory = () => {
               className="bg-white mx-auto rounded-md shadow-md w-full flex flex-col justify-center items-center py-10"
             >
               <p className="bg-[#ebd8b3] p-2 rounded-full">
-                <img src={category?.icon_url} className="h-14 w-14" alt="" />
+                <img src={category?.icon_url} className="h-14 w-14 rounded-full object-cover" alt="" />
               </p>
               <p>{category?.name}</p>
               <div className="space-x-4">
                 <Popconfirm
-                  title="Are you sure you want to delete this category?"
+                  title={i === 0 ? "You can only edit first category!" : "Are you sure you want to delete this category?"}
                   okText="Yes"
                   cancelText="No"
+                  disabled={i === 0} 
                   onConfirm={() => handleDeleteCategory(category?._id)}
                 >
                   <button className="border-[#CD9B3A] border px-3 py-2 rounded-lg bg-[#E6F0FF]">
@@ -104,7 +104,6 @@ const ToolsCategory = () => {
 
                 <button
                   onClick={() => {
-                    console.log(category?.icon_url);
                     setSelectedCategory({
                       categoryName: category?.name,
                       icon: [
