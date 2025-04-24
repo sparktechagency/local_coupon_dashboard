@@ -12,15 +12,15 @@ const navigate = useNavigate()
     const data = {
       ...values,
     };
-    console.log(data);
     loginAdmin(data)
       .unwrap()
       .then((payload) => {
-        toast.success(payload?.message)
-        console.log(payload?.data?.accessToken);
-        if(payload?.data){
+        if(payload?.data && payload?.data?.role === "admin"){
+          toast.success(payload?.message)
             localStorage.setItem('coupon_token' ,JSON.stringify( payload?.data?.accessToken))
             navigate("/")
+        }else{
+          toast.error("You are not authorized for dashboard")
         }
       })
       .catch((error) => toast.error(error?.data?.message));

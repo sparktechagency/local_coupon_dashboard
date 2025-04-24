@@ -3,7 +3,7 @@ import { FaRegUserCircle } from "react-icons/fa";
 import { IoIosArrowForward, IoMdMenu, IoMdClose } from "react-icons/io";
 import { IoSettingsOutline } from "react-icons/io5";
 import { MdOutlineCategory, MdOutlineDashboard } from "react-icons/md";
-import { NavLink, useLocation } from "react-router-dom";
+import { NavLink, useLocation, useNavigate } from "react-router-dom";
 import img from "../../assets/images/logo.png";
 import { PiToolboxDuotone } from "react-icons/pi";
 import { CiDollar } from "react-icons/ci";
@@ -11,7 +11,8 @@ import { TbFilePercent } from "react-icons/tb";
 
 const Sidebar = () => {
   const [openIndex, setOpenIndex] = useState(null);
-  const [isOpen, setIsOpen] = useState(false); 
+  const [isOpen, setIsOpen] = useState(false);
+  const navigate = useNavigate()
 
   const contentRefs = useRef([]);
   const { pathname } = useLocation();
@@ -181,7 +182,14 @@ const Sidebar = () => {
             }
           })}
         </div>
+        <div className="mr-3 mt-10">
+        <button onClick={()=>{
+          localStorage.removeItem("coupon_token")
+          navigate("/auth/login")
+          }} className="bg-[#CD9B3A] w-full text-white  mr-5 py-2 rounded-tr-md rounded-br-md ">Logout</button>
       </div>
+      </div>
+     
 
       {/* Background Overlay for Mobile */}
       {isOpen && (
