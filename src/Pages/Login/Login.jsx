@@ -1,5 +1,4 @@
 import { Button, Checkbox, Form, Input } from "antd";
-import React from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { useLoginAdminMutation } from "../../redux/api/authApi";
 import { toast } from "sonner";
@@ -27,25 +26,18 @@ const navigate = useNavigate()
   };
   return (
     <div
-      className="gap-0 flex-col flex justify-center items-center"
-      style={{
-        width: "100%",
-        background: "#E7E7E7",
-        height: "100vh",
-      }}
+      className=" flex justify-center items-center min-h-[100vh] bg-[#E7E7E7] px-2 md:px-0"
+    
     >
-      <div className="bg-white flex justify-center items-center rounded-lg">
+      <div className="bg-white md:w-[600px] flex justify-center items-center rounded-lg">
         <Form
-          name="normal_login"
-          className="login-form"
           initialValues={{
             remember: true,
           }}
           style={{
-            width: "630px",
             background: "white",
             borderRadius: "12px",
-            padding: "90px 57px",
+            padding: "70px 40px",
           }}
           onFinish={onFinish}
         >
@@ -73,9 +65,9 @@ const navigate = useNavigate()
               Email address:{" "}
             </label>
             <Form.Item
-              style={{ marginBottom: 0 }}
               name="email"
               id="email"
+              className="w-full"
               rules={[
                 {
                   required: true,
@@ -86,6 +78,7 @@ const navigate = useNavigate()
               <Input
                 placeholder="Enter your email address"
                 type="email"
+                className="w-full"
                 style={{
                   border: "1px solid #E0E4EC",
                   height: "52px",
