@@ -100,7 +100,7 @@ const FAQ = () => {
               rows={4}
               placeholder="Type question here.."
               variant="filled"
-              maxLength={6}
+              // maxLength={6}
             />
           </Form.Item>
           <div className="flex items-center justify-center mt-2">
