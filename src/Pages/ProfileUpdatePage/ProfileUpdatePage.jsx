@@ -36,7 +36,7 @@ const ProfileUpdatePage = () => {
         <Link to={-1}>
           <FaArrowLeft className="text-[#CD9B3A]" size={20} />
         </Link>
-        <p className="font-semibold ">Referral Overview</p>
+        <p className="font-semibold ">Coupons</p>
       </div>
       <ProfileUpdateRequest dataSource={formattedData} />
       <div className="mt-2 flex items-center justify-center">

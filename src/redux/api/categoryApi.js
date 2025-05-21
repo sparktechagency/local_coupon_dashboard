@@ -5,7 +5,7 @@ const categoryApi = baseApi.injectEndpoints({
         getAllCategory : builder.query({
             query : ()=>{
                 return { 
-                    url : "/admin/categories",
+                    url : "/categories",
                     method : 'GET'
                 }
             },
