@@ -17,11 +17,12 @@ import WithdrawRequest from "../Pages/WithdrawRequest/WithdrawRequest";
 import ReferralCommission from "../Pages/ReferralCommission/ReferralCommission";
 import ToolsCategory from "../Pages/ToolsCaregory/ToolsCategory";
 import PrivateRoutes from "../Components/PrivateRoute/PrivateRoute";
+import CouponManagement from "../Pages/CouponManagement/CouponManagement";
 
 export const router = createBrowserRouter([
     {
         path: '/',
-        element: <PrivateRoutes> <MainLayout /></PrivateRoutes>,
+        element:<MainLayout />,
         children: [
             {
                 path: '/',
@@ -37,7 +38,10 @@ export const router = createBrowserRouter([
                 element: <ToolsManagement/>
             },
             
-           
+            {
+                path : "/coupon-management",
+                element : <CouponManagement/>
+            },
             
             {
                 path: '/premium-use',

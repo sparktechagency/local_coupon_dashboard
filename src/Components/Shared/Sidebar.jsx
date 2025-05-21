@@ -8,6 +8,7 @@ import img from "../../assets/images/logo.png";
 import { PiToolboxDuotone } from "react-icons/pi";
 import { CiDollar } from "react-icons/ci";
 import { TbFilePercent } from "react-icons/tb";
+import { RiCoupon4Line } from "react-icons/ri";
 
 const Sidebar = () => {
   const [openIndex, setOpenIndex] = useState(null);
@@ -52,6 +53,12 @@ const Sidebar = () => {
       path: "/tools-category",
       label: "Category Management",
       icon: <MdOutlineCategory size={25} />,
+      sub_menu: false,
+    },
+    {
+      path: "/coupon-management",
+      label: "Coupon Management",
+      icon: <RiCoupon4Line size={25} />,
       sub_menu: false,
     },
     {

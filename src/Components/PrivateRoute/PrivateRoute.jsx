@@ -6,11 +6,11 @@ import { useGetProfileQuery } from "../../redux/api/authApi";
     const location = useLocation()
     const { data: getUserInfo,isError, isLoading } = useGetProfileQuery();
 
-    console.log(getUserInfo?.data?.role);
+    // console.log(getUserInfo?.data?.role);
     if(isLoading){
         return <div className="flex items-center justify-center"><Skeleton active /></div>;
     }
-    if (isError || getUserInfo?.data?.role !== "admin") {
+    if (isError || getUserInfo?.data?.role !== "admin" || getUserInfo?.data?.role !== "business") {
         return <Navigate to="/auth/login" state={{ from: location }} />;
       }
     

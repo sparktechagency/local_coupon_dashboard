@@ -14,7 +14,8 @@ const navigate = useNavigate()
     loginAdmin(data)
       .unwrap()
       .then((payload) => {
-        if(payload?.data && payload?.data?.role === "admin"){
+        console.log(payload?.data);
+        if(payload?.data && (payload?.data?.role === "admin" || payload?.data?.role === "business")){
           toast.success(payload?.message)
             localStorage.setItem('coupon_token' ,JSON.stringify( payload?.data?.accessToken))
             navigate("/")
