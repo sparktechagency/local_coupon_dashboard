@@ -1,21 +1,27 @@
 import { FaArrowLeft } from "react-icons/fa";
 import { Link } from "react-router-dom";
-import { useGetAllCouponQuery } from "../../redux/api/couponManagement";
-import { Pagination, Table } from "antd";
+import {
+  useDeleteCouponsMutation,
+  useGetAllCouponQuery,
+} from "../../redux/api/couponManagement";
+import { Pagination, Popconfirm, Table } from "antd";
 import { MdAdd } from "react-icons/md";
 import { useGetAllCategoryQuery } from "../../redux/api/categoryApi";
 import { useState } from "react";
 import AddCouponModal from "../../Components/AddCouponModal/AddCouponModal";
+import { RiDeleteBin6Line } from "react-icons/ri";
+import { toast } from "sonner";
 
 const CouponManagement = () => {
-  const [openCouponModal , setOpenCouponModal] = useState(false)
-  const { data: allCoupons } = useGetAllCouponQuery();
-  const {data :  getCategory } = useGetAllCategoryQuery()
-
-  // console.log(getCategory?.data);
+  const [page, setPage] = useState(1);
+  const [openCouponModal, setOpenCouponModal] = useState(false);
+  const { data: allCoupons } = useGetAllCouponQuery(page);
+  const { data: getCategory } = useGetAllCategoryQuery();
+  const [deleteCoupon] = useDeleteCouponsMutation();
 
   // table data
   const formattedData = allCoupons?.data?.map((transaction) => {
+    // console.log(transaction);
     return {
       key: transaction?._id,
       useName: transaction?.user?.name,
@@ -121,8 +127,41 @@ const CouponManagement = () => {
       dataIndex: "date",
       key: "date",
     },
+
+    {
+      title: "Action",
+      dataIndex: "action",
+      key: "action",
+      render: (_, record) => (
+        <Popconfirm
+          title="Are you sure delete this coupon?"
+          okText="Yes"
+          cancelText="No"
+          onConfirm={() => handleDeleteCoupon(record?.key)}
+        >
+          <p
+            // onClick={() => handleDeleteCoupon(record?.key)}
+            className="cursor-pointer text-red-600"
+          >
+            <RiDeleteBin6Line size={25} />
+          </p>
+        </Popconfirm>
+      ),
+    },
   ];
 
+  const onChange = (page) => {
+    setPage(page);
+  };
+
+  // Handle Delete Coupon
+
+  const handleDeleteCoupon = (id) => {
+    deleteCoupon(id)
+      .unwrap()
+      .then((payload) => toast.success(payload?.message))
+      .catch((error) => toast.error(error?.data?.message));
+  };
   return (
     <div className="bg-white shadow-md p-4 rounded-md">
       <div className="flex justify-between items-center mb-5">
@@ -134,7 +173,13 @@ const CouponManagement = () => {
             Coupon Management
           </span>
         </div>
-        <button onClick={()=> setOpenCouponModal(true)} className="bg-[#CD9B3A] text-white px-4 py-2 rounded-md shadow-md flex items-center gap-2"><MdAdd size={20} />Add Coupon</button>
+        <button
+          onClick={() => setOpenCouponModal(true)}
+          className="bg-[#CD9B3A] text-white px-4 py-2 rounded-md shadow-md flex items-center gap-2"
+        >
+          <MdAdd size={20} />
+          Add Coupon
+        </button>
       </div>
       <Table
         dataSource={formattedData}
@@ -145,18 +190,22 @@ const CouponManagement = () => {
       />
 
       <div className="mt-2 flex items-center justify-center">
-        {/* <Pagination
+        <Pagination
           current={page}
           onChange={onChange}
-          total={recentTransaction?.meta?.total}
-          pageSize={recentTransaction?.meta?.limit}
+          total={allCoupons?.meta?.total}
+          pageSize={allCoupons?.meta?.limit}
           showSizeChanger={false}
           showTotal={(total, range) =>
             `Showing ${range[0]}-${range[1]} out of ${total}`
           }
-        /> */}
+        />
       </div>
-      <AddCouponModal openCouponModal={openCouponModal} setOpenCouponModal={setOpenCouponModal} category={getCategory?.data} />
+      <AddCouponModal
+        openCouponModal={openCouponModal}
+        setOpenCouponModal={setOpenCouponModal}
+        category={getCategory?.data}
+      />
     </div>
   );
 };

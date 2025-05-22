@@ -3,12 +3,13 @@ import { baseApi } from "./baseApi";
 const couponManagement = baseApi.injectEndpoints({
     endpoints : (builder)=>({
         getAllCoupon : builder.query({
-            query : ()=>{
+            query : (page)=>{
                 return {
-                    url : "/coupons?page=1&limit=10",
+                    url : `/coupons?page=${page}&limit=10`,
                     method : "GET"
                 }
-            }
+            },
+            providesTags : ['coupons']
         }),
         businessAnalytics : builder.query({
             query : ()=>{
@@ -17,8 +18,27 @@ const couponManagement = baseApi.injectEndpoints({
                     method : 'GET'
                 }
             }
+        }),
+        addNewCoupons : builder.mutation({
+            query : (data)=>{
+                return {
+                    url : '/coupons',
+                    method : 'POST',
+                    body : data
+                }
+            },
+            invalidatesTags : ["coupons"]
+        }),
+        deleteCoupons : builder.mutation({
+            query : (id)=>{
+                return {
+                    url : `/coupons?id=${id}`,
+                    method : "DELETE"
+                }
+            },
+            invalidatesTags : ["coupons"]
         })
     })
 })
 
-export const { useGetAllCouponQuery , useBusinessAnalyticsQuery } = couponManagement;
+export const { useGetAllCouponQuery , useBusinessAnalyticsQuery , useAddNewCouponsMutation , useDeleteCouponsMutation} = couponManagement;
