@@ -14,7 +14,7 @@ import { useAddNewCouponsMutation } from "../../redux/api/couponManagement";
 import { toast } from "sonner";
 
 const AddCouponModal = ({ openCouponModal, setOpenCouponModal, category }) => {
-  const [addCoupons] = useAddNewCouponsMutation();
+  const [addCoupons , {isLoading}] = useAddNewCouponsMutation();
   const [form] = Form.useForm();
   const [selectedType, setSelectedType] = useState(null);
 
@@ -26,7 +26,6 @@ const AddCouponModal = ({ openCouponModal, setOpenCouponModal, category }) => {
 
   const handleFormSubmit = (values) => {
     const formData = new FormData();
-    console.log(values);
 
     Object.entries(values).forEach(([key, value]) => {
       if (key === "photo" && value?.file) {
@@ -44,6 +43,7 @@ const AddCouponModal = ({ openCouponModal, setOpenCouponModal, category }) => {
       .then((payload) => {
         toast.success(payload?.message);
         setOpenCouponModal(false);
+        form.resetFields()
       })
       .catch((error) => toast.error(error?.data?.message));
   };
@@ -52,7 +52,10 @@ const AddCouponModal = ({ openCouponModal, setOpenCouponModal, category }) => {
     <Modal
       centered
       open={openCouponModal}
-      onCancel={() => setOpenCouponModal(false)}
+      onCancel={() => {
+        setOpenCouponModal(false)
+        form.resetFields()
+      }}
       footer={false}
     >
       <p className="text-center text-xl font-semibold">Add New Coupon</p>
@@ -164,16 +167,20 @@ const AddCouponModal = ({ openCouponModal, setOpenCouponModal, category }) => {
         <div className="flex items-center gap-5">
           <button
             type="button"
-            onClick={() => setOpenCouponModal(false)}
+            onClick={() => {
+              setOpenCouponModal(false)
+              form.resetFields()
+            }}
             className="w-full border border-[#cd9b3a] py-2 rounded-sm text-[#cd9b3a]"
           >
             Cancel
           </button>
           <button
             type="submit"
-            className="w-full bg-[#cd9b3a] text-white py-2 rounded-sm"
+            disabled={isLoading}
+            className={`w-full bg-[#cd9b3a] ${isLoading && "cursor-not-allowed bg-gray-500"} text-white py-2 rounded-sm`}
           >
-            Add
+            {isLoading ? "Adding..." : "Add"}
           </button>
         </div>
       </Form>
