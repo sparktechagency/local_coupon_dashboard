@@ -148,9 +148,9 @@ const navigate = useNavigate()
 
           <Form.Item style={{ marginBottom: 0 }}>
             <Button
-              type="primary"
+              type="submit"
               htmlType="submit"
-              className="login-form-button rounded-sm"
+              className="login-form-button rounded-sm text-white"
               block
               style={{
                 height: "52px",
@@ -160,12 +160,9 @@ const navigate = useNavigate()
                 marginTop: "56px",
               }}
             >
-              <Link className="login-form-forgot " style={{ color: "white" }}>
-              {
-                isLoading ? "Sign In..." : "Sign In"
-              }
+            
+               { isLoading ? "Sign In..." : "Sign In"}
                 
-              </Link>
             </Button>
           </Form.Item>
         </Form>
