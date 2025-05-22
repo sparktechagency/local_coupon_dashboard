@@ -14,7 +14,7 @@ import { useAddNewCouponsMutation } from "../../redux/api/couponManagement";
 import { toast } from "sonner";
 
 const AddCouponModal = ({ openCouponModal, setOpenCouponModal, category }) => {
-  const [addCoupons , {isLoading}] = useAddNewCouponsMutation();
+  const [addCoupons, { isLoading }] = useAddNewCouponsMutation();
   const [form] = Form.useForm();
   const [selectedType, setSelectedType] = useState(null);
 
@@ -25,6 +25,7 @@ const AddCouponModal = ({ openCouponModal, setOpenCouponModal, category }) => {
   }));
 
   const handleFormSubmit = (values) => {
+    console.log(values);
     const formData = new FormData();
 
     Object.entries(values).forEach(([key, value]) => {
@@ -43,7 +44,7 @@ const AddCouponModal = ({ openCouponModal, setOpenCouponModal, category }) => {
       .then((payload) => {
         toast.success(payload?.message);
         setOpenCouponModal(false);
-        form.resetFields()
+        form.resetFields();
       })
       .catch((error) => toast.error(error?.data?.message));
   };
@@ -53,8 +54,8 @@ const AddCouponModal = ({ openCouponModal, setOpenCouponModal, category }) => {
       centered
       open={openCouponModal}
       onCancel={() => {
-        setOpenCouponModal(false)
-        form.resetFields()
+        setOpenCouponModal(false);
+        form.resetFields();
       }}
       footer={false}
     >
@@ -77,6 +78,9 @@ const AddCouponModal = ({ openCouponModal, setOpenCouponModal, category }) => {
         layout="vertical"
         className="mt-5"
         onFinish={handleFormSubmit}
+        initialValues={{
+          add_to_carousel: false,
+        }}
       >
         <Form.Item
           label="Select Coupon Category"
@@ -168,8 +172,8 @@ const AddCouponModal = ({ openCouponModal, setOpenCouponModal, category }) => {
           <button
             type="button"
             onClick={() => {
-              setOpenCouponModal(false)
-              form.resetFields()
+              setOpenCouponModal(false);
+              form.resetFields();
             }}
             className="w-full border border-[#cd9b3a] py-2 rounded-sm text-[#cd9b3a]"
           >
@@ -178,7 +182,9 @@ const AddCouponModal = ({ openCouponModal, setOpenCouponModal, category }) => {
           <button
             type="submit"
             disabled={isLoading}
-            className={`w-full bg-[#cd9b3a] ${isLoading && "cursor-not-allowed bg-gray-500"} text-white py-2 rounded-sm`}
+            className={`w-full bg-[#cd9b3a] ${
+              isLoading && "cursor-not-allowed bg-gray-500"
+            } text-white py-2 rounded-sm`}
           >
             {isLoading ? "Adding..." : "Add"}
           </button>
