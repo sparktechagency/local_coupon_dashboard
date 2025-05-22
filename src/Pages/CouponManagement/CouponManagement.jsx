@@ -21,11 +21,11 @@ const CouponManagement = () => {
 
   // table data
   const formattedData = allCoupons?.data?.map((transaction) => {
-    // console.log(transaction);
+    // console.log(transaction?.coupon?.createdBy?.companyName);
     return {
       key: transaction?._id,
-      useName: transaction?.user?.name,
-      companyName: transaction?.coupon?.createdBy?.companyName,
+      useName: transaction?.coupon?.createdBy?.name,
+      companyName: transaction?.coupon?.createdBy?.companyName || "N/A",
       couponImage: transaction?.coupon?.photo_url,
       couponExpire: transaction?.coupon?.end?.split("T")?.[0],
       share: transaction?.coupon?.shareCount,
@@ -34,7 +34,7 @@ const CouponManagement = () => {
       discountAmount: transaction?.coupon?.discount_amount,
       regularAmount: transaction?.coupon?.regular_amount,
       discountPercent: transaction?.coupon?.discount_percentage,
-      date: transaction?.createdAt?.split("T")?.[0],
+      date:transaction?.coupon?.start?.split("T")?.[0],
     };
   });
 

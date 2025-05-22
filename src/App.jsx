@@ -23,7 +23,6 @@ import { RxValue } from "react-icons/rx";
 function App() {
   const { data: getUserInfo, isError, isLoading } = useGetProfileQuery();
   const {data : getBusinessAnalytics} = useBusinessAnalyticsQuery()
-  console.log(getBusinessAnalytics?.data?.total_downloads);
 
   const [subscriptionYear, setSubscriptionYear] = useState(
     new Date().getFullYear()

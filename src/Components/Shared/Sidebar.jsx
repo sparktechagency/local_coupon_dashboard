@@ -9,70 +9,115 @@ import { PiToolboxDuotone } from "react-icons/pi";
 import { CiDollar } from "react-icons/ci";
 import { TbFilePercent } from "react-icons/tb";
 import { RiCoupon4Line } from "react-icons/ri";
+import { useGetProfileQuery } from "../../redux/api/authApi";
 
 const Sidebar = () => {
+  const { data: getProfile } = useGetProfileQuery();
   const [openIndex, setOpenIndex] = useState(null);
   const [isOpen, setIsOpen] = useState(false);
-  const navigate = useNavigate()
+  const navigate = useNavigate();
 
   const contentRefs = useRef([]);
   const { pathname } = useLocation();
+  const userRole = getProfile?.data?.role;
 
-  const links = [
+  console.log(getProfile?.data?.role);
+
+  const allLinks = [
     {
       path: "/",
       label: "Dashboard",
       icon: <MdOutlineDashboard size={25} />,
       sub_menu: false,
+      roles: ["admin", "business"],
     },
     {
       path: "/business-owners",
       label: "Business Owner",
       icon: <PiToolboxDuotone size={25} />,
       sub_menu: false,
+      roles: ["admin"],
     },
     {
       path: "/user-management",
       label: "User Management",
       icon: <FaRegUserCircle size={25} />,
       sub_menu: false,
+      roles: ["admin"],
     },
     {
       path: "/subscriptions",
       label: "Subscriptions",
       icon: <TbFilePercent size={25} />,
       sub_menu: false,
+      roles: ["admin"],
     },
     {
       path: "/premium-use",
       label: "Premium User",
       icon: <CiDollar size={25} />,
       sub_menu: false,
+      roles: ["admin"],
     },
     {
       path: "/tools-category",
       label: "Category Management",
       icon: <MdOutlineCategory size={25} />,
       sub_menu: false,
+      roles: ["admin"],
     },
     {
       path: "/coupon-management",
       label: "Coupon Management",
       icon: <RiCoupon4Line size={25} />,
       sub_menu: false,
+      roles: ["business"],
     },
     {
       path: "#",
       label: "Setting",
       icon: <IoSettingsOutline size={25} />,
       sub_menu: [
-        { path: "/profile", label: "Profile", icon: <></> },
-        { path: "/faq", label: "FAQ", icon: <></> },
-        { path: "/terms-condition", label: "Terms & Condition", icon: <></> },
-        { path: "/privacy-policy", label: "Privacy Policy", icon: <></> },
+        {
+          path: "/profile",
+          label: "Profile",
+          icon: <></>,
+          roles: ["admin", "business"],
+        },
+        { path: "/faq", label: "FAQ", icon: <></>, roles: ["admin"] },
+        {
+          path: "/terms-condition",
+          label: "Terms & Condition",
+          icon: <></>,
+          roles: ["admin"],
+        },
+        {
+          path: "/privacy-policy",
+          label: "Privacy Policy",
+          icon: <></>,
+          roles: ["admin"],
+        },
       ],
+      roles: ["admin", "business"],
     },
   ];
+
+  // Filter main links
+  const links = allLinks
+    .map((item) => {
+      if (item.sub_menu) {
+        // Filter sub-menu items based on role
+        const filteredSubMenu = item.sub_menu.filter((sub) =>
+          sub.roles.includes(userRole)
+        );
+        return filteredSubMenu.length > 0
+          ? { ...item, sub_menu: filteredSubMenu }
+          : null;
+      } else {
+        return item.roles.includes(userRole) ? item : null;
+      }
+    })
+    .filter(Boolean);
 
   const toggleAccordion = (index) => {
     setOpenIndex((prevIndex) => (prevIndex === index ? null : index));
@@ -190,13 +235,17 @@ const Sidebar = () => {
           })}
         </div>
         <div className="mr-3 mt-10">
-        <button onClick={()=>{
-          localStorage.removeItem("coupon_token")
-          navigate("/auth/login")
-          }} className="bg-[#CD9B3A] w-full text-white  mr-5 py-2 rounded-tr-md rounded-br-md ">Logout</button>
+          <button
+            onClick={() => {
+              localStorage.removeItem("coupon_token");
+              window.location.href = "/auth/login";
+            }}
+            className="bg-[#CD9B3A] w-full text-white  mr-5 py-2 rounded-tr-md rounded-br-md "
+          >
+            Logout
+          </button>
+        </div>
       </div>
-      </div>
-     
 
       {/* Background Overlay for Mobile */}
       {isOpen && (
