@@ -26,8 +26,7 @@ const ReferralCommission = () => {
   const [openModal, setOpenModal] = useState(false);
   const [subscriptionDetails, setSubscriptionDetails] = useState([]);
 
-  // console.log(selectedSubscription);
-
+console.log(getSubscription);
   const handleDeleteSubscription = (id) => {
     const data = {
       id: id,
@@ -78,6 +77,11 @@ const ReferralCommission = () => {
       key: "priceInCents",
     },
     {
+      title: "Subscription Type",
+      dataIndex: "type",
+      key: "type",
+    },
+    {
       title: "Description",
       dataIndex: "info",
       key: "info",
@@ -102,7 +106,6 @@ const ReferralCommission = () => {
       dataIndex: "action",
       key: "action",
       render: (_, record) => {
-        console.log(record?.key);
         return (
           <div className="flex items-center">
             <button
@@ -137,6 +140,7 @@ const ReferralCommission = () => {
       priceInCents: subscription?.priceInCents,
       durationInMonths: subscription?.durationInMonths,
       info: subscription?.info,
+      type : subscription?.type || "N/A"
     };
   });
 

@@ -1,4 +1,4 @@
-import { Modal, Form, Input } from "antd";
+import { Modal, Form, Input, Select } from "antd";
 import { useEffect, useRef, useState } from "react";
 import JoditEditor from "jodit-react";
 
@@ -8,12 +8,11 @@ const SubscriptionModal = ({
   initialValues,
   isEditMode = false,
   onSubmit,
-  setSelectedSubscription
+  setSelectedSubscription,
 }) => {
   const [form] = Form.useForm();
   const editor = useRef(null);
   const [content, setContent] = useState("");
-
 
   useEffect(() => {
     if (initialValues) {
@@ -49,7 +48,6 @@ const SubscriptionModal = ({
     setSelectedSubscription(null);
   };
 
-
   return (
     <Modal
       title={isEditMode ? "Update Subscription" : "Create Subscription"}
@@ -61,7 +59,9 @@ const SubscriptionModal = ({
         <Form.Item
           name="name"
           label="Subscription Plan Name"
-          rules={[{ required: true, message: "Please enter Subscription plan name" }]}
+          rules={[
+            { required: true, message: "Please enter Subscription plan name" },
+          ]}
         >
           <Input />
         </Form.Item>
@@ -78,6 +78,19 @@ const SubscriptionModal = ({
           rules={[{ required: true, message: "Please enter duration" }]}
         >
           <Input type="number" />
+        </Form.Item>
+
+        <Form.Item
+          name="type"
+          label="Subscription Type"
+          rules={[
+            { required: true, message: "Please select subscription type" },
+          ]}
+        >
+          <Select placeholder="Select subscription type">
+            <Select.Option value="business">Business</Select.Option>
+            <Select.Option value="user">User</Select.Option>
+          </Select>
         </Form.Item>
 
         <JoditEditor
