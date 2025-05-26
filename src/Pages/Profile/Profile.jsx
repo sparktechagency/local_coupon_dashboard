@@ -7,11 +7,20 @@ import {
   useUpdateProfileMutation,
 } from "../../redux/api/authApi";
 import { toast } from "sonner";
+import { RiDeleteBinLine, RiFacebookBoxFill } from "react-icons/ri";
+import { CiEdit } from "react-icons/ci";
+import { FaSquareInstagram, FaSquareWhatsapp } from "react-icons/fa6";
+import { IoIosAddCircleOutline } from "react-icons/io";
+import AddSocialMediaModal from "../../Components/AddSocialMediaModal/AddSocialMediaModal";
+import { FaTelegram } from "react-icons/fa";
 const admin = false;
 const Profile = () => {
+  const [isModalOpen, setIsModalOpen] = useState(false);
   const { data: getAdminProfile } = useGetProfileQuery();
   const [updateProfile, { isLoading }] = useUpdateProfileMutation();
   const [changePassword] = useChangePasswordMutation();
+
+  console.log(getAdminProfile?.data?.socials);
 
   const [image, setImage] = useState();
   const [form] = Form.useForm();
@@ -37,6 +46,8 @@ const Profile = () => {
       email: getAdminProfile?.data?.email,
       contact: getAdminProfile?.data?.phone,
       address: getAdminProfile?.data?.location || "N/A",
+      companyName: getAdminProfile?.data?.companyName,
+      companyAddress: getAdminProfile?.data?.companyAddress || "N/A",
     };
     form.setFieldsValue(data);
   }, [getAdminProfile]);
@@ -58,7 +69,6 @@ const Profile = () => {
       .unwrap()
       .then((payload) => toast.success(payload?.message))
       .catch((error) => toast.error(error?.data?.message));
-
   };
 
   const onEditProfile = (values) => {
@@ -74,6 +84,24 @@ const Profile = () => {
       .unwrap()
       .then((payload) => toast.success(payload?.message))
       .catch((error) => toast.error(error?.data?.message));
+  };
+
+  // Handle Delete Social Media
+
+  const handleSocialMedia = (socialMediaName) => {
+    const currentSocials = getAdminProfile?.data?.socials || {};
+
+    const updatedSocials = Object.fromEntries(
+      Object.entries(currentSocials).filter(([key]) => key !== socialMediaName)
+    );
+
+    // console.log(updatedSocials);
+    const formData = new FormData();
+    formData.append("socials", JSON.stringify(updatedSocials));
+    updateProfile(formData)
+      .unwrap()
+      .then((payload) => console.log("fulfilled", payload))
+      .catch((error) => console.error("rejected", error));
   };
 
   return (
@@ -114,7 +142,9 @@ const Profile = () => {
             )}
           </div>
           <div className="w-fit">
-            <p className=" text-[#575757] text-[24px] leading-[32px] font-semibold">{getAdminProfile?.data?.name}</p>
+            <p className=" text-[#575757] text-[24px] leading-[32px] font-semibold">
+              {getAdminProfile?.data?.name}
+            </p>
           </div>
         </div>
 
@@ -227,7 +257,116 @@ const Profile = () => {
                   placeholder="79/A Joker Vila, Gotham City"
                 />
               </Form.Item>
-
+              {getAdminProfile?.data?.role === "business" && (
+                <>
+                  <Form.Item
+                    label={
+                      <p className="text-[#919191] text-[16px] leading-5 font-normal">
+                        Company Name
+                      </p>
+                    }
+                    name={"companyName"}
+                  >
+                    <Input className="h-[48px]" placeholder="Company Name" />
+                  </Form.Item>
+                  <Form.Item
+                    label={
+                      <p className="text-[#919191] text-[16px] leading-5 font-normal">
+                        Company Name
+                      </p>
+                    }
+                    name={"companyAddress"}
+                  >
+                    <Input className="h-[48px]" placeholder="Company Address" />
+                  </Form.Item>
+                  <div className="flex items-center justify-between">
+                    <p className="text-xl">Social Media</p>
+                    <p
+                      onClick={() => setIsModalOpen(true)}
+                      className="bg-[#CD9B3A] text-white p-1 rounded-full cursor-pointer"
+                    >
+                      <IoIosAddCircleOutline size={22} />
+                    </p>
+                  </div>
+                  {getAdminProfile?.data?.socials?.fb && (
+                    <div className="h-10 flex rounded-md items-center justify-between border mb-5">
+                      <div className="flex items-center justify-between w-full px-2">
+                        <RiFacebookBoxFill size={25} color="#2A73DE" />
+                        <p className="mb-0">Facebook</p>
+                        <div className="flex items-center gap-2">
+                          <RiDeleteBinLine
+                            onClick={() => handleSocialMedia("fb")}
+                            size={22}
+                            className="cursor-pointer text-red-500"
+                          />
+                          <CiEdit
+                            size={22}
+                            className="cursor-pointer text-[#CD9B3A]"
+                          />
+                        </div>
+                      </div>
+                    </div>
+                  )}
+                  {getAdminProfile?.data?.socials?.ig && (
+                    <div className="h-10 flex rounded-md items-center justify-between border mb-5">
+                      <div className="flex items-center justify-between w-full px-2">
+                        <FaSquareInstagram size={25} color="#EA076B" />
+                        <p className="mb-0">Instagram</p>
+                        <div className="flex items-center gap-2">
+                          <RiDeleteBinLine
+                            onClick={() => handleSocialMedia("ig")}
+                            size={22}
+                            className="cursor-pointer text-red-500"
+                          />
+                          <CiEdit
+                            size={22}
+                            className="cursor-pointer text-[#CD9B3A]"
+                          />
+                        </div>
+                      </div>
+                    </div>
+                  )}
+                  {getAdminProfile?.data?.socials?.whatsapp && (
+                    <div className="h-10 flex rounded-md items-center justify-between border mb-5">
+                      <div className="flex items-center justify-between w-full px-2">
+                        <FaSquareWhatsapp size={25} color="#24CC63" />
+                        <p className="mb-0">What's App</p>
+                        <div className="flex items-center gap-2">
+                          <RiDeleteBinLine
+                            onClick={() => handleSocialMedia("whatsapp")}
+                            size={22}
+                            className="cursor-pointer text-red-500"
+                          />
+                          <CiEdit
+                            size={22}
+                            className="cursor-pointer text-[#CD9B3A]"
+                          />
+                        </div>
+                      </div>
+                    </div>
+                  )}
+                  {getAdminProfile?.data?.socials?.whatsapp && (
+                    <div className="h-10 flex rounded-md items-center justify-between border mb-5">
+                      <div className="flex items-center justify-between w-full px-2">
+                        <FaTelegram size={25} color="#2597D2" />
+                        <p className="mb-0">Telegram</p>
+                        <div className="flex items-center gap-2">
+                          <RiDeleteBinLine
+                            onClick={() => handleSocialMedia("telegram")}
+                            size={22}
+                            className="cursor-pointer text-red-500"
+                          />
+                          <CiEdit
+                            size={22}
+                            className="cursor-pointer text-[#CD9B3A]"
+                          />
+                        </div>
+                      </div>
+                    </div>
+                  )}
+                  
+                </>
+              )}
               <Form.Item
                 style={{
                   marginBottom: 0,
@@ -369,6 +508,11 @@ const Profile = () => {
           </div>
         )}
       </div>
+      <AddSocialMediaModal
+        isModalOpen={isModalOpen}
+        setIsModalOpen={setIsModalOpen}
+        socialLinks = {getAdminProfile?.data?.socials}
+      />
     </div>
   );
 };

@@ -22,7 +22,7 @@ import { ImProfile } from "react-icons/im";
 import { RxValue } from "react-icons/rx";
 function App() {
   const { data: getUserInfo, isError, isLoading } = useGetProfileQuery();
-  const {data : getBusinessAnalytics} = useBusinessAnalyticsQuery()
+  const { data: getBusinessAnalytics } = useBusinessAnalyticsQuery();
 
   const [subscriptionYear, setSubscriptionYear] = useState(
     new Date().getFullYear()
@@ -50,16 +50,19 @@ function App() {
       title: "Total User",
       icon: profileUser,
       count: getDashboardInfo?.data?.total_users,
+      path: "/user-management",
     },
     {
       title: "Premium User",
       icon: activeUser,
       count: getDashboardInfo?.data?.premium_users,
+      path: "/premium-use",
     },
     {
       title: "Total Business Owners",
       icon: referrals,
       count: getDashboardInfo?.data?.business_owners,
+      path: "/business-owners",
     },
     {
       title: "Total Coupon",
@@ -68,8 +71,8 @@ function App() {
     },
   ];
 
-  // Business Analytics data 
-  const businessAnalyticsData =[
+  // Business Analytics data
+  const businessAnalyticsData = [
     {
       title: "Total Download",
       icon: <IoCloudDownloadOutline />,
@@ -100,7 +103,7 @@ function App() {
       icon: <RxValue />,
       count: getBusinessAnalytics?.data?.value,
     },
-  ]
+  ];
 
   // table data
   const formattedData = recentTransaction?.data
@@ -220,14 +223,16 @@ function App() {
           {/*  statistics card for dashboard home page */}
           <div className="grid grid-cols-1 md:grid-cols-4 justify-center items-center gap-5">
             {data?.map((item, index) => (
-              <div
-                className="w-full h-full flex justify-center items-center  flex-col gap-3 py-7 bg-[#FEFEFE] p-2 rounded-md"
-                key={index}
-              >
-                <p className="text-2xl font-medium">{item?.title}</p>
-                <img src={item?.icon} className="my-[5px]" />
-                <p className="text-3xl font-semibold">{item?.count}</p>
-              </div>
+              <Link to={item?.path}>
+                <div
+                  className="w-full h-full flex hover:shadow-md justify-center items-center  flex-col gap-3 py-7 bg-[#FEFEFE] p-2 rounded-md"
+                  key={index}
+                >
+                  <p className="text-2xl font-medium">{item?.title}</p>
+                  <img src={item?.icon} className="my-[5px]" />
+                  <p className="text-3xl font-semibold">{item?.count}</p>
+                </div>
+              </Link>
             ))}
           </div>
 
@@ -265,19 +270,21 @@ function App() {
           </div>
         </div>
       ) : (
-         <div className="grid grid-cols-1 md:grid-cols-3 justify-center items-center gap-5">
-            {businessAnalyticsData?.map((item, index) => (
-              <div
-                className="w-full h-full  text-center 
+        <div className="grid grid-cols-1 md:grid-cols-3 justify-center items-center gap-5">
+          {businessAnalyticsData?.map((item, index) => (
+            <div
+              className="w-full h-full  text-center 
                  bg-[#FEFEFE] py-10 rounded-md"
-                key={index}
-              >
-                <p className="text-2xl font-medium">{item?.title}</p>
-                <p className="text-2xl  text-[#CD9B3A] flex justify-center">{item?.icon}</p>
-                <p className="text-3xl font-semibold">{item?.count}</p>
-              </div>
-            ))}
-          </div>
+              key={index}
+            >
+              <p className="text-2xl font-medium">{item?.title}</p>
+              <p className="text-2xl  text-[#CD9B3A] flex justify-center">
+                {item?.icon}
+              </p>
+              <p className="text-3xl font-semibold">{item?.count}</p>
+            </div>
+          ))}
+        </div>
       )}
     </div>
   );
