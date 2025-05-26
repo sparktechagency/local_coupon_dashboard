@@ -6,7 +6,6 @@ const AddSocialMediaModal = ({ isModalOpen, setIsModalOpen, socialLinks }) => {
   const [updateProfile, { isLoading }] = useUpdateProfileMutation();
   const [form] = Form.useForm();
 
-  console.log(socialLinks);
   const handleAddSocialMedia = (value) => {
     const platformKeyMap = {
       facebook: "fb",
@@ -29,6 +28,7 @@ const AddSocialMediaModal = ({ isModalOpen, setIsModalOpen, socialLinks }) => {
       .then((payload) => {
         toast.success(payload?.message)
         setIsModalOpen(false)
+        form.resetFields()
       })
       .catch((error) => toast.error(error?.data?.message));
   };
@@ -57,7 +57,7 @@ const AddSocialMediaModal = ({ isModalOpen, setIsModalOpen, socialLinks }) => {
         </Form.Item>
         <div className="flex justify-center ">
           <button className="bg-[#CD9B3A] text-white px-4 py-1 rounded-sm">
-            Save
+            {isLoading ? "Saving..." : "Save"}
           </button>
         </div>
       </Form>

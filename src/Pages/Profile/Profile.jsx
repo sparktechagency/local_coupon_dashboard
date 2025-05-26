@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { Button, Form, Input } from "antd";
+import { Button, Form, Input, Popconfirm } from "antd";
 import { IoCameraOutline } from "react-icons/io5";
 import {
   useChangePasswordMutation,
@@ -23,7 +23,7 @@ const Profile = () => {
   const [updateProfile, { isLoading }] = useUpdateProfileMutation();
   const [changePassword] = useChangePasswordMutation();
 
-  console.log(socialMediaLink);
+  // console.log(socialMediaLink);
   // console.log(getAdminProfile?.data?.socials);
 
   const [image, setImage] = useState();
@@ -84,6 +84,12 @@ const Profile = () => {
     formData.append("name", values?.name);
     formData.append("location", values?.address);
     formData.append("phone", values?.contact);
+    if (values?.companyAddress) {
+      formData.append("companyAddress", values?.companyAddress);
+    }
+    if (values?.companyName) {
+      formData.append("companyName", values?.companyName);
+    }
     updateProfile(formData)
       .unwrap()
       .then((payload) => toast.success(payload?.message))
@@ -104,8 +110,8 @@ const Profile = () => {
     formData.append("socials", JSON.stringify(updatedSocials));
     updateProfile(formData)
       .unwrap()
-      .then((payload) => console.log("fulfilled", payload))
-      .catch((error) => console.error("rejected", error));
+      .then((payload) => toast.success(payload?.message))
+      .catch((error) => toast.error(error?.data?.message));
   };
 
   return (
@@ -276,7 +282,7 @@ const Profile = () => {
                   <Form.Item
                     label={
                       <p className="text-[#919191] text-[16px] leading-5 font-normal">
-                        Company Name
+                        Company Address
                       </p>
                     }
                     name={"companyAddress"}
@@ -298,17 +304,27 @@ const Profile = () => {
                         <RiFacebookBoxFill size={25} color="#2A73DE" />
                         <p className="mb-0">Facebook</p>
                         <div className="flex items-center gap-2">
-                          <RiDeleteBinLine
-                            onClick={() => handleSocialMedia("fb")}
-                            size={22}
-                            className="cursor-pointer text-red-500"
-                          />
+                          <Popconfirm
+                            title="Are you sure to delete this social media link?"
+                            onConfirm={() => handleSocialMedia("fb")}
+                            okText="Yes"
+                            cancelText="No"
+                          >
+                            <RiDeleteBinLine
+                              size={22}
+                              className="cursor-pointer text-red-500"
+                            />
+                          </Popconfirm>
+
                           <CiEdit
                             size={22}
                             className="cursor-pointer text-[#CD9B3A]"
-                              onClick={() => {
+                            onClick={() => {
                               setOpenSocialMediaModal(true);
-                              setSocialMediLink({name : "fb",link: getAdminProfile?.data?.socials?.fb});
+                              setSocialMediLink({
+                                name: "fb",
+                                link: getAdminProfile?.data?.socials?.fb,
+                              });
                             }}
                           />
                         </div>
@@ -321,15 +337,25 @@ const Profile = () => {
                         <FaSquareInstagram size={25} color="#EA076B" />
                         <p className="mb-0">Instagram</p>
                         <div className="flex items-center gap-2">
-                          <RiDeleteBinLine
-                            onClick={() => handleSocialMedia("ig")}
-                            size={22}
-                            className="cursor-pointer text-red-500"
-                          />
+                          <Popconfirm
+                            title="Are you sure to delete this social media link?"
+                            onConfirm={() => handleSocialMedia("ig")}
+                            okText="Yes"
+                            cancelText="No"
+                          >
+                            <RiDeleteBinLine
+                              size={22}
+                              className="cursor-pointer text-red-500"
+                            />
+                          </Popconfirm>
+
                           <CiEdit
                             onClick={() => {
                               setOpenSocialMediaModal(true);
-                              setSocialMediLink({name : "ig",link : getAdminProfile?.data?.socials?.ig});
+                              setSocialMediLink({
+                                name: "ig",
+                                link: getAdminProfile?.data?.socials?.ig,
+                              });
                             }}
                             size={22}
                             className="cursor-pointer text-[#CD9B3A]"
@@ -344,15 +370,25 @@ const Profile = () => {
                         <FaSquareWhatsapp size={25} color="#24CC63" />
                         <p className="mb-0">What's App</p>
                         <div className="flex items-center gap-2">
-                          <RiDeleteBinLine
-                            onClick={() => handleSocialMedia("whatsapp")}
-                            size={22}
-                            className="cursor-pointer text-red-500"
-                          />
+                          <Popconfirm
+                            title="Are you sure to delete this social media link?"
+                            onConfirm={() => handleSocialMedia("whatsapp")}
+                            okText="Yes"
+                            cancelText="No"
+                          >
+                            <RiDeleteBinLine
+                              size={22}
+                              className="cursor-pointer text-red-500"
+                            />
+                          </Popconfirm>
+
                           <CiEdit
                             onClick={() => {
                               setOpenSocialMediaModal(true);
-                              setSocialMediLink({name :"whatsapp" , link : getAdminProfile?.data?.socials?.whatsapp});
+                              setSocialMediLink({
+                                name: "whatsapp",
+                                link: getAdminProfile?.data?.socials?.whatsapp,
+                              });
                             }}
                             size={22}
                             className="cursor-pointer text-[#CD9B3A]"
@@ -367,15 +403,25 @@ const Profile = () => {
                         <FaTelegram size={25} color="#2597D2" />
                         <p className="mb-0">Telegram</p>
                         <div className="flex items-center gap-2">
-                          <RiDeleteBinLine
-                            onClick={() => handleSocialMedia("telegram")}
-                            size={22}
-                            className="cursor-pointer text-red-500"
-                          />
+                          <Popconfirm
+                            title="Are you sure to delete this social media link?"
+                            onConfirm={() => handleSocialMedia("telegram")}
+                            okText="Yes"
+                            cancelText="No"
+                          >
+                            <RiDeleteBinLine
+                              size={22}
+                              className="cursor-pointer text-red-500"
+                            />
+                          </Popconfirm>
+
                           <CiEdit
                             onClick={() => {
                               setOpenSocialMediaModal(true);
-                              setSocialMediLink({name : "telegram" , link : getAdminProfile?.data?.socials?.telegram});
+                              setSocialMediLink({
+                                name: "telegram",
+                                link: getAdminProfile?.data?.socials?.telegram,
+                              });
                             }}
                             size={22}
                             className="cursor-pointer text-[#CD9B3A]"
@@ -537,7 +583,6 @@ const Profile = () => {
         setOpenSocialMediaModal={setOpenSocialMediaModal}
         socialMediaLink={socialMediaLink}
         socialLinks={getAdminProfile?.data?.socials}
-
       />
     </div>
   );

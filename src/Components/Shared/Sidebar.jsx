@@ -21,7 +21,6 @@ const Sidebar = () => {
   const { pathname } = useLocation();
   const userRole = getProfile?.data?.role;
 
-  console.log(getProfile?.data?.role);
 
   const allLinks = [
     {

@@ -12,7 +12,6 @@ const Header = () => {
   const { data: getAdminProfile } = useGetProfileQuery();
   const { data: count } = useGetNotificationCountQuery();
 
-  console.log(getAdminProfile?.data?.role);
 
   return (
     <div className="w-full py-4 bg-[var(--primary-color)] flex justify-end items-center  gap-4">
