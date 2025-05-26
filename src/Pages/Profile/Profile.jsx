@@ -13,14 +13,18 @@ import { FaSquareInstagram, FaSquareWhatsapp } from "react-icons/fa6";
 import { IoIosAddCircleOutline } from "react-icons/io";
 import AddSocialMediaModal from "../../Components/AddSocialMediaModal/AddSocialMediaModal";
 import { FaTelegram } from "react-icons/fa";
+import EditSocialMediaModal from "../../Components/EditSocialMediaModal/EditSocialMediaModal";
 const admin = false;
 const Profile = () => {
   const [isModalOpen, setIsModalOpen] = useState(false);
+  const [socialMediaLink, setSocialMediLink] = useState({});
+  const [openEditSocialMediaModal, setOpenSocialMediaModal] = useState(false);
   const { data: getAdminProfile } = useGetProfileQuery();
   const [updateProfile, { isLoading }] = useUpdateProfileMutation();
   const [changePassword] = useChangePasswordMutation();
 
-  console.log(getAdminProfile?.data?.socials);
+  console.log(socialMediaLink);
+  // console.log(getAdminProfile?.data?.socials);
 
   const [image, setImage] = useState();
   const [form] = Form.useForm();
@@ -302,6 +306,10 @@ const Profile = () => {
                           <CiEdit
                             size={22}
                             className="cursor-pointer text-[#CD9B3A]"
+                              onClick={() => {
+                              setOpenSocialMediaModal(true);
+                              setSocialMediLink({name : "fb",link: getAdminProfile?.data?.socials?.fb});
+                            }}
                           />
                         </div>
                       </div>
@@ -319,6 +327,10 @@ const Profile = () => {
                             className="cursor-pointer text-red-500"
                           />
                           <CiEdit
+                            onClick={() => {
+                              setOpenSocialMediaModal(true);
+                              setSocialMediLink({name : "ig",link : getAdminProfile?.data?.socials?.ig});
+                            }}
                             size={22}
                             className="cursor-pointer text-[#CD9B3A]"
                           />
@@ -338,6 +350,10 @@ const Profile = () => {
                             className="cursor-pointer text-red-500"
                           />
                           <CiEdit
+                            onClick={() => {
+                              setOpenSocialMediaModal(true);
+                              setSocialMediLink({name :"whatsapp" , link : getAdminProfile?.data?.socials?.whatsapp});
+                            }}
                             size={22}
                             className="cursor-pointer text-[#CD9B3A]"
                           />
@@ -345,7 +361,7 @@ const Profile = () => {
                       </div>
                     </div>
                   )}
-                  {getAdminProfile?.data?.socials?.whatsapp && (
+                  {getAdminProfile?.data?.socials?.telegram && (
                     <div className="h-10 flex rounded-md items-center justify-between border mb-5">
                       <div className="flex items-center justify-between w-full px-2">
                         <FaTelegram size={25} color="#2597D2" />
@@ -357,6 +373,10 @@ const Profile = () => {
                             className="cursor-pointer text-red-500"
                           />
                           <CiEdit
+                            onClick={() => {
+                              setOpenSocialMediaModal(true);
+                              setSocialMediLink({name : "telegram" , link : getAdminProfile?.data?.socials?.telegram});
+                            }}
                             size={22}
                             className="cursor-pointer text-[#CD9B3A]"
                           />
@@ -364,7 +384,6 @@ const Profile = () => {
                       </div>
                     </div>
                   )}
-                  
                 </>
               )}
               <Form.Item
@@ -511,7 +530,14 @@ const Profile = () => {
       <AddSocialMediaModal
         isModalOpen={isModalOpen}
         setIsModalOpen={setIsModalOpen}
-        socialLinks = {getAdminProfile?.data?.socials}
+        socialLinks={getAdminProfile?.data?.socials}
+      />
+      <EditSocialMediaModal
+        openEditSocialMediaModal={openEditSocialMediaModal}
+        setOpenSocialMediaModal={setOpenSocialMediaModal}
+        socialMediaLink={socialMediaLink}
+        socialLinks={getAdminProfile?.data?.socials}
+
       />
     </div>
   );
