@@ -45,6 +45,8 @@ function App() {
   });
   const { data: recentTransaction } = useRecentTransactionQuery();
   //
+
+  // console.log(getDashboardInfo?.data?.redeemed_coupons);
   const data = [
     {
       title: "Total User",
@@ -68,6 +70,11 @@ function App() {
       title: "Total Coupon",
       icon: income,
       count: getDashboardInfo?.data?.coupons,
+    },
+    {
+      title: "Redeemed Coupon",
+      icon: income,
+      count: getDashboardInfo?.data?.redeemed_coupons
     },
   ];
 
@@ -221,7 +228,7 @@ function App() {
       {getUserInfo?.data?.role === "admin" ? (
         <div>
           {/*  statistics card for dashboard home page */}
-          <div className="grid grid-cols-1 md:grid-cols-4 justify-center items-center gap-5">
+          <div className="grid grid-cols-1 md:grid-cols-5 justify-center items-center gap-5">
             {data?.map((item, index) => (
               <Link to={item?.path}>
                 <div
