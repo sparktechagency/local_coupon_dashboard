@@ -18,6 +18,7 @@ import ReferralCommission from "../Pages/ReferralCommission/ReferralCommission";
 import ToolsCategory from "../Pages/ToolsCaregory/ToolsCategory";
 import PrivateRoutes from "../Components/PrivateRoute/PrivateRoute";
 import CouponManagement from "../Pages/CouponManagement/CouponManagement";
+import Report from "../Pages/Report/Report";
 
 export const router = createBrowserRouter([
     {
@@ -64,6 +65,10 @@ export const router = createBrowserRouter([
             {
                 path: '/terms-condition',
                 element: <TremsCondition />
+            },
+            {
+                path: '/report',
+                element: <Report/>
             },
             {
                 path: '/faq',

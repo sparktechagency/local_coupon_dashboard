@@ -26,7 +26,6 @@ const ReferralCommission = () => {
   const [openModal, setOpenModal] = useState(false);
   const [subscriptionDetails, setSubscriptionDetails] = useState([]);
 
-console.log(getSubscription);
   const handleDeleteSubscription = (id) => {
     const data = {
       id: id,

@@ -1,9 +1,9 @@
 import React, { useState } from "react";
-import { Table, Button, Pagination } from "antd";
+import { Table, Button, Pagination, Popconfirm } from "antd";
 import "antd/dist/reset.css";
 import { Link } from "react-router-dom";
 import { FaArrowLeft } from "react-icons/fa";
-import { CiSearch } from "react-icons/ci";
+import { CiEdit, CiSearch } from "react-icons/ci";
 import { MdBlockFlipped } from "react-icons/md";
 import {
   useBlockUnblockUserMutation,
@@ -11,12 +11,17 @@ import {
 } from "../../redux/api/usersApi";
 import { placeImage } from "../../redux/api/baseApi";
 import { toast } from "sonner";
+import { RiDeleteBinLine } from "react-icons/ri";
 
 const ToolsManagement = () => {
-  const [page , setPage] = useState(1)
-  const [query , setQuery] = useState("")
+  const [page, setPage] = useState(1);
+  const [query, setQuery] = useState("");
   const [blockUnBlockUser] = useBlockUnblockUserMutation();
-  const { data: getBusinessOwner } = useGetBusinessOwnerQuery({page ,query , type : 'business'});
+  const { data: getBusinessOwner } = useGetBusinessOwnerQuery({
+    page,
+    query,
+    type: "business",
+  });
 
   const handleBlockOwner = (id) => {
     const data = {
@@ -27,6 +32,11 @@ const ToolsManagement = () => {
       .then((payload) => toast.success(payload?.message))
       .catch((error) => toast.error(error?.data?.message));
   };
+
+  // Handle delete users
+  const handleDeleteUser =(id)=>{
+    console.log(id);
+  }
 
   const data = getBusinessOwner?.data?.map((owner) => {
     return {
@@ -90,14 +100,31 @@ const ToolsManagement = () => {
       title: "Action",
       key: "action",
       render: (_, record) => (
-        <p
-          onClick={() => handleBlockOwner(record?.key)}
-          className={`p-1 rounded-md shadow-md inline-block cursor-pointer ${
-            record?.isBanned ? "bg-gray-300" : "bg-red-500"
-          }`}
-        >
-          <MdBlockFlipped size={25} />
-        </p>
+        <div className="flex items-center  gap-2">
+          <p
+            onClick={() => handleBlockOwner(record?.key)}
+            className={`p-1 rounded-sm shadow-sm  inline-block text-white cursor-pointer ${
+              record?.isBanned ? "bg-gray-300" : "bg-red-500"
+            }`}
+          >
+            <MdBlockFlipped size={20} />
+          </p>
+          <Popconfirm
+            placement="topRight"
+            title="Are you sure delete this user!"
+            okText="Yes"
+            cancelText="No"
+            onConfirm={()=>handleDeleteUser(record?.key)}
+          >
+            <p className="bg-red-500 p-1 rounded-sm cursor-pointer text-white">
+              <RiDeleteBinLine size={20} />
+            </p>
+          </Popconfirm>
+          <p className="bg-[#CD9B3A] p-1 rounded-sm text-white cursor-pointer">
+            <CiEdit size={20} />
+
+          </p>
+        </div>
       ),
     },
   ];
@@ -116,7 +143,7 @@ const ToolsManagement = () => {
           <div className="relative">
             <input
               type="text"
-              onChange={(e)=> setQuery(e.target.value)}
+              onChange={(e) => setQuery(e.target.value)}
               placeholder="Search here..."
               className="w-full pl-10 pr-4 py-2 rounded-md border border-gray-300 focus:border-blue-500 focus:outline-none focus:ring-1 "
             />
@@ -136,13 +163,13 @@ const ToolsManagement = () => {
             pageSize: getBusinessOwner?.meta?.limit,
             total: getBusinessOwner?.meta?.totalUsers,
             showSizeChanger: false,
-            showTotal: (total, range) => `${range[0]}-${range[1]} of ${total} items`,
+            showTotal: (total, range) =>
+              `${range[0]}-${range[1]} of ${total} items`,
             onChange: (page) => {
               setPage(page);
             },
           }}
         />
-
       </div>
     </div>
   );

@@ -37,8 +37,16 @@ const couponManagement = baseApi.injectEndpoints({
                 }
             },
             invalidatesTags : ["coupons"]
+        }),
+        getAllReport : builder.query({
+            query : ()=>{
+                return { 
+                    url : `/admin/report?page=1&limit=10`,
+                    method : 'GET'
+                }
+            }
         })
     })
 })
 
-export const { useGetAllCouponQuery , useBusinessAnalyticsQuery , useAddNewCouponsMutation , useDeleteCouponsMutation} = couponManagement;
+export const { useGetAllCouponQuery , useBusinessAnalyticsQuery , useAddNewCouponsMutation , useDeleteCouponsMutation , useGetAllReportQuery} = couponManagement;

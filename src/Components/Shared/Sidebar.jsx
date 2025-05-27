@@ -2,7 +2,7 @@ import React, { useEffect, useRef, useState } from "react";
 import { FaRegUserCircle } from "react-icons/fa";
 import { IoIosArrowForward, IoMdMenu, IoMdClose } from "react-icons/io";
 import { IoSettingsOutline } from "react-icons/io5";
-import { MdOutlineCategory, MdOutlineDashboard } from "react-icons/md";
+import { MdOutlineCategory, MdOutlineDashboard, MdOutlineReportProblem } from "react-icons/md";
 import { NavLink, useLocation, useNavigate } from "react-router-dom";
 import img from "../../assets/images/logo.png";
 import { PiToolboxDuotone } from "react-icons/pi";
@@ -62,6 +62,13 @@ const Sidebar = () => {
       path: "/tools-category",
       label: "Category Management",
       icon: <MdOutlineCategory size={25} />,
+      sub_menu: false,
+      roles: ["admin"],
+    },
+    {
+      path: "/report",
+      label: "Report",
+      icon: <MdOutlineReportProblem size={25} />,
       sub_menu: false,
       roles: ["admin"],
     },
