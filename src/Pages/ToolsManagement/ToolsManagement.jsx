@@ -7,6 +7,7 @@ import { CiEdit, CiSearch } from "react-icons/ci";
 import { MdBlockFlipped } from "react-icons/md";
 import {
   useBlockUnblockUserMutation,
+  useDeleteUserMutation,
   useGetBusinessOwnerQuery,
 } from "../../redux/api/usersApi";
 import { placeImage } from "../../redux/api/baseApi";
@@ -17,6 +18,7 @@ const ToolsManagement = () => {
   const [page, setPage] = useState(1);
   const [query, setQuery] = useState("");
   const [blockUnBlockUser] = useBlockUnblockUserMutation();
+  const [deleteUser] = useDeleteUserMutation();
   const { data: getBusinessOwner } = useGetBusinessOwnerQuery({
     page,
     query,
@@ -34,9 +36,12 @@ const ToolsManagement = () => {
   };
 
   // Handle delete users
-  const handleDeleteUser =(id)=>{
-    console.log(id);
-  }
+  const handleDeleteUser = (email) => {
+    deleteUser(email)
+      .unwrap()
+      .then((payload) => toast.success(payload?.message))
+      .catch((error) => toast.error(error?.data?.message));
+  };
 
   const data = getBusinessOwner?.data?.map((owner) => {
     return {
@@ -114,7 +119,7 @@ const ToolsManagement = () => {
             title="Are you sure delete this user!"
             okText="Yes"
             cancelText="No"
-            onConfirm={()=>handleDeleteUser(record?.key)}
+            onConfirm={() => handleDeleteUser(record?.email)}
           >
             <p className="bg-red-500 p-1 rounded-sm cursor-pointer text-white">
               <RiDeleteBinLine size={20} />
@@ -122,7 +127,6 @@ const ToolsManagement = () => {
           </Popconfirm>
           <p className="bg-[#CD9B3A] p-1 rounded-sm text-white cursor-pointer">
             <CiEdit size={20} />
-
           </p>
         </div>
       ),

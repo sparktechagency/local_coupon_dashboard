@@ -20,8 +20,18 @@ const userApi = baseApi.injectEndpoints({
                 }
             },
             invalidatesTags : ["owner"]
+        }),
+        deleteUser :  builder.mutation({
+            query : (email)=>{
+                return {
+                    url : `/admin/users?email=${email}`,
+                    method : 'DELETE'
+                }
+            },
+            invalidatesTags : ["owner"]
+
         })
     })
 })
 
-export const { useGetBusinessOwnerQuery , useBlockUnblockUserMutation } =  userApi;
+export const { useGetBusinessOwnerQuery , useBlockUnblockUserMutation , useDeleteUserMutation } =  userApi;
