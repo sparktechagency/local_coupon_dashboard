@@ -1,4 +1,4 @@
-import { Table } from "antd";
+import { Popconfirm, Table } from "antd";
 import React, { useState } from "react";
 import { CiSearch } from "react-icons/ci";
 import { FaArrowLeft } from "react-icons/fa";
@@ -8,11 +8,16 @@ import img2 from "../../assets/images/user2.png";
 import { MdBlock, MdBlockFlipped } from "react-icons/md";
 import {
   useBlockUnblockUserMutation,
+  useDeleteUserMutation,
   useGetBusinessOwnerQuery,
 } from "../../redux/api/usersApi";
 import { placeImage } from "../../redux/api/baseApi";
 import { toast } from "sonner";
+import AddBusinessOwnerModal from "../../Components/AddBusinessOwnerModal/AddBusinessOwnerModal";
+import { RiDeleteBinLine } from "react-icons/ri";
 const UserManagement = () => {
+    const [addModalOpen , setAddModal] = useState(false)
+  
   const [page, setPage] = useState(1);
   const [query, setQuery] = useState("");
   const [blockUnBlockUser] = useBlockUnblockUserMutation();
@@ -21,6 +26,8 @@ const UserManagement = () => {
     query,
     type: "user",
   });
+    const [deleteUser] = useDeleteUserMutation();
+  
 
   const data = getUsers?.data?.map((owner) => {
     return {
@@ -47,6 +54,14 @@ const UserManagement = () => {
       .then((payload) => toast.success(payload?.message))
       .catch((error) => toast.error(error?.data?.message));
   };
+
+   // Handle delete users
+    const handleDeleteUser = (email) => {
+      deleteUser(email)
+        .unwrap()
+        .then((payload) => toast.success(payload?.message))
+        .catch((error) => toast.error(error?.data?.message));
+    };
 
   const columns = [
     {
@@ -97,14 +112,30 @@ const UserManagement = () => {
       dataIndex: "action",
       key: "action",
       render: (_, record) => (
-        <p
+
+        <div className="flex items-center gap-2">
+           <p
           onClick={() => handleBlockOwner(record?.key)}
-          className={`p-1 rounded-md shadow-md inline-block cursor-pointer ${
+          className={`p-1 rounded-sm shadow-sm inline-block text-white cursor-pointer ${
             record?.isBanned ? "bg-gray-300" : "bg-red-500"
           }`}
         >
-          <MdBlockFlipped size={25} />
+          <MdBlockFlipped size={20} />
         </p>
+        
+          <Popconfirm
+            placement="topRight"
+            title="Are you sure delete this user!"
+            okText="Yes"
+            cancelText="No"
+            onConfirm={() => handleDeleteUser(record?.email)}
+          >
+            <p className="bg-red-500 p-1 rounded-sm cursor-pointer text-white">
+              <RiDeleteBinLine size={20} />
+            </p>
+          </Popconfirm>
+        </div>
+     
       ),
     },
   ];
@@ -120,7 +151,7 @@ const UserManagement = () => {
             User Management
           </span>
         </div>
-        <div>
+        <div className="flex items-center gap-2">
           <div className="relative">
             <input
               type="text"
@@ -132,6 +163,8 @@ const UserManagement = () => {
               <CiSearch />
             </span>
           </div>
+          <button onClick={()=>setAddModal(true)} className="bg-[#CD9B3A] text-white py-2 px-2 rounded-sm">Add New User</button>
+
         </div>
       </div>
 
@@ -154,6 +187,8 @@ const UserManagement = () => {
           }}
         />
       </div>
+      <AddBusinessOwnerModal  addModalOpen={addModalOpen}   setAddModal={setAddModal} role={"user"} />
+
     </div>
   );
 };

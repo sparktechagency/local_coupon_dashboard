@@ -41,7 +41,7 @@ const couponManagement = baseApi.injectEndpoints({
         getAllReport : builder.query({
             query : ()=>{
                 return { 
-                    url : `/admin/report?page=1&limit=10`,
+                    url : `/admin/report?page=1&limit=1000`,
                     method : 'GET'
                 }
             }

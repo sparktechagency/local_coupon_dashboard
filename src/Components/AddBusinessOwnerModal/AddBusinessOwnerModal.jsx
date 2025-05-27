@@ -1,12 +1,21 @@
-import { DatePicker, Form, Input, Modal, Switch, Upload, Button, Select } from "antd";
+import {
+  DatePicker,
+  Form,
+  Input,
+  Modal,
+  Switch,
+  Upload,
+  Button,
+  Select,
+} from "antd";
 import { UploadOutlined } from "@ant-design/icons";
 import { useForm } from "antd/es/form/Form";
 import dayjs from "dayjs";
 import { useAddNewBusinessOwnerMutation } from "../../redux/api/usersApi";
 import { toast } from "sonner";
 const { Option } = Select;
-const AddBusinessOwnerModal = ({ addModalOpen, setAddModal }) => {
-  const [addUser , {isLoading}] = useAddNewBusinessOwnerMutation();
+const AddBusinessOwnerModal = ({ addModalOpen, setAddModal, role }) => {
+  const [addUser, { isLoading }] = useAddNewBusinessOwnerMutation();
   const [form] = useForm();
 
   const handleSubmit = (values) => {
@@ -34,13 +43,12 @@ const AddBusinessOwnerModal = ({ addModalOpen, setAddModal }) => {
     console.log("FormData:", Array.from(formData.entries()));
     addUser(formData)
       .unwrap()
-      .then((payload) =>{
-         toast.success(payload?.message)
-         form.resetFields()
-         setAddModal(false)
+      .then((payload) => {
+        toast.success(payload?.message);
+        form.resetFields();
+        setAddModal(false);
       })
       .catch((error) => toast.error(error?.data?.message));
-
   };
 
   return (
@@ -99,17 +107,30 @@ const AddBusinessOwnerModal = ({ addModalOpen, setAddModal }) => {
         </div>
 
         <div className="flex items-center gap-2">
-          <Form.Item label="Role" name="role" className="w-full">
-            <Input placeholder="business" />
-          </Form.Item>
-          <Form.Item label="Company Name" name="companyName" className="w-full">
-            <Input placeholder="Enter company name" />
+          <Form.Item
+            label="Role"
+            name="role"
+            initialValue={role}
+            className="w-full"
+          >
+            <Input placeholder="business" disabled />
           </Form.Item>
         </div>
 
-        <Form.Item label="Company Address" name="companyAddress">
-          <Input placeholder="Enter company address" />
-        </Form.Item>
+        {role === "business" && (
+          <>
+            <Form.Item label="Company Address" name="companyAddress">
+              <Input placeholder="Enter company address" />
+            </Form.Item>
+            <Form.Item
+              label="Company Name"
+              name="companyName"
+              className="w-full"
+            >
+              <Input placeholder="Enter company name" />
+            </Form.Item>
+          </>
+        )}
 
         {/* Additional Fields */}
         <Form.Item
@@ -166,7 +187,13 @@ const AddBusinessOwnerModal = ({ addModalOpen, setAddModal }) => {
         </Form.Item>
 
         <Form.Item>
-          <Button disabled={isLoading} type="primary" style={{ backgroundColor : '#CD9B3A'}} htmlType="submit" block>
+          <Button
+            disabled={isLoading}
+            type="primary"
+            style={{ backgroundColor: "#CD9B3A" }}
+            htmlType="submit"
+            block
+          >
             {isLoading ? "submitting.." : "Submit"}
           </Button>
         </Form.Item>
