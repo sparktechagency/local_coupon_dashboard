@@ -30,8 +30,19 @@ const userApi = baseApi.injectEndpoints({
             },
             invalidatesTags : ["owner"]
 
+        }),
+        addNewBusinessOwner : builder.mutation({
+            query : (formData)=>{
+                return {
+                    url : '/admin/users',
+                    method :"POST",
+                    body : formData
+                }
+            },
+            invalidatesTags : ["owner"]
+
         })
     })
 })
 
-export const { useGetBusinessOwnerQuery , useBlockUnblockUserMutation , useDeleteUserMutation } =  userApi;
+export const { useGetBusinessOwnerQuery , useBlockUnblockUserMutation , useDeleteUserMutation  , useAddNewBusinessOwnerMutation} =  userApi;

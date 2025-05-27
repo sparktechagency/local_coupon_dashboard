@@ -13,8 +13,10 @@ import {
 import { placeImage } from "../../redux/api/baseApi";
 import { toast } from "sonner";
 import { RiDeleteBinLine } from "react-icons/ri";
+import AddBusinessOwnerModal from "../../Components/AddBusinessOwnerModal/AddBusinessOwnerModal";
 
 const ToolsManagement = () => {
+  const [addModalOpen , setAddModal] = useState(false)
   const [page, setPage] = useState(1);
   const [query, setQuery] = useState("");
   const [blockUnBlockUser] = useBlockUnblockUserMutation();
@@ -24,6 +26,8 @@ const ToolsManagement = () => {
     query,
     type: "business",
   });
+
+  // console.log(getBusinessOwner?.data);
 
   const handleBlockOwner = (id) => {
     const data = {
@@ -125,9 +129,9 @@ const ToolsManagement = () => {
               <RiDeleteBinLine size={20} />
             </p>
           </Popconfirm>
-          <p className="bg-[#CD9B3A] p-1 rounded-sm text-white cursor-pointer">
+          {/* <p className="bg-[#CD9B3A] p-1 rounded-sm text-white cursor-pointer">
             <CiEdit size={20} />
-          </p>
+          </p> */}
         </div>
       ),
     },
@@ -143,7 +147,7 @@ const ToolsManagement = () => {
             Business Owner List
           </span>
         </div>
-        <div>
+        <div className="flex items-center gap-2">
           <div className="relative">
             <input
               type="text"
@@ -155,6 +159,7 @@ const ToolsManagement = () => {
               <CiSearch />
             </span>
           </div>
+          <button onClick={()=>setAddModal(true)} className="bg-[#CD9B3A] text-white py-2 px-2 rounded-sm">Add Business Owner</button>
         </div>
       </div>
       <div className="p-4">
@@ -175,6 +180,8 @@ const ToolsManagement = () => {
           }}
         />
       </div>
+
+      <AddBusinessOwnerModal  addModalOpen={addModalOpen}   setAddModal={setAddModal} />
     </div>
   );
 };
