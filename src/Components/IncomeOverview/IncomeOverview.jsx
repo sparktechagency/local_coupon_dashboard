@@ -1,4 +1,5 @@
 import { Select } from "antd";
+import { useTranslation } from "react-i18next";
 import {
   AreaChart,
   Area,
@@ -10,6 +11,8 @@ import {
 } from "recharts";
 
 const IncomeOverview = ({ subscriptionGrowth , handleChangeYear }) => {
+
+  const {t} = useTranslation()
   const values = subscriptionGrowth?.chart?.data;
 
   const currentYear = new Date().getFullYear()
@@ -37,7 +40,7 @@ const IncomeOverview = ({ subscriptionGrowth , handleChangeYear }) => {
     <>
       <div className="flex justify-between items-center">
         <div className="ml-6">
-          <p className="text-2xl font-semibold mb-10  ">Subscription Growth</p>
+          <p className="text-2xl font-semibold mb-10  ">{t("subscription_growth")}</p>
         </div>
         <Select
           defaultValue={currentYear}

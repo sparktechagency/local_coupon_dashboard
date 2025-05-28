@@ -4,7 +4,9 @@ import { FaArrowLeft } from "react-icons/fa";
 import { Link } from "react-router-dom";
 import { Pagination } from "antd";
 import { useRecentTransactionQuery } from "../../redux/api/dahsboadHomeApi";
+import { useTranslation } from "react-i18next";
 const ProfileUpdatePage = () => {
+  const {t} = useTranslation()
   const [page, setCurrent] = useState(1);
   const { data: recentTransaction } = useRecentTransactionQuery(page);
 
@@ -17,7 +19,7 @@ const ProfileUpdatePage = () => {
       return {
         key: transaction?._id,
         useName: transaction?.user?.name,
-        companyName: transaction?.coupon?.createdBy?.companyName,
+        companyName: transaction?.coupon?.createdBy?.companyName || "N/A",
         couponImage: transaction?.coupon?.photo_url,
         couponExpire: transaction?.coupon?.end?.split("T")?.[0],
         share: transaction?.coupon?.shareCount,
@@ -36,7 +38,7 @@ const ProfileUpdatePage = () => {
         <Link to={-1}>
           <FaArrowLeft className="text-[#CD9B3A]" size={20} />
         </Link>
-        <p className="font-semibold ">Coupons</p>
+        <p className="font-semibold ">{t("coupons")}</p>
       </div>
       <ProfileUpdateRequest dataSource={formattedData} />
       <div className="mt-2 flex items-center justify-center">

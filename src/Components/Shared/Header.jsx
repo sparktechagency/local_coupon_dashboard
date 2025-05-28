@@ -2,7 +2,7 @@ import React from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { Badge } from "antd";
 import { IoIosNotificationsOutline } from "react-icons/io";
-import img from "../../assets/images/profile.png";
+import { useTranslation } from "react-i18next";
 import {
   useGetNotificationCountQuery,
   useGetProfileQuery,
@@ -12,9 +12,25 @@ const Header = () => {
   const { data: getAdminProfile } = useGetProfileQuery();
   const { data: count } = useGetNotificationCountQuery();
 
+  const { i18n } = useTranslation();
+
+  const changeLanguage = (lang) => {
+    i18n.changeLanguage(lang);
+    localStorage.setItem("lang", lang); // optional: persist language
+  };
 
   return (
     <div className="w-full py-4 bg-[var(--primary-color)] flex justify-end items-center  gap-4">
+      <select
+        onChange={(e) => changeLanguage(e.target.value)}
+        value={i18n.language}
+        className="bg-white border px-2 py-1 rounded"
+      >
+        <option value="en">English</option>
+        <option value="fr">Français</option>
+        <option value="es">Español</option>
+      </select>
+
       {getAdminProfile?.data?.role === "admin" && (
         <div className="relative">
           <Link

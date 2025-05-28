@@ -20,7 +20,9 @@ import { MdOutlineExplore } from "react-icons/md";
 import { FcExpired } from "react-icons/fc";
 import { ImProfile } from "react-icons/im";
 import { RxValue } from "react-icons/rx";
+import { useTranslation } from "react-i18next";
 function App() {
+  const { t } = useTranslation();
   const { data: getUserInfo, isError, isLoading } = useGetProfileQuery();
   const { data: getBusinessAnalytics } = useBusinessAnalyticsQuery();
 
@@ -49,30 +51,30 @@ function App() {
   // console.log(getDashboardInfo?.data?.redeemed_coupons);
   const data = [
     {
-      title: "Total User",
+      title:  t("totalUser"),
       icon: profileUser,
       count: getDashboardInfo?.data?.total_users,
       path: "/user-management",
     },
     {
-      title: "Premium User",
+      title: t("premiumUser"),
       icon: activeUser,
       count: getDashboardInfo?.data?.premium_users,
       path: "/premium-use",
     },
     {
-      title: "Total Business Owners",
+      title: t("totalBusinessOwners"),
       icon: referrals,
       count: getDashboardInfo?.data?.business_owners,
       path: "/business-owners",
     },
     {
-      title: "Total Coupon",
+      title: t("totalCoupon"),
       icon: income,
       count: getDashboardInfo?.data?.coupons,
     },
     {
-      title: "Redeemed Coupon",
+      title:t("redeemedCoupon"),
       icon: income,
       count: getDashboardInfo?.data?.redeemed_coupons
     },
@@ -81,32 +83,32 @@ function App() {
   // Business Analytics data
   const businessAnalyticsData = [
     {
-      title: "Total Download",
+      title: t("totalDownload"),
       icon: <IoCloudDownloadOutline />,
       count: getBusinessAnalytics?.data?.total_downloads,
     },
     {
-      title: "Total Share",
+      title: t("totalShare"),
       icon: <CiShare2 />,
       count: getBusinessAnalytics?.data?.total_shares,
     },
     {
-      title: "Click to Explore",
+      title: t("clickToExplore"),
       icon: <MdOutlineExplore />,
       count: getBusinessAnalytics?.data?.click_to_explore,
     },
     {
-      title: "Expired Coupon",
+      title: t("expiredCoupon"),
       icon: <FcExpired />,
       count: getBusinessAnalytics?.data?.expired_coupons,
     },
     {
-      title: "Profile Visit",
+      title: t("profileVisit"),
       icon: <ImProfile />,
       count: getBusinessAnalytics?.data?.profile_visits,
     },
     {
-      title: "Value",
+      title: t("value"),
       icon: <RxValue />,
       count: getBusinessAnalytics?.data?.value,
     },
@@ -141,7 +143,7 @@ function App() {
     },
 
     {
-      title: "User Name",
+      title: <>{t("userName")}</>,
       dataIndex: "useName",
       key: "useName",
       render: (_, record) => {
@@ -153,12 +155,12 @@ function App() {
       },
     },
     {
-      title: "Company Name",
+      title: <>{t("companyName")}</>,
       dataIndex: "companyName",
       key: "companyName",
     },
     {
-      title: "Coupon",
+      title: <>{t("coupon")}</>,
       dataIndex: "coupon",
       key: "coupon",
       render: (_, record) => {
@@ -207,17 +209,17 @@ function App() {
       },
     },
     {
-      title: "RedeemCount",
+      title: <>{t("redeemCount")}</>,
       dataIndex: "download",
       key: "download",
     },
     {
-      title: "Share",
+      title: <>{t("share")}</>,
       dataIndex: "share",
       key: "share",
     },
     {
-      title: "Date",
+      title:<>{t("date")}</>,
       dataIndex: "date",
       key: "date",
     },
@@ -263,9 +265,9 @@ function App() {
             {/* Referral Overview section */}
             <div className="flex  justify-between items-center my-5 px-2 ">
               <p className="text-xl font-semibold">
-                Recent Transactions Coupons
+                {t("recentTransactions")}
               </p>{" "}
-              <Link to={`/all-referral`}>View all</Link>
+              <Link to={`/all-referral`}>{t("viewAll")}</Link>
             </div>
             <Table
               dataSource={formattedData}

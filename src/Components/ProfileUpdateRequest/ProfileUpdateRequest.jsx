@@ -4,8 +4,11 @@ import { IoEyeOutline } from 'react-icons/io5';
 import { MdBlockFlipped } from 'react-icons/md';
 import { Link } from 'react-router-dom';
 import kfc from '../../assets/images/kfc.png'
+import { useTranslation } from 'react-i18next';
 
 const ProfileUpdateRequest = ({ dataSource }) => {
+     const { t } = useTranslation();
+
     // console.log(pagination)
     const [isModalOpen, setIsModalOpen] = useState(false);
     const [requestUser, setRequestuser] = useState({})
@@ -24,7 +27,7 @@ const ProfileUpdateRequest = ({ dataSource }) => {
      },
   
      {
-       title: "User Name",
+       title: <>{t("userName")}</>,
        dataIndex: "useName",
        key: "useName",
        render: (_, record) => {
@@ -37,12 +40,12 @@ const ProfileUpdateRequest = ({ dataSource }) => {
        },
      },
      {
-       title : 'Company Name',
+       title : <>{t("companyName")}</>,
        dataIndex : 'companyName',
        key : 'companyName'
      },
      {
-      title: "Coupon",
+      title:<> {t("coupon")}</>,
       dataIndex: "coupon",
       key: "coupon",
       render: (_, record) => {
@@ -91,17 +94,17 @@ const ProfileUpdateRequest = ({ dataSource }) => {
       },
     },
      {
-       title : 'Download',
+       title :<>{t("download")}</>,
        dataIndex : 'download',
        key : 'download'
      },
      {
-       title : 'Share',
+       title : <>{t('share')}</>,
        dataIndex : 'share',
        key : 'share'
      },
      {
-       title : 'Date',
+       title : <>{t("date")}</>,
        dataIndex : 'date',
        key : 'date'
      },

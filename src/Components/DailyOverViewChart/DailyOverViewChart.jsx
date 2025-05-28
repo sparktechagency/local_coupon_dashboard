@@ -1,5 +1,6 @@
 import { Select } from "antd";
 import React, { PureComponent } from "react";
+import { useTranslation } from "react-i18next";
 import {
   BarChart,
   Bar,
@@ -12,7 +13,7 @@ import {
 } from "recharts";
 
 const DailyOverViewChart = ({userGrowth ,handleUserGrowth}) => {
-  // console.log(userGrowth?.chart?.data[0]);
+  const {t} = useTranslation()
 
   const combineData = userGrowth?.chart?.labels?.map((month , i)=>{
     return {
@@ -36,7 +37,7 @@ const DailyOverViewChart = ({userGrowth ,handleUserGrowth}) => {
     <>
       <div className="flex justify-between items-center">
         <div className="ml-6">
-          <p className="text-2xl font-semibold mb-10 ">User Growth</p>
+          <p className="text-2xl font-semibold mb-10 ">{t("user_growth")}</p>
         </div>
         <Select
           defaultValue={currentYear}

@@ -117,7 +117,7 @@ const AddCouponModal = ({ openCouponModal, setOpenCouponModal, category }) => {
                 label="Regular Amount"
                 name="regular_amount"
               >
-                <Input placeholder="Regular amount" />
+                <Input  placeholder="Regular amount" />
               </Form.Item>
               <Form.Item
                 className="w-full"

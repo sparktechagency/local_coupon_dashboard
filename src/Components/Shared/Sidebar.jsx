@@ -10,12 +10,14 @@ import { CiDollar } from "react-icons/ci";
 import { TbFilePercent } from "react-icons/tb";
 import { RiCoupon4Line } from "react-icons/ri";
 import { useGetProfileQuery } from "../../redux/api/authApi";
+import { useTranslation } from "react-i18next";
 
 const Sidebar = () => {
   const { data: getProfile } = useGetProfileQuery();
   const [openIndex, setOpenIndex] = useState(null);
   const [isOpen, setIsOpen] = useState(false);
   const navigate = useNavigate();
+  const { t } = useTranslation();
 
   const contentRefs = useRef([]);
   const { pathname } = useLocation();
@@ -25,81 +27,81 @@ const Sidebar = () => {
   const allLinks = [
     {
       path: "/",
-      label: "Dashboard",
+      label: t("dashboard"),
       icon: <MdOutlineDashboard size={25} />,
       sub_menu: false,
       roles: ["admin", "business"],
     },
     {
       path: "/business-owners",
-      label: "Business Owner",
+      label: t("business_owner"),
       icon: <PiToolboxDuotone size={25} />,
       sub_menu: false,
       roles: ["admin"],
     },
     {
       path: "/user-management",
-      label: "User Management",
+      label: t("user_management"),
       icon: <FaRegUserCircle size={25} />,
       sub_menu: false,
       roles: ["admin"],
     },
     {
       path: "/subscriptions",
-      label: "Subscriptions",
+      label: t("subscriptions"),
       icon: <TbFilePercent size={25} />,
       sub_menu: false,
       roles: ["admin"],
     },
     {
       path: "/premium-use",
-      label: "Premium User",
+      label: t("premium_user"),
       icon: <CiDollar size={25} />,
       sub_menu: false,
       roles: ["admin"],
     },
     {
       path: "/tools-category",
-      label: "Category Management",
+      label: t("category_management"),
       icon: <MdOutlineCategory size={25} />,
       sub_menu: false,
       roles: ["admin"],
     },
     {
       path: "/report",
-      label: "Report",
+      label: t("report"),
       icon: <MdOutlineReportProblem size={25} />,
       sub_menu: false,
       roles: ["admin"],
     },
     {
       path: "/coupon-management",
-      label: "Coupon Management",
+      label: t("coupon_management"),
       icon: <RiCoupon4Line size={25} />,
       sub_menu: false,
       roles: ["business"],
     },
     {
       path: "#",
-      label: "Setting",
+      label: t("setting"),
       icon: <IoSettingsOutline size={25} />,
       sub_menu: [
         {
           path: "/profile",
-          label: "Profile",
+          label: t("profile"),
           icon: <></>,
           roles: ["admin", "business"],
         },
-        { path: "/faq", label: "FAQ", icon: <></>, roles: ["admin"] },
+        { path: "/faq", label: t("faq"), icon: <></>, roles: ["admin"] },
         {
           path: "/terms-condition",
-          label: "Terms & Condition",
+          label:t("privacy"),
           icon: <></>,
           roles: ["admin"],
         },
         {
           path: "/privacy-policy",
-          label: "Privacy Policy",
+          label: t("privacy"),
           icon: <></>,
           roles: ["admin"],
         },
@@ -248,7 +250,7 @@ const Sidebar = () => {
             }}
             className="bg-[#CD9B3A] w-full text-white  mr-5 py-2 rounded-tr-md rounded-br-md "
           >
-            Logout
+            {t("logout")}
           </button>
         </div>
       </div>
