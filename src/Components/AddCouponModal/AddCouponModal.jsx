@@ -18,10 +18,12 @@ const AddCouponModal = ({ openCouponModal, setOpenCouponModal, category }) => {
   const [form] = Form.useForm();
   const [selectedType, setSelectedType] = useState(null);
 
+
+  // console.log(category);
   const categoryOptions = category?.map((cat) => ({
-    key: cat?._id,
+    key: cat?.id,
     label: cat?.name,
-    value: cat?._id,
+    value: cat?.id,
   }));
 
   const handleFormSubmit = (values) => {
@@ -48,6 +50,8 @@ const AddCouponModal = ({ openCouponModal, setOpenCouponModal, category }) => {
       })
       .catch((error) => toast.error(error?.data?.message));
   };
+
+  // console.log(categoryOptions);
 
   return (
     <Modal
