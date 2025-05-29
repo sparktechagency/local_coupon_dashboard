@@ -5,15 +5,24 @@ import { FaArrowLeft } from "react-icons/fa";
 import { CiSearch } from "react-icons/ci";
 import { useGetPremiumUserQuery } from "../../redux/api/SubscriptionApi";
 import { placeImage } from "../../redux/api/baseApi";
+import { useTranslation } from "react-i18next";
 
-const columns = [
+
+
+const WithdrawRequest = () => {
+  const {t} = useTranslation()
+  const [query, setQuery] = useState('')
+  const [page, setPage] = useState(1);
+  const { data: getPremiumUser } = useGetPremiumUserQuery({ page ,query });
+
+  const columns = [
   {
-    title: "ID No.",
+    title: <>{t("slNo")}</>,
     dataIndex: "slNo",
     key: "slNo",
   },
   {
-    title: "User Name",
+    title: <>{t("userName")}</> ,
     dataIndex: "name",
     key: "name",
     render: (text, record) => (
@@ -24,43 +33,23 @@ const columns = [
     ),
   },
   {
-    title: "Duration",
+    title:  <>{t("duration")}</>,
     dataIndex: "duration",
     key: "duration",
   },
   {
-    title: "Subscription Plan",
+    title:  <>{t("subscriptionPlan")}</>,
     dataIndex: "plan",
     key: "plan",
   },
 
   {
-    title: "Subscription Fee",
+    title:  <>{t("subscriptionFee")}</>,
     dataIndex: "fee",
     key: "fee",
   },
-  // {
-  //   title: "Status",
-  //   dataIndex: "status",
-  //   key: "status",
-  //   render: (status) => (
-  //     <p
-  //       className={`${
-  //         status === "Due"
-  //           ? "border-red-500 border  text-red-600"
-  //           : "border border-green-500 text-green-500"
-  //       } text-center w-[80px] py-1 rounded-full`}
-  //     >
-  //       {status}
-  //     </p>
-  //   ),
-  // },
+ 
 ];
-
-const WithdrawRequest = () => {
-  const [query, setQuery] = useState('')
-  const [page, setPage] = useState(1);
-  const { data: getPremiumUser } = useGetPremiumUserQuery({ page ,query });
 
 
   const formattedData = getPremiumUser?.data?.map((user) => {
@@ -83,7 +72,7 @@ const WithdrawRequest = () => {
             <FaArrowLeft size={18} className="text-[var(--primary-color)] " />
           </Link>
           <span className="font-semibold md:text-[20px]">
-            Premium Subscribers
+           {t("premiumSubscribers")}
           </span>
         </div>
         <div>

@@ -11,7 +11,10 @@ import {
 } from "../../redux/api/categoryApi";
 import { toast } from "sonner";
 import CategoryModal from "../../Components/CategoryModal/CategoryModal";
+import { useTranslation } from "react-i18next";
 const ToolsCategory = () => {
+
+  const {t} = useTranslation()
 
   const { data: getAllCategory } = useGetAllCategoryQuery();
   const [createCategory, { isLoading :  createLoading }] = useAddCategoryMutation();
@@ -65,7 +68,7 @@ const ToolsCategory = () => {
           <Link to={-1}>
             <FaArrowLeft size={18} className="text-[var(--secondary-color)] " />
           </Link>
-          <span className="font-semibold text-[20px]">Add Category</span>
+          <span className="font-semibold text-[20px]">{t("addCategory")}</span>
         </div>
         <button
           onClick={() => {
@@ -74,7 +77,7 @@ const ToolsCategory = () => {
           }}
           className="flex  mt-5 bg-[var(--secondary-color)] text-white px-4 py-2 rounded-sm shadow-md"
         >
-          <GoPlus /> Add Category
+          <GoPlus />{t("addCategory")}
         </button>
       </div>
 
@@ -98,7 +101,7 @@ const ToolsCategory = () => {
                   onConfirm={() => handleDeleteCategory(category?._id)}
                 >
                   <button className="border-[#CD9B3A] border px-3 py-2 rounded-lg bg-[#E6F0FF]">
-                    Delete
+                    {t("delete")}
                   </button>
                 </Popconfirm>
 
@@ -120,7 +123,7 @@ const ToolsCategory = () => {
                   }}
                   className="bg-[#CD9B3A] text-white px-6 py-2 rounded-lg"
                 >
-                  Edit
+                  {t("edit")}
                 </button>
               </div>
             </div>

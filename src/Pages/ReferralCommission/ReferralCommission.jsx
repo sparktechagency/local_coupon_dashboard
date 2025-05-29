@@ -12,8 +12,10 @@ import {
 import { toast } from "sonner";
 import SubscriptionModal from "../../Components/SubscriptionModal/SubscriptionModal";
 import { AiOutlineDelete } from "react-icons/ai";
+import { useTranslation } from "react-i18next";
 
 const ReferralCommission = () => {
+  const {t} = useTranslation()
   const { data: getSubscription } = useGetSubscriptionQuery();
   const [createSubscription] = useCreateSubscriptionMutation();
   const [updateSubscription] = useUpdateSubscriptionMutation();
@@ -56,32 +58,32 @@ const ReferralCommission = () => {
 
   const columns = [
     {
-      title: "SL No.",
+      title: <>{t("slNo")}</>,
       dataIndex: "slNo",
       key: "slNo",
     },
     {
-      title: "Subscription Name",
+      title: <>{t("subscriptionName")}</>,
       dataIndex: "name",
       key: "name",
     },
     {
-      title: "Duration",
+      title: <>{t("duration")}</>,
       dataIndex: "durationInMonths",
       key: "durationInMonths",
     },
     {
-      title: "Subscription Fee",
+      title: <>{t("subscriptionFee")}</>,
       dataIndex: "priceInCents",
       key: "priceInCents",
     },
     {
-      title: "Subscription Type",
+      title: <>{t("subscriptionType")}</>,
       dataIndex: "type",
       key: "type",
     },
     {
-      title: "Description",
+      title: <>{t("description")}</>,
       dataIndex: "info",
       key: "info",
       render: (_, record) => {
@@ -94,14 +96,14 @@ const ReferralCommission = () => {
               }}
               className="text-[var(--secondary-color)]"
             >
-              View
+              {t("view")}
             </button>
           </div>
         );
       },
     },
     {
-      title: "Action",
+      title: <>{t("action")}</>,
       dataIndex: "action",
       key: "action",
       render: (_, record) => {
@@ -174,14 +176,14 @@ const ReferralCommission = () => {
             <Link to={-1}>
               <FaArrowLeft size={18} className="text-[var(--primary-color)] " />
             </Link>
-            <span className="font-semibold text-[20px]">Subscription Plan</span>
+            <span className="font-semibold text-[20px]">{t("subscriptionPlan")}</span>
           </div>
         </div>
         <button
           onClick={() => setOpenModal(true)}
           className="flex items-center mt-2 md:mt-0  gap-2 bg-[var(--secondary-color)] px-4 py-2 rounded-md text-white"
         >
-          <IoAdd size={20} /> Subscription
+          <IoAdd size={20} /> {t("subscription")}
         </button>
       </div>
 

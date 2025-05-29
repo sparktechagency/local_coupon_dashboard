@@ -15,7 +15,9 @@ import { placeImage } from "../../redux/api/baseApi";
 import { toast } from "sonner";
 import AddBusinessOwnerModal from "../../Components/AddBusinessOwnerModal/AddBusinessOwnerModal";
 import { RiDeleteBinLine } from "react-icons/ri";
+import { useTranslation } from "react-i18next";
 const UserManagement = () => {
+  const {t} = useTranslation()
     const [addModalOpen , setAddModal] = useState(false)
   
   const [page, setPage] = useState(1);
@@ -65,12 +67,12 @@ const UserManagement = () => {
 
   const columns = [
     {
-      title: "SL No",
+      title: <>{t("slNo")}</>,
       dataIndex: "key",
       key: "key",
     },
     {
-      title: "Full Name",
+      title:<>{t("userName")}</>,
       dataIndex: "name",
       key: "name",
       render: (_, record) => {
@@ -87,28 +89,28 @@ const UserManagement = () => {
       },
     },
     {
-      title: "Email",
+      title: <>{t("email")}</>,
       dataIndex: "email",
       key: "email",
     },
     {
-      title: "Phone Number",
+      title:<>{t("contactNumber")}</>,
       dataIndex: "contact",
       key: "contact",
     },
     {
-      title: "Gender",
+      title:<>{t("gender")}</>,
       dataIndex: "gender",
       key: "gender",
     },
     {
-      title: "Address",
+      title: <>{t("address")}</>,
       dataIndex: "address",
       key: "address",
     },
 
     {
-      title: "Action",
+      title:  <>{t("action")}</>,
       dataIndex: "action",
       key: "action",
       render: (_, record) => (
@@ -148,7 +150,7 @@ const UserManagement = () => {
             <FaArrowLeft size={18} className="text-[var(--primary-color)] " />
           </Link>
           <span className="font-semibold md:text-[20px] mb-2 md:mb-0">
-            User Management
+             {t("userManagement")}
           </span>
         </div>
         <div className="flex items-center gap-2">
@@ -163,7 +165,7 @@ const UserManagement = () => {
               <CiSearch />
             </span>
           </div>
-          <button onClick={()=>setAddModal(true)} className="bg-[#CD9B3A] text-white py-2 px-2 rounded-sm">Add New User</button>
+          <button onClick={()=>setAddModal(true)} className="bg-[#CD9B3A] text-white py-2 px-2 rounded-sm">{t("addNewUser")}</button>
 
         </div>
       </div>

@@ -14,8 +14,10 @@ import { IoIosAddCircleOutline } from "react-icons/io";
 import AddSocialMediaModal from "../../Components/AddSocialMediaModal/AddSocialMediaModal";
 import { FaTelegram } from "react-icons/fa";
 import EditSocialMediaModal from "../../Components/EditSocialMediaModal/EditSocialMediaModal";
+import { useTranslation } from "react-i18next";
 const admin = false;
 const Profile = () => {
+  const {t} = useTranslation()
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [socialMediaLink, setSocialMediLink] = useState({});
   const [openEditSocialMediaModal, setOpenSocialMediaModal] = useState(false);
@@ -170,7 +172,7 @@ const Profile = () => {
                         cursor-pointer text-[16px] leading-5  
                     `}
           >
-            Edit Profile
+           {t("editProfile")}
           </p>
           <p
             onClick={() => handlePageChange("Change Password")}
@@ -183,7 +185,7 @@ const Profile = () => {
                          cursor-pointer text-base leading-[18px]  
                     `}
           >
-            Change Password
+            {t("changePassword")}
           </p>
         </div>
         {tab === "Profile" ? (
@@ -194,7 +196,7 @@ const Profile = () => {
             <Form onFinish={onEditProfile} layout="vertical" form={form}>
               <Form.Item
                 name="name"
-                label={<p className="text-[16px]  font-normal">User Name</p>}
+                label={<p className="text-[16px]  font-normal">{t("userName")}</p>}
               >
                 <Input
                   style={{
@@ -211,7 +213,7 @@ const Profile = () => {
               </Form.Item>
               <Form.Item
                 name="email"
-                label={<p className=" text-[16px] font-normal">Email</p>}
+                label={<p className=" text-[16px] font-normal">{t("email")}</p>}
               >
                 <Input
                   style={{
@@ -231,7 +233,7 @@ const Profile = () => {
                 name="contact"
                 label={
                   <p className="text-[#919191] text-[16px] leading-5 font-normal">
-                    Contact no
+                    {t("contactNo")}
                   </p>
                 }
               >
@@ -251,7 +253,7 @@ const Profile = () => {
                 name="address"
                 label={
                   <p className="text-[#919191] text-[16px] leading-5 font-normal">
-                    Address
+                    {t("address")}
                   </p>
                 }
               >
@@ -272,7 +274,7 @@ const Profile = () => {
                   <Form.Item
                     label={
                       <p className="text-[#919191] text-[16px] leading-5 font-normal">
-                        Company Name
+                        {t("companyName")}
                       </p>
                     }
                     name={"companyName"}
@@ -282,7 +284,7 @@ const Profile = () => {
                   <Form.Item
                     label={
                       <p className="text-[#919191] text-[16px] leading-5 font-normal">
-                        Company Address
+                        {t("companyAddress")}
                       </p>
                     }
                     name={"companyAddress"}
@@ -290,7 +292,7 @@ const Profile = () => {
                     <Input className="h-[48px]" placeholder="Company Address" />
                   </Form.Item>
                   <div className="flex items-center justify-between">
-                    <p className="text-xl">Social Media</p>
+                    <p className="text-xl">{t("socialMedia")}</p>
                     <p
                       onClick={() => setIsModalOpen(true)}
                       className="bg-[#CD9B3A] text-white p-1 rounded-full cursor-pointer"
@@ -460,14 +462,14 @@ const Profile = () => {
         ) : (
           <div className="max-w-[481px] mx-auto rounded-lg p-6">
             <h1 className="text-center text-[#CD9B3A] leading-7 text-2xl font-medium mb-7">
-              Edit Your Profile
+              {t("editYourProfile")}
             </h1>
             <Form layout="vertical" onFinish={handleChangePassword} form={form}>
               <Form.Item
                 name="oldPassword"
                 label={
                   <p className="text-[#415D71] text-sm leading-5 poppins-semibold">
-                    Current Password
+                    {t("currentPassword")}
                   </p>
                 }
                 rules={[
@@ -500,7 +502,7 @@ const Profile = () => {
                 ]}
                 label={
                   <p className="text-[#415D71] text-sm leading-5 poppins-semibold">
-                    New Password
+                   {t("newPassword")}
                   </p>
                 }
               >
@@ -520,7 +522,7 @@ const Profile = () => {
               <Form.Item
                 label={
                   <p className="text-[#415D71] text-sm leading-5 poppins-semibold">
-                    Confirm Password
+                   {t('confirmPassword')}
                   </p>
                 }
                 name="confirmPassword"
@@ -566,7 +568,7 @@ const Profile = () => {
                   }}
                   className="font-normal text-[16px] leading-6 bg-[var(--primary-color)] rounded-full"
                 >
-                  Save Changes
+                  {t("saveChanges")}
                 </Button>
               </Form.Item>
             </Form>

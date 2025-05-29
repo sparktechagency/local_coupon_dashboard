@@ -4,46 +4,48 @@ import { FaArrowLeft } from "react-icons/fa";
 import { Table } from "antd";
 import { useState } from "react";
 import RepostDetailsModal from "../../Components/RepostDetailsModal/RepostDetailsModal";
+import { useTranslation } from "react-i18next";
 
 const Report = () => {
+  const {t} = useTranslation()
   const [details, setDetails] = useState("");
   const [openModal, setIsOpenModal] = useState(false);
   const { data: getReports } = useGetAllReportQuery();
 
   const columns = [
     {
-      title: "SL No.",
+      title: <>{t("slNo")}</>,
       dataIndex: "slNo",
       key: "slNo",
     },
     {
-      title: "Reported by",
+      title: <>{t("reportedBy")}</>,
       dataIndex: "name",
       key: "name",
     },
     {
-      title: "Reported by Email",
+      title:<>{t("reportedByEmail")}</>,
       dataIndex: "reportedByEmail",
       key: "reportedByEmail",
     },
     {
-      title: "Reported Against",
+      title: <>{t("reportedAgainst")}</>,
       dataIndex: "reportName",
       key: "reportName",
     },
     {
-      title: "Reported Against Email",
+      title: <>{t("reportedAgainstEmail")}</>,
       dataIndex: "reportEmail",
       key: "reportEmail",
     },
     {
-      title: "Reason",
+      title: <>{t("reason")}</>,
       dataIndex: "reason",
       key: "reason",
     },
 
     {
-      title: "Description",
+      title:<>{t("description")}</>,
       dataIndex: "details",
       key: "details",
       render: (_, record) => {
@@ -65,10 +67,8 @@ const Report = () => {
   ];
 
 
-  console.log(getReports?.data);
 
   const formattedData = getReports?.data?.map((report, i) => {
-    console.log(report?.details);
 
 
 
@@ -91,7 +91,7 @@ const Report = () => {
           <Link to={-1}>
             <FaArrowLeft size={18} className="text-[var(--primary-color)] " />
           </Link>
-          <span className="font-semibold text-[20px]">Reports</span>
+          <span className="font-semibold text-[20px]">{t("reports")}</span>
         </div>
       </div>
       <div className="mt-5">

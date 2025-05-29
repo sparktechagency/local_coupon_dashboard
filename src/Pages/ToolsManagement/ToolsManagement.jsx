@@ -14,8 +14,10 @@ import { placeImage } from "../../redux/api/baseApi";
 import { toast } from "sonner";
 import { RiDeleteBinLine } from "react-icons/ri";
 import AddBusinessOwnerModal from "../../Components/AddBusinessOwnerModal/AddBusinessOwnerModal";
+import { useTranslation } from "react-i18next";
 
 const ToolsManagement = () => {
+  const {t} = useTranslation()
   const [addModalOpen , setAddModal] = useState(false)
   const [page, setPage] = useState(1);
   const [query, setQuery] = useState("");
@@ -64,12 +66,12 @@ const ToolsManagement = () => {
 
   const columns = [
     {
-      title: "#Sl",
+      title: <>{t("slNo")}</>,
       dataIndex: "sl",
       key: "sl",
     },
     {
-      title: "User Name",
+      title: <>{t("userName")}</>,
       dataIndex: "name",
       key: "name",
       render: (text, record) => (
@@ -81,32 +83,32 @@ const ToolsManagement = () => {
       ),
     },
     {
-      title: "Company name",
+      title: <>{t("companyName")}</>,
       dataIndex: "company",
       key: "company",
     },
     {
-      title: "Company Address",
+      title:  <>{t("companyAddress")}</>,
       dataIndex: "address",
       key: "address",
     },
     {
-      title: "Email",
+      title:  <>{t("email")}</>,
       dataIndex: "email",
       key: "email",
     },
     {
-      title: "Contact Number",
+      title:  <>{t("contactNumber")}</>,
       dataIndex: "contact",
       key: "contact",
     },
     {
-      title: "Location",
+      title:  <>{t("location")}</>,
       dataIndex: "location",
       key: "location",
     },
     {
-      title: "Action",
+      title: <>{t("action")}</>,
       key: "action",
       render: (_, record) => (
         <div className="flex items-center  gap-2">
@@ -144,7 +146,7 @@ const ToolsManagement = () => {
             <FaArrowLeft size={18} className="text-[var(--secondary-color)] " />
           </Link>
           <span className="md:font-semibold text-sm md:text-[20px]">
-            Business Owner List
+            {t("businessOwnerList")}
           </span>
         </div>
         <div className="flex items-center gap-2">
@@ -159,7 +161,7 @@ const ToolsManagement = () => {
               <CiSearch />
             </span>
           </div>
-          <button onClick={()=>setAddModal(true)} className="bg-[#CD9B3A] text-white py-2 px-2 rounded-sm">Add Business Owner</button>
+          <button onClick={()=>setAddModal(true)} className="bg-[#CD9B3A] text-white py-2 px-2 rounded-sm">{t("addBusinessOwner")}</button>
         </div>
       </div>
       <div className="p-4">
