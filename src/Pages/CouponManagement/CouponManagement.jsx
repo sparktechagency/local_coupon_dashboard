@@ -11,8 +11,10 @@ import { useState } from "react";
 import AddCouponModal from "../../Components/AddCouponModal/AddCouponModal";
 import { RiDeleteBin6Line } from "react-icons/ri";
 import { toast } from "sonner";
+import { useTranslation } from "react-i18next";
 
 const CouponManagement = () => {
+  const {t} = useTranslation()
   const [page, setPage] = useState(1);
   const [openCouponModal, setOpenCouponModal] = useState(false);
   const { data: allCoupons } = useGetAllCouponQuery(page);
@@ -41,13 +43,13 @@ const CouponManagement = () => {
   // Table data
   const columns = [
     {
-      title: "SL No.",
+      title: <>{t("slNo")}</>,
       dataIndex: "key",
       key: "key",
     },
 
     {
-      title: "User Name",
+      title: <>{t("userName")}</> ,
       dataIndex: "useName",
       key: "useName",
       render: (_, record) => {
@@ -59,12 +61,12 @@ const CouponManagement = () => {
       },
     },
     {
-      title: "Company Name",
+      title:  <>{t("companyName")}</>,
       dataIndex: "companyName",
       key: "companyName",
     },
     {
-      title: "Coupon",
+      title:  <>{t("coupon")}</>,
       dataIndex: "coupon",
       key: "coupon",
       render: (_, record) => {
@@ -113,23 +115,23 @@ const CouponManagement = () => {
       },
     },
     {
-      title: "RedeemCount",
+      title:  <>{t("redeemCount")}</>,
       dataIndex: "download",
       key: "download",
     },
     {
-      title: "Share",
+      title: <>{t("share")}</>,
       dataIndex: "share",
       key: "share",
     },
     {
-      title: "Date",
+      title: <>{t("date")}</>,
       dataIndex: "date",
       key: "date",
     },
 
     {
-      title: "Action",
+      title:<>{t("action")}</>,
       dataIndex: "action",
       key: "action",
       render: (_, record) => (
@@ -170,7 +172,7 @@ const CouponManagement = () => {
             <FaArrowLeft size={18} className="text-[var(--secondary-color)] " />
           </Link>
           <span className="md:font-semibold text-sm md:text-[20px]">
-            Coupon Management
+            {t('coupon_management')}
           </span>
         </div>
         <button
@@ -178,7 +180,7 @@ const CouponManagement = () => {
           className="bg-[#CD9B3A] text-white px-4 py-2 rounded-md shadow-md flex items-center gap-2"
         >
           <MdAdd size={20} />
-          Add Coupon
+          {t("addCoupon")}
         </button>
       </div>
       <Table

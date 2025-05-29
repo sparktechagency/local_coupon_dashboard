@@ -105,6 +105,8 @@ i18n
           privacyPolicy: "Privacy Policy",
           totalNotifications: "Total Notifications",
           notifications: "Notifications",
+          addCoupon: "Add Coupon",
+          redeemCount: "Redeem Count",
         },
       },
       fr: {
@@ -200,6 +202,8 @@ i18n
           privacyPolicy: "Politique de Confidentialité",
           totalNotifications: "Total des Notifications",
           notifications: "Notifications",
+          addCoupon: "Ajouter un coupon",
+          redeemCount: "Nombre d'utilisations",
         },
       },
       es: {
@@ -295,6 +299,8 @@ i18n
           privacyPolicy: "Política de Privacidad",
           totalNotifications: "Total de Notificaciones",
           notifications: "Notificaciones",
+          addCoupon: "Agregar cupón",
+          redeemCount: "Cantidad de canjes",
         },
       },
     },
