@@ -4,12 +4,14 @@ import { Link } from 'react-router-dom';
 import { IoArrowBackSharp } from 'react-icons/io5';
 import { useCreatePrivacyMutation, useGetPrivacyQuery } from '../../redux/api/settingApi';
 import { toast } from 'sonner';
+import { useTranslation } from 'react-i18next';
 
 const PrivacyPolicy = () => {
   const {data : getPrivacy} =  useGetPrivacyQuery()
   const [createPrivacy] = useCreatePrivacyMutation()
   const editor = useRef(null);
   const [content, setContent] = useState('');
+  const {t} = useTranslation()
   const handleTerms = () => {
     const data = {
       content: content,
@@ -38,7 +40,7 @@ const PrivacyPolicy = () => {
     <>
     <div className='flex justify-start items-center gap-2 mb-3 relative m-5'>
       <div className='absolute top-6 left-2 flex items-center'>
-        <Link to={-1} className='py-1 px-2 rounded-md flex justify-start items-center gap-1  '><IoArrowBackSharp className='text-[var(--primary-color)]' /></Link> <p className='font-semibold'>Privacy Policy</p>
+        <Link to={-1} className='py-1 px-2 rounded-md flex justify-start items-center gap-1'><IoArrowBackSharp className='text-[var(--primary-color)]' /></Link> <p className='font-semibold'>{t("privacyPolicy")}</p>
       </div>
     </div>
 
@@ -52,7 +54,7 @@ const PrivacyPolicy = () => {
         onChange={newContent => { }}
       />
       <div className='flex items-center   justify-center mt-5'>
-        <button onClick={handleTerms} className='bg-[var(--secondary-color)]  text-white px-4 py-2 rounded-full test'>Save Changes</button>
+        <button onClick={handleTerms} className='bg-[var(--secondary-color)]  text-white px-4 py-2 rounded-full test'>{t("save")}</button>
       </div>
 
     </div>

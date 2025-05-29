@@ -3,9 +3,11 @@ import { IoArrowBackSharp } from "react-icons/io5";
 import { RiDeleteBin6Line } from "react-icons/ri";
 import { useGetNotificationQuery } from "../../redux/api/authApi";
 import { Link } from "react-router-dom";
+import { useTranslation } from "react-i18next";
 
 const Notification = () => {
   const { data: getNotification } = useGetNotificationQuery();
+  const {t} = useTranslation()
 
   function getRelativeTime(dateString) {
     const now = new Date();
@@ -72,12 +74,12 @@ const Notification = () => {
           <Link to={-1}>
             <IoArrowBackSharp className="text-[#CD9B3A]" />
           </Link>
-          Notifications
+          {t("notifications")}
         </h3>
       </div>
       <div>
         <h2 className="text-[18px] font-semibold py-2">
-          Total {getNotification?.data?.length} Notifications
+          Total {getNotification?.data?.length} {t("notifications")}
         </h2>
         <Table
           columns={columns}

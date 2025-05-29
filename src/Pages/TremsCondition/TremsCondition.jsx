@@ -7,7 +7,11 @@ import {
   useGetTernsConditionQuery,
 } from "../../redux/api/settingApi";
 import { toast } from "sonner";
+import { t } from "i18next";
+import { useTranslation } from "react-i18next";
 const TremsCondition = () => {
+    const {t} = useTranslation()
+  
   const { data: getTermsCondition } = useGetTernsConditionQuery();
   const [createTerms] = useCreateTermsAndConditionMutation();
   const editor = useRef(null);
@@ -54,7 +58,7 @@ const TremsCondition = () => {
           >
             <IoArrowBackSharp className="text-[var(--primary-color)]" />
           </Link>{" "}
-          <p className="font-semibold mb-0">Terms & Conditions</p>
+          <p className="font-semibold mb-0">{t("termsAndConditions")}</p>
         </div>
       </div>
 
@@ -72,7 +76,7 @@ const TremsCondition = () => {
             onClick={handleTerms}
             className="bg-[var(--secondary-color)]  text-white px-4 py-2 rounded-full test"
           >
-            Save Changes
+           {t("save")}
           </button>
         </div>
       </div>

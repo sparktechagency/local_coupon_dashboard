@@ -6,8 +6,10 @@ import { Link } from "react-router-dom";
 import { useAddFaqMutation, useDeleteFaqMutation, useGetFaqQuery } from "../../redux/api/settingApi";
 import { FiDelete } from "react-icons/fi";
 import { toast } from "sonner";
+import { useTranslation } from "react-i18next";
 const { TextArea } = Input;
 const FAQ = () => {
+  const {t} = useTranslation()
   const [isModalOpen, setIsModalOpen] = useState(false);
   const { data: getFaq } = useGetFaqQuery();
   const [addFaq] = useAddFaqMutation();
@@ -56,7 +58,7 @@ const FAQ = () => {
         {getFaq?.data?.map((question, i) => (
           <div key={i} className="p-2">
             <div className="flex justify-between items-center">
-              <p className="pb-3">Question no: {i + 1}</p>
+              <p className="pb-3">{t("questionNo")}: {i + 1}</p>
               <Popconfirm
               title="Are you sure delete this FAQ?"
               okText="Yes
@@ -67,7 +69,7 @@ const FAQ = () => {
               </Popconfirm>
             </div>
             <p className="bg-[#F2F2F2] p-2 rounded-md">{question?.question}</p>
-            <p className="py-2">Answer</p>
+            <p className="py-2">{t("answer")}</p>
             <p className="bg-[#F2F2F2] p-2 rounded-md">{question?.answer}</p>
           </div>
         ))}
@@ -78,7 +80,7 @@ const FAQ = () => {
           className="flex items-center gap-2 bg-[#CD9B3A] text-white px-10 py-2 rounded-3xl"
         >
           <GoPlus size={20} />
-          <span> Add FAQ</span>
+          <span>{t('addFAQ')}</span>
         </button>
       </div>
 
@@ -90,7 +92,7 @@ const FAQ = () => {
         footer={false}
         onCancel={() => setIsModalOpen(false)}
       >
-        <p className="text-center font-semibold pb-5 text-xl">Add FAQ</p>
+        <p className="text-center font-semibold pb-5 text-xl">{t('addFAQ')}</p>
         <Form onFinish={onFinish}>
           <Form.Item name={"question"}>
             <Input placeholder="Type Answer Here.." variant="filled" />
@@ -109,7 +111,7 @@ const FAQ = () => {
               className="flex w-full items-center justify-center gap-2 bg-[#CD9B3A] text-white px-10 py-2 text-xl rounded-3xl"
             >
               {" "}
-              Save
+              {t('save')}
             </button>
           </div>
         </Form>
