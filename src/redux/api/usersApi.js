@@ -41,8 +41,16 @@ const userApi = baseApi.injectEndpoints({
             },
             invalidatesTags : ["owner"]
 
-        })
+        }),
+      getCurrency : builder.query({
+            query : ()=>{
+                return {
+                    url : `https://api.frankfurter.app/latest?from=USD`,
+                    method : 'GET'
+                }
+            },
+        }),
     })
 })
 
-export const { useGetBusinessOwnerQuery , useBlockUnblockUserMutation , useDeleteUserMutation  , useAddNewBusinessOwnerMutation} =  userApi;
+export const { useGetBusinessOwnerQuery , useBlockUnblockUserMutation , useDeleteUserMutation  , useAddNewBusinessOwnerMutation , useGetCurrencyQuery} =  userApi;

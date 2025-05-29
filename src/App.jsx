@@ -21,8 +21,13 @@ import { FcExpired } from "react-icons/fc";
 import { ImProfile } from "react-icons/im";
 import { RxValue } from "react-icons/rx";
 import { useTranslation } from "react-i18next";
+import { TbCurrencyPeso } from "react-icons/tb";
+import { FaDollarSign } from "react-icons/fa";
+import { useAppContext } from "./context/AppContext";
 function App() {
   const { t } = useTranslation();
+  const { currency, setCurrency } = useAppContext();
+
   const { data: getUserInfo, isError, isLoading } = useGetProfileQuery();
   const { data: getBusinessAnalytics } = useBusinessAnalyticsQuery();
 
@@ -51,7 +56,7 @@ function App() {
   // console.log(getDashboardInfo?.data?.redeemed_coupons);
   const data = [
     {
-      title:  t("totalUser"),
+      title: t("totalUser"),
       icon: profileUser,
       count: getDashboardInfo?.data?.total_users,
       path: "/user-management",
@@ -74,9 +79,9 @@ function App() {
       count: getDashboardInfo?.data?.coupons,
     },
     {
-      title:t("redeemedCoupon"),
+      title: t("redeemedCoupon"),
       icon: income,
-      count: getDashboardInfo?.data?.redeemed_coupons
+      count: getDashboardInfo?.data?.redeemed_coupons,
     },
   ];
 
@@ -131,6 +136,7 @@ function App() {
         regularAmount: transaction?.coupon?.regular_amount,
         discountPercent: transaction?.coupon?.discount_percentage,
         date: transaction?.createdAt?.split("T")?.[0],
+        mxnAmount: transaction?.coupon?.mxn_amount,
       };
     });
 
@@ -171,6 +177,7 @@ function App() {
           discountPercent,
           discountAmount,
           regularAmount,
+          mxnAmount,
         } = record;
 
         let displayText = "";
@@ -180,9 +187,19 @@ function App() {
         } else if (discountPercent) {
           displayText = `${discountPercent}% Off`;
         } else if (discountAmount) {
-          displayText = `${discountAmount}`;
-          if (regularAmount) {
-            displayText += ` `;
+          if (currency === "us") {
+            displayText = (
+              <div className="flex items-center">
+                <FaDollarSign />
+                {discountAmount}
+              </div>
+            );
+          } else {
+            displayText = (
+              <div className="flex items-center">
+                <TbCurrencyPeso /> {mxnAmount}
+              </div>
+            );
           }
         }
 
@@ -219,7 +236,7 @@ function App() {
       key: "share",
     },
     {
-      title:<>{t("date")}</>,
+      title: <>{t("date")}</>,
       dataIndex: "date",
       key: "date",
     },
@@ -264,9 +281,7 @@ function App() {
           <div className="bg-white shadow-md p-0 md:p-4 mt-5 rounded-md">
             {/* Referral Overview section */}
             <div className="flex  justify-between items-center my-5 px-2 ">
-              <p className="text-xl font-semibold">
-                {t("recentTransactions")}
-              </p>{" "}
+              <p className="text-xl font-semibold">{t("recentTransactions")}</p>{" "}
               <Link to={`/all-referral`}>{t("viewAll")}</Link>
             </div>
             <Table

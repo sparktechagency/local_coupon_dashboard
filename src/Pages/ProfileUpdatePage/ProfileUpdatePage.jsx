@@ -28,6 +28,7 @@ const ProfileUpdatePage = () => {
         discountAmount: transaction?.coupon?.discount_amount,
         regularAmount: transaction?.coupon?.regular_amount,
         discountPercent: transaction?.coupon?.discount_percentage,
+        mxnAmount : transaction?.coupon?.mxn_amount,
         date: transaction?.createdAt?.split("T")?.[0],
       };
     });

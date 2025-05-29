@@ -1,51 +1,55 @@
-import { Modal, Table } from 'antd';
-import React, { useState } from 'react'
-import { IoEyeOutline } from 'react-icons/io5';
-import { MdBlockFlipped } from 'react-icons/md';
-import { Link } from 'react-router-dom';
-import kfc from '../../assets/images/kfc.png'
-import { useTranslation } from 'react-i18next';
+import { Modal, Table } from "antd";
+import React, { useState } from "react";
+import { IoEyeOutline } from "react-icons/io5";
+import { MdBlockFlipped } from "react-icons/md";
+import { Link } from "react-router-dom";
+import kfc from "../../assets/images/kfc.png";
+import { useTranslation } from "react-i18next";
+import { useAppContext } from "../../context/AppContext";
+import { FaDollarSign } from "react-icons/fa";
+import { TbCurrencyPeso } from "react-icons/tb";
 
 const ProfileUpdateRequest = ({ dataSource }) => {
-     const { t } = useTranslation();
+  const { t } = useTranslation();
+  const { currency, setCurrency } = useAppContext();
 
-    // console.log(pagination)
-    const [isModalOpen, setIsModalOpen] = useState(false);
-    const [requestUser, setRequestuser] = useState({})
+  // console.log(currency);
 
-    const handleShowRequestUserDelails = (data) => {
-        setIsModalOpen(true)
-        setRequestuser(data)
-    }
+  const [isModalOpen, setIsModalOpen] = useState(false);
+  const [requestUser, setRequestuser] = useState({});
 
-   // Table data
-   const columns = [
-     {
-       title: "SL No.",
-       dataIndex: "key",
-       key: "key",
-     },
-  
-     {
-       title: <>{t("userName")}</>,
-       dataIndex: "useName",
-       key: "useName",
-       render: (_, record) => {
-         return (
-           <div className="flex items-center gap-2">
-          
-             <p className="font-medium">{record?.useName}</p>
-           </div>
-         );
-       },
-     },
-     {
-       title : <>{t("companyName")}</>,
-       dataIndex : 'companyName',
-       key : 'companyName'
-     },
-     {
-      title:<> {t("coupon")}</>,
+  const handleShowRequestUserDelails = (data) => {
+    setIsModalOpen(true);
+    setRequestuser(data);
+  };
+
+  // Table data
+  const columns = [
+    {
+      title: "SL No.",
+      dataIndex: "key",
+      key: "key",
+    },
+
+    {
+      title: <>{t("userName")}</>,
+      dataIndex: "useName",
+      key: "useName",
+      render: (_, record) => {
+        return (
+          <div className="flex items-center gap-2">
+            <p className="font-medium">{record?.useName}</p>
+          </div>
+        );
+      },
+    },
+    {
+      title: <>{t("companyName")}</>,
+      dataIndex: "companyName",
+      key: "companyName",
+    },
+    {
+      title: <> {t("coupon")}</>,
       dataIndex: "coupon",
       key: "coupon",
       render: (_, record) => {
@@ -56,6 +60,7 @@ const ProfileUpdateRequest = ({ dataSource }) => {
           discountPercent,
           discountAmount,
           regularAmount,
+          mxnAmount,
         } = record;
 
         let displayText = "";
@@ -65,9 +70,19 @@ const ProfileUpdateRequest = ({ dataSource }) => {
         } else if (discountPercent) {
           displayText = `${discountPercent}% Off`;
         } else if (discountAmount) {
-          displayText = `${discountAmount}`;
-          if (regularAmount) {
-            displayText += ` `;
+          if (currency === "us") {
+            displayText = (
+              <div className="flex items-center">
+                <FaDollarSign />
+                {discountAmount}
+              </div>
+            );
+          } else {
+            displayText = (
+              <div className="flex items-center">
+                <TbCurrencyPeso /> {mxnAmount}
+              </div>
+            );
           }
         }
 
@@ -93,40 +108,32 @@ const ProfileUpdateRequest = ({ dataSource }) => {
         );
       },
     },
-     {
-       title :<>{t("download")}</>,
-       dataIndex : 'download',
-       key : 'download'
-     },
-     {
-       title : <>{t('share')}</>,
-       dataIndex : 'share',
-       key : 'share'
-     },
-     {
-       title : <>{t("date")}</>,
-       dataIndex : 'date',
-       key : 'date'
-     },
-    
-    //  {
-    //    title: "Action",
-    //    dataIndex: "action",
-    //    key: "action",
-    //    render : (_, record)=>{
-    //      return (
-    //        <div>
-    //          <button className="bg-red-600 p-1 rounded-md shadow-md text-white"><MdBlockFlipped size={25} /></button>
-    //        </div>
-    //      )
-    //    }
-    //  },
-   ];
- 
-    return (
-        <div className=''>
-            <Table dataSource={dataSource} columns={columns} className="custom-pagination" pagination={false} />
-            <Modal open={isModalOpen} centered footer={false} onCancel={() => setIsModalOpen(false)}>
+    {
+      title: <>{t("download")}</>,
+      dataIndex: "download",
+      key: "download",
+    },
+    {
+      title: <>{t("share")}</>,
+      dataIndex: "share",
+      key: "share",
+    },
+    {
+      title: <>{t("date")}</>,
+      dataIndex: "date",
+      key: "date",
+    },
+  ];
+
+  return (
+    <div className="">
+      <Table
+        dataSource={dataSource}
+        columns={columns}
+        className="custom-pagination"
+        pagination={false}
+      />
+      {/* <Modal open={isModalOpen} centered footer={false} onCancel={() => setIsModalOpen(false)}>
                 <div className='flex flex-col items-center justify-center '>
                     <img src={requestUser.img} className='w-[80px] h-[80px] rounded-full' alt="" />
                     <p className='mt-5 font-semibold text-2xl'>{requestUser?.name}</p>
@@ -163,9 +170,9 @@ const ProfileUpdateRequest = ({ dataSource }) => {
                     </div>
                 </div>
 
-            </Modal>
-        </div>
-    )
-}
+            </Modal> */}
+    </div>
+  );
+};
 
-export default ProfileUpdateRequest
+export default ProfileUpdateRequest;

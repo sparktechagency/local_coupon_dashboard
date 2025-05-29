@@ -15,6 +15,9 @@ const WithdrawRequest = () => {
   const [page, setPage] = useState(1);
   const { data: getPremiumUser } = useGetPremiumUserQuery({ page ,query });
 
+
+
+  // console.log(getPremiumUser?.data);
   const columns = [
   {
     title: <>{t("slNo")}</>,
@@ -53,14 +56,15 @@ const WithdrawRequest = () => {
 
 
   const formattedData = getPremiumUser?.data?.map((user) => {
+    console.log(user);
     return {
       key: user?._id,
       slNo: user?._id,
       name: user?.name,
       avatar: user?.picture ? user?.picture : placeImage,
-      duration: user?.subscriptionPackage?.durationInMonths,
-      plan: user?.subscriptionPackage?.name,
-      fee: user?.subscriptionPackage?.priceInCents,
+      duration: user?.subscriptionPackage?.durationInMonths || "N/A",
+      plan: user?.subscriptionPackage?.name || "N/A",
+      fee: user?.subscriptionPackage?.priceInCents || "N/A",
       // status: user?.isSubscribed ? "Paid" : "Due",
     };
   });

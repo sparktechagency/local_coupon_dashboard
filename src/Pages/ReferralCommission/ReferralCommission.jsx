@@ -1,6 +1,6 @@
-import { Form,  Modal, Popconfirm, Table } from "antd";
+import { Form, Modal, Popconfirm, Table } from "antd";
 import React, { useRef, useState } from "react";
-import { FaArrowLeft, FaRegEdit } from "react-icons/fa";
+import { FaArrowLeft, FaDollarSign, FaRegEdit } from "react-icons/fa";
 import { IoAdd } from "react-icons/io5";
 import { Link } from "react-router-dom";
 import {
@@ -13,9 +13,23 @@ import { toast } from "sonner";
 import SubscriptionModal from "../../Components/SubscriptionModal/SubscriptionModal";
 import { AiOutlineDelete } from "react-icons/ai";
 import { useTranslation } from "react-i18next";
+import { useAppContext } from "../../context/AppContext";
+import { useGetCurrencyQuery } from "../../redux/api/usersApi";
+import { TbCurrencyPeso } from "react-icons/tb";
 
 const ReferralCommission = () => {
-  const {t} = useTranslation()
+  const { currency, setCurrency } = useAppContext();
+  const { data: getCurrency } = useGetCurrencyQuery();
+  // console.log(getCurrency?.rates?.MXN);
+
+  const mexicanCurrency = (amount) => {
+    const mexicanRate = getCurrency?.rates?.MXN;
+    const res = amount * mexicanRate;
+    return res.toFixed(2);
+  };
+
+
+  const { t } = useTranslation();
   const { data: getSubscription } = useGetSubscriptionQuery();
   const [createSubscription] = useCreateSubscriptionMutation();
   const [updateSubscription] = useUpdateSubscriptionMutation();
@@ -124,7 +138,9 @@ const ReferralCommission = () => {
               cancelText="No"
               onConfirm={() => handleDeleteSubscription(record?.key)}
             >
-              <button><AiOutlineDelete size={22} color="red" /></button>
+              <button>
+                <AiOutlineDelete size={22} color="red" />
+              </button>
             </Popconfirm>
           </div>
         );
@@ -132,16 +148,22 @@ const ReferralCommission = () => {
     },
   ];
 
-
   const formattedData = getSubscription?.data?.map((subscription, i) => {
     return {
       key: subscription?._id,
       slNo: i + 1,
       name: subscription?.name,
-      priceInCents: subscription?.priceInCents,
+      priceInCents:
+      currency === "us"
+        ? (<p className="flex items-center gap-2"><FaDollarSign />{subscription?.priceInCents}</p>)
+        : (
+            <p className="flex items-center gap-2">
+              <TbCurrencyPeso size={20} /> {mexicanCurrency(subscription?.priceInCents)}
+            </p>
+          ),
       durationInMonths: subscription?.durationInMonths,
       info: subscription?.info,
-      type : subscription?.type || "N/A"
+      type: subscription?.type || "N/A",
     };
   });
 
@@ -163,7 +185,7 @@ const ReferralCommission = () => {
       .then((res) => {
         toast.success(res?.message);
         setOpenModal(false);
-        form.resetFields()
+        form.resetFields();
       })
       .catch((err) => toast.error(err?.data?.message));
   };
@@ -176,7 +198,9 @@ const ReferralCommission = () => {
             <Link to={-1}>
               <FaArrowLeft size={18} className="text-[var(--primary-color)] " />
             </Link>
-            <span className="font-semibold text-[20px]">{t("subscriptionPlan")}</span>
+            <span className="font-semibold text-[20px]">
+              {t("subscriptionPlan")}
+            </span>
           </div>
         </div>
         <button
@@ -223,7 +247,6 @@ const ReferralCommission = () => {
         setSelectedSubscription={setSelectedSubscription}
         onSubmit={selectedSubscription ? handleUpdate : handleCreate}
       />
-
     </div>
   );
 };
