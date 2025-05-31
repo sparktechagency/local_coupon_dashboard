@@ -9,15 +9,18 @@ import {
   useBlockUnblockUserMutation,
   useDeleteUserMutation,
   useGetBusinessOwnerQuery,
+  useGetSingleUserQuery,
 } from "../../redux/api/usersApi";
 import { placeImage } from "../../redux/api/baseApi";
 import { toast } from "sonner";
 import { RiDeleteBinLine } from "react-icons/ri";
 import AddBusinessOwnerModal from "../../Components/AddBusinessOwnerModal/AddBusinessOwnerModal";
 import { useTranslation } from "react-i18next";
+import EditBusinessOwnerModal from "../../Components/EditBusinessOwnerModal/EditBusinessOwnerModal";
 
 const ToolsManagement = () => {
   const {t} = useTranslation()
+  const [openOwnerEditModal , setOpenOwnerEditModal] = useState(false)
   const [addModalOpen , setAddModal] = useState(false)
   const [page, setPage] = useState(1);
   const [query, setQuery] = useState("");
@@ -28,8 +31,11 @@ const ToolsManagement = () => {
     query,
     type: "business",
   });
+  const [id , setOwnerId] = useState("")
+  const {data :  getSingleUser} = useGetSingleUserQuery(id)
 
-  // console.log(getBusinessOwner?.data);
+
+  // console.log(getSingleUser?.data);
 
   const handleBlockOwner = (id) => {
     const data = {
@@ -113,6 +119,15 @@ const ToolsManagement = () => {
       render: (_, record) => (
         <div className="flex items-center  gap-2">
           <p
+            onClick={() =>{
+               setOwnerId(record?.key)
+               setOpenOwnerEditModal(true)
+            }}
+            className={`p-1 rounded-sm shadow-sm  inline-block text-white cursor-pointer  bg-[#CD9B3A]`}
+          >
+            <CiEdit size={20} />
+          </p>
+          <p
             onClick={() => handleBlockOwner(record?.key)}
             className={`p-1 rounded-sm shadow-sm  inline-block text-white cursor-pointer ${
               record?.isBanned ? "bg-gray-300" : "bg-red-500"
@@ -184,6 +199,7 @@ const ToolsManagement = () => {
       </div>
 
       <AddBusinessOwnerModal  addModalOpen={addModalOpen}   setAddModal={setAddModal} role={"business"} />
+      <EditBusinessOwnerModal  openOwnerEditModal={openOwnerEditModal} setOpenOwnerEditModal={setOpenOwnerEditModal} role={"business"} />
     </div>
   );
 };

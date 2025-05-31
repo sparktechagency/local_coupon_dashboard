@@ -191,7 +191,7 @@ const Profile = () => {
         {tab === "Profile" ? (
           <div className="max-w-[480px] mx-auto rounded-lg p-6">
             <h1 className="text-center text-[#CD9B3A] leading-7 text-2xl font-medium mb-7">
-              Edit Your Profile
+              {t("editYourProfile")}
             </h1>
             <Form onFinish={onEditProfile} layout="vertical" form={form}>
               <Form.Item
@@ -454,7 +454,7 @@ const Profile = () => {
                   }}
                   className="font-normal text-[16px] leading-6 bg-[#CD9B3A] rounded-full"
                 >
-                  {isLoading ? "Updating.." : "Save & Changes"}
+                  {isLoading ? "Updating.." : `${t("save")}`}
                 </Button>
               </Form.Item>
             </Form>

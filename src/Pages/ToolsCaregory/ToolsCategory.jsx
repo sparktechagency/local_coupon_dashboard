@@ -1,4 +1,4 @@
-import {Form ,Popconfirm} from "antd";
+import { Form, Popconfirm } from "antd";
 import React, { useState } from "react";
 import { FaArrowLeft } from "react-icons/fa";
 import { Link } from "react-router-dom";
@@ -12,18 +12,24 @@ import {
 import { toast } from "sonner";
 import CategoryModal from "../../Components/CategoryModal/CategoryModal";
 import { useTranslation } from "react-i18next";
+import { useAppContext } from "../../context/AppContext";
 const ToolsCategory = () => {
+  const { language } = useAppContext();
 
-  const {t} = useTranslation()
+  console.log(language);
+
+  const { t } = useTranslation();
 
   const { data: getAllCategory } = useGetAllCategoryQuery();
-  const [createCategory, { isLoading :  createLoading }] = useAddCategoryMutation();
-  const [updateCategory , { isLoading : updateLoading}] = useUpdateCategoryMutation();
+  const [createCategory, { isLoading: createLoading }] =
+    useAddCategoryMutation();
+  const [updateCategory, { isLoading: updateLoading }] =
+    useUpdateCategoryMutation();
   const [deleteCategory] = useDeleteCategoryMutation();
   const [selectedCategory, setSelectedCategory] = useState(null);
   const [openModal, setOpenModal] = useState(false);
 
-
+  console.log(getAllCategory?.data);
   const handleUploadCategory = (value) => {
     const formData = new FormData();
     formData.append("name", value?.categoryName);
@@ -36,9 +42,8 @@ const ToolsCategory = () => {
       updateCategory(formData)
         .unwrap()
         .then((payload) => {
-          toast.success(payload?.message)
+          toast.success(payload?.message);
           setOpenModal(false);
-
         })
         .catch((error) => toast.error(error?.data?.message));
     } else {
@@ -77,7 +82,8 @@ const ToolsCategory = () => {
           }}
           className="flex  mt-5 bg-[var(--secondary-color)] text-white px-4 py-2 rounded-sm shadow-md"
         >
-          <GoPlus />{t("addCategory")}
+          <GoPlus />
+          {t("addCategory")}
         </button>
       </div>
 
@@ -89,16 +95,31 @@ const ToolsCategory = () => {
               className="bg-white mx-auto rounded-md shadow-md w-full flex flex-col justify-center items-center py-10"
             >
               <p className="bg-[#ebd8b3] p-2 rounded-full">
-                <img src={category?.icon_url} className="h-14 w-14 rounded-full object-cover" alt="" />
+                <img
+                  src={category?.icon_url}
+                  className="h-14 w-14 rounded-full object-cover"
+                  alt=""
+                />
               </p>
-              <p>{category?.name}</p>
+              <p>
+                {" "}
+                {language === "en"
+                  ? category?.name
+                  : category?.translations?.find(
+                      (t) => t.language_code === language
+                    )?.name || category?.name}
+              </p>
               <div className="space-x-4">
                 <Popconfirm
-                  title={i === 0 ? "You can only edit first category!" : "Are you sure you want to delete this category?"}
+                  title={
+                    i === 0
+                      ? "You can only edit first category!"
+                      : "Are you sure you want to delete this category?"
+                  }
                   okText="Yes"
                   cancelText="No"
-                  disabled={i === 0} 
-                  onConfirm={() => handleDeleteCategory(category?._id)}
+                  disabled={i === 0}
+                  onConfirm={() => handleDeleteCategory(category?.id)}
                 >
                   <button className="border-[#CD9B3A] border px-3 py-2 rounded-lg bg-[#E6F0FF]">
                     {t("delete")}

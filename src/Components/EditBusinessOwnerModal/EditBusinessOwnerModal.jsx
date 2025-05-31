@@ -1,65 +1,26 @@
-import {
-  DatePicker,
-  Form,
-  Input,
-  Modal,
-  Switch,
-  Upload,
-  Button,
-  Select,
-} from "antd";
-import { UploadOutlined } from "@ant-design/icons";
-import { useForm } from "antd/es/form/Form";
-import dayjs from "dayjs";
-import { useAddNewBusinessOwnerMutation } from "../../redux/api/usersApi";
-import { toast } from "sonner";
+import { Button, DatePicker, Form, Input, Modal, Select, Switch, Upload } from "antd";
 const { Option } = Select;
-const AddBusinessOwnerModal = ({ addModalOpen, setAddModal, role }) => {
-  const [addUser, { isLoading }] = useAddNewBusinessOwnerMutation();
-  const [form] = useForm();
+import { UploadOutlined } from "@ant-design/icons";
+
+const EditBusinessOwnerModal = ({
+  openOwnerEditModal,
+  setOpenOwnerEditModal,
+  role
+}) => {
+  const { form } = Form.useForm();
 
   const handleSubmit = (values) => {
-    const formData = new FormData();
-
-    // Add text and date fields
-    Object.keys(values).forEach((key) => {
-      if (key === "subscriptionExpiry" || key === "dateOfBirth") {
-        formData.append(key, values[key]?.format("MM/DD/YYYY"));
-      } else if (
-        key !== "picture" &&
-        key !== "id_proof" &&
-        key !== "verification_id"
-      ) {
-        formData.append(key, values[key]);
-      }
-    });
-
-    // Add file fields
-    ["picture", "id_proof", "verification_id"].forEach((field) => {
-      if (values[field]?.[0]) {
-        formData.append(field, values[field][0].originFileObj);
-      }
-    });
-    console.log("FormData:", Array.from(formData.entries()));
-    addUser(formData)
-      .unwrap()
-      .then((payload) => {
-        toast.success(payload?.message);
-        form.resetFields();
-        setAddModal(false);
-      })
-      .catch((error) => toast.error(error?.data?.message));
+    console.log(values);
   };
-
   return (
     <Modal
-      onCancel={() => setAddModal(false)}
-      open={addModalOpen}
+      onCancel={() => setOpenOwnerEditModal(false)}
+      open={openOwnerEditModal}
       centered
       width={700}
       footer={null}
     >
-      <p className="text-center text-xl">Add Business Owner</p>
+      <p className="text-center text-xl">Edit Business Owner</p>
       <Form layout="vertical" form={form} onFinish={handleSubmit}>
         <Form.Item label="Name" name="name">
           <Input placeholder="Enter Name" />
@@ -189,13 +150,14 @@ const AddBusinessOwnerModal = ({ addModalOpen, setAddModal, role }) => {
 
         <Form.Item>
           <Button
-            disabled={isLoading}
+            // disabled={isLoading}
             type="primary"
             style={{ backgroundColor: "#CD9B3A" }}
             htmlType="submit"
             block
           >
-            {isLoading ? "submitting.." : "Submit"}
+            {/* {isLoading ? "submitting.." : "Submit"} */}
+            submit
           </Button>
         </Form.Item>
       </Form>
@@ -203,4 +165,4 @@ const AddBusinessOwnerModal = ({ addModalOpen, setAddModal, role }) => {
   );
 };
 
-export default AddBusinessOwnerModal;
+export default EditBusinessOwnerModal;

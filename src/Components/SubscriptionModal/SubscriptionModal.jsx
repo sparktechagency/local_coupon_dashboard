@@ -14,6 +14,7 @@ const SubscriptionModal = ({
   const editor = useRef(null);
   const [content, setContent] = useState("");
 
+
   useEffect(() => {
     if (initialValues) {
       form.setFieldsValue(initialValues);

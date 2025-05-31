@@ -28,7 +28,6 @@ const ReferralCommission = () => {
     return res.toFixed(2);
   };
 
-
   const { t } = useTranslation();
   const { data: getSubscription } = useGetSubscriptionQuery();
   const [createSubscription] = useCreateSubscriptionMutation();
@@ -90,6 +89,26 @@ const ReferralCommission = () => {
       title: <>{t("subscriptionFee")}</>,
       dataIndex: "priceInCents",
       key: "priceInCents",
+      render: (_, data) => {
+        const price = data.priceInCents; 
+
+        return (
+          <p className="flex items-center gap-2">
+            {currency === "us" ? (
+              <>
+                <FaDollarSign />
+                {price}
+              </>
+            ) : (
+              <>
+                <TbCurrencyPeso size={20} />
+                {price}{" "}
+                
+              </>
+            )}
+          </p>
+        );
+      },
     },
     {
       title: <>{t("subscriptionType")}</>,
@@ -154,13 +173,9 @@ const ReferralCommission = () => {
       slNo: i + 1,
       name: subscription?.name,
       priceInCents:
-      currency === "us"
-        ? (<p className="flex items-center gap-2"><FaDollarSign />{subscription?.priceInCents}</p>)
-        : (
-            <p className="flex items-center gap-2">
-              <TbCurrencyPeso size={20} /> {mexicanCurrency(subscription?.priceInCents)}
-            </p>
-          ),
+        currency === "us"
+          ? `${subscription?.priceInCents}`
+          : `${mexicanCurrency(subscription?.priceInCents)}`,
       durationInMonths: subscription?.durationInMonths,
       info: subscription?.info,
       type: subscription?.type || "N/A",

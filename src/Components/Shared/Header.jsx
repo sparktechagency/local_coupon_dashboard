@@ -9,7 +9,7 @@ import {
 } from "../../redux/api/authApi";
 import { useAppContext } from "../../context/AppContext";
 const Header = () => {
-  const {currency , setCurrency} = useAppContext()
+  const {currency , setCurrency , setLanguage} = useAppContext()
 
 
   const navigate = useNavigate();
@@ -20,7 +20,8 @@ const Header = () => {
 
   const changeLanguage = (lang) => {
     i18n.changeLanguage(lang);
-    localStorage.setItem("lang", lang); 
+    localStorage.setItem("lang", lang);
+    setLanguage(lang)
   };
 
 

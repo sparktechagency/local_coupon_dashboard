@@ -4,9 +4,10 @@ const AppContext = createContext();
 
 export const AppProvider = ({ children }) => {
   const [currency, setCurrency] = useState("us");
+  const [language, setLanguage] = useState("en");
 
   return (
-    <AppContext.Provider value={{ currency, setCurrency }}>
+    <AppContext.Provider value={{ currency, setCurrency, language, setLanguage }}>
       {children}
     </AppContext.Provider>
   );
