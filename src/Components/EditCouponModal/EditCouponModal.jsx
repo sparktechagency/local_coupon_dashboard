@@ -6,27 +6,59 @@ import {
   DatePicker,
   Switch,
   Upload,
-  Checkbox,
+  message,
 } from "antd";
 import { UploadOutlined } from "@ant-design/icons";
-import { useState } from "react";
-import { useAddNewCouponsMutation } from "../../redux/api/couponManagement";
+import { useEffect, useState } from "react";
 import { toast } from "sonner";
+import dayjs from "dayjs";
+import { useEditCouponsMutation } from "../../redux/api/couponManagement";
+// import { useUpdateCouponMutation } from "../../redux/api/couponManagement";
 
-const AddCouponModal = ({ openCouponModal, setOpenCouponModal, category }) => {
-  const [addCoupons, { isLoading }] = useAddNewCouponsMutation();
+const EditCouponModal = ({ open, setOpen, couponData, category }) => {
+  const [fileList, setFileList] = useState([]);
+
+  const [updateCoupon, { isLoading }] = useEditCouponsMutation();
   const [form] = Form.useForm();
   const [selectedType, setSelectedType] = useState(null);
 
-  // console.log(category);
   const categoryOptions = category?.map((cat) => ({
     key: cat?.id,
     label: cat?.name,
     value: cat?.id,
   }));
 
+  // Prefill form when modal opens
+  useEffect(() => {
+    if (couponData?.photo_url) {
+      setFileList([
+        {
+          uid: "-1",
+          name: "coupon-image.jpg",
+          status: "done",
+          url: couponData?.photo_url,
+        },
+      ]);
+    }
+    if (couponData) {
+      setSelectedType(
+        couponData.discount_percentage
+          ? "discount_percentage"
+          : couponData.promo_title
+          ? "promo_title"
+          : "discount_amount"
+      );
+
+      form.setFieldsValue({
+        ...couponData,
+        category_id: couponData.category,
+        start: couponData.start ? dayjs(couponData.start) : null,
+        end: couponData.end ? dayjs(couponData.end) : null,
+      });
+    }
+  }, [couponData, category, form]);
+
   const handleFormSubmit = (values) => {
-    console.log(values);
     const formData = new FormData();
 
     Object.entries(values).forEach(([key, value]) => {
@@ -39,36 +71,38 @@ const AddCouponModal = ({ openCouponModal, setOpenCouponModal, category }) => {
       }
     });
 
-    // You can now send formData via RTK Query
-    addCoupons(formData)
-      .unwrap()
-      .then((payload) => {
-        toast.success(payload?.message);
-        setOpenCouponModal(false);
-        form.resetFields();
-      })
-      .catch((error) => toast.error(error?.data?.message));
-  };
+    formData.append("id", couponData?._id);
 
-  // console.log(categoryOptions);
+    updateCoupon(formData)
+      .unwrap()
+      .then((res) => {
+        toast.success(res?.message || "Coupon updated successfully!");
+        form.resetFields();
+        setOpen(false);
+      })
+      .catch((err) => {
+        toast.error(err?.data?.message || "Update failed!");
+      });
+  };
 
   return (
     <Modal
       centered
-      open={openCouponModal}
+      open={open}
       onCancel={() => {
-        setOpenCouponModal(false);
         form.resetFields();
+        setOpen(false);
       }}
       footer={false}
     >
-      <p className="text-center text-xl font-semibold">Add New Coupon</p>
+      <p className="text-center text-xl font-semibold">Edit Coupon</p>
 
       <p className="mb-1">Select Coupon Type</p>
       <Select
-        placeholder="Select type to show specific field"
+        placeholder="Select type"
         style={{ width: "100%" }}
         onChange={(value) => setSelectedType(value)}
+        value={selectedType}
         options={[
           { label: "Discount Percentage", value: "discount_percentage" },
           { label: "Promo Title", value: "promo_title" },
@@ -81,9 +115,6 @@ const AddCouponModal = ({ openCouponModal, setOpenCouponModal, category }) => {
         layout="vertical"
         className="mt-5"
         onFinish={handleFormSubmit}
-        initialValues={{
-          add_to_carousel: false,
-        }}
       >
         <Form.Item
           label="Select Coupon Category"
@@ -96,9 +127,10 @@ const AddCouponModal = ({ openCouponModal, setOpenCouponModal, category }) => {
             placeholder="Select Coupon Category"
           />
         </Form.Item>
+
         {selectedType === "discount_percentage" && (
           <Form.Item label="Discount Percentage" name="discount_percentage">
-            <Input placeholder="Discount percentage" />
+            <Input type="number" placeholder="Discount percentage" />
           </Form.Item>
         )}
 
@@ -116,18 +148,18 @@ const AddCouponModal = ({ openCouponModal, setOpenCouponModal, category }) => {
                 label="Regular Amount"
                 name="regular_amount"
               >
-                <Input placeholder="Regular amount" />
+                <Input type="number" placeholder="Regular amount" />
               </Form.Item>
               <Form.Item
                 className="w-full"
                 label="Discount Amount"
                 name="discount_amount"
               >
-                <Input placeholder="Discount amount" />
+                <Input type="number" placeholder="Discount amount" />
               </Form.Item>
             </div>
             <Form.Item label="Mexican Amount" name="mxn_amount">
-              <Input placeholder="Mexican amount" />
+              <Input type="number" placeholder="Mexican amount" />
             </Form.Item>
           </>
         )}
@@ -161,47 +193,13 @@ const AddCouponModal = ({ openCouponModal, setOpenCouponModal, category }) => {
             return e?.fileList?.[0] ? e : null;
           }}
         >
-          <Upload accept=".jpg,.jpeg,.png" listType="picture" maxCount={1} beforeUpload={() => false}>
-            <button
-              type="button"
-              className="border border-[#cd9b3a] text-[#cd9b3a] px-4 py-1 rounded-sm"
-            >
-              <UploadOutlined /> Select File
-            </button>
-          </Upload>
-          <span className="text-gray-500 text-sm">Note: Please upload JPG or PNG JPEG files only.</span>
-        </Form.Item>
-        {/* <Form.Item
-          label="Upload Photo"
-          name="photo"
-          valuePropName="fileList"
-          getValueFromEvent={(e) => {
-            if (Array.isArray(e)) return e;
-            return e?.fileList;
-          }}
-        >
           <Upload
+            accept=".jpg,.jpeg,.png"
             listType="picture"
             maxCount={1}
-            beforeUpload={(file) => {
-              const isJpgOrPng =
-                file.type === "image/jpeg" ||
-                file.type === "image/jpg" ||
-                file.type === "image/png";
-              if (!isJpgOrPng) {
-                message.error("You can only upload JPG/PNG or JPEG files!");
-                return Upload.LIST_IGNORE;
-              }
-
-              const isLt1M = file.size / 1024 / 1024 < 1;
-              if (!isLt1M) {
-                message.error("Image must be smaller than 1MB!");
-                return Upload.LIST_IGNORE;
-              }
-
-              return file; // allow AntD to add it to fileList
-            }}
-            showUploadList={true}
+            fileList={fileList}
+            onChange={({ fileList }) => setFileList(fileList)}
+            beforeUpload={() => false}
           >
             <button
               type="button"
@@ -210,13 +208,16 @@ const AddCouponModal = ({ openCouponModal, setOpenCouponModal, category }) => {
               <UploadOutlined /> Select File
             </button>
           </Upload>
-        </Form.Item> */}
+          <span className="text-gray-500 text-sm">
+            Note: Please upload JPG or PNG JPEG files only.
+          </span>
+        </Form.Item>
 
         <div className="flex items-center gap-5">
           <button
             type="button"
             onClick={() => {
-              setOpenCouponModal(false);
+              setOpen(false);
               form.resetFields();
             }}
             className="w-full border border-[#cd9b3a] py-2 rounded-sm text-[#cd9b3a]"
@@ -230,7 +231,7 @@ const AddCouponModal = ({ openCouponModal, setOpenCouponModal, category }) => {
               isLoading && "cursor-not-allowed bg-gray-500"
             } text-white py-2 rounded-sm`}
           >
-            {isLoading ? "Adding..." : "Add"}
+            {isLoading ? "Updating..." : "Update"}
           </button>
         </div>
       </Form>
@@ -238,4 +239,4 @@ const AddCouponModal = ({ openCouponModal, setOpenCouponModal, category }) => {
   );
 };
 
-export default AddCouponModal;
+export default EditCouponModal;

@@ -45,8 +45,26 @@ const couponManagement = baseApi.injectEndpoints({
                     method : 'GET'
                 }
             }
+        }),
+        getSingleCoupon : builder.query({
+            query : (id)=>{
+                return  {
+                    url : `/coupons/get?id=${id}`,
+                    method : 'GET'
+                }
+            }
+        }),
+        editCoupons : builder.mutation({
+            query : (data)=>{
+                return {
+                    url : '/coupons',
+                    method : "PATCH",
+                    body : data
+                }
+            },
+            invalidatesTags : ["coupons"]
         })
     })
 })
 
-export const { useGetAllCouponQuery , useBusinessAnalyticsQuery , useAddNewCouponsMutation , useDeleteCouponsMutation , useGetAllReportQuery} = couponManagement;
+export const { useGetAllCouponQuery , useBusinessAnalyticsQuery , useAddNewCouponsMutation , useDeleteCouponsMutation , useGetAllReportQuery , useGetSingleCouponQuery , useEditCouponsMutation} = couponManagement;

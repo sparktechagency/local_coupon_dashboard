@@ -89,7 +89,7 @@ const ProfileUpdateRequest = ({ dataSource }) => {
         return (
           <div className="border border-dashed px-2 py-2 flex items-center justify-between max-w-[300px]">
             <div>
-              <img src={couponImage} className="h-10 mt-2" alt="Coupon" />
+              <img src={couponImage} className="h-12 w-12 mt-2" alt="Coupon" />
               <p className="mt-1 text-sm text-gray-500">
                 Expires {couponExpire}
               </p>

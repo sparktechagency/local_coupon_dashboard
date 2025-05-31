@@ -1,8 +1,9 @@
-import { FaArrowLeft } from "react-icons/fa";
+import { FaArrowLeft, FaDollarSign } from "react-icons/fa";
 import { Link } from "react-router-dom";
 import {
   useDeleteCouponsMutation,
   useGetAllCouponQuery,
+  useGetSingleCouponQuery,
 } from "../../redux/api/couponManagement";
 import { Pagination, Popconfirm, Table } from "antd";
 import { MdAdd } from "react-icons/md";
@@ -12,14 +13,22 @@ import AddCouponModal from "../../Components/AddCouponModal/AddCouponModal";
 import { RiDeleteBin6Line } from "react-icons/ri";
 import { toast } from "sonner";
 import { useTranslation } from "react-i18next";
+import { TbCurrencyPeso } from "react-icons/tb";
+import { useAppContext } from "../../context/AppContext";
+import { CiEdit } from "react-icons/ci";
+import EditCouponModal from "../../Components/EditCouponModal/EditCouponModal";
 
 const CouponManagement = () => {
-  const {t} = useTranslation()
+  const { t } = useTranslation();
   const [page, setPage] = useState(1);
   const [openCouponModal, setOpenCouponModal] = useState(false);
   const { data: allCoupons } = useGetAllCouponQuery(page);
   const { data: getCategory } = useGetAllCategoryQuery();
   const [deleteCoupon] = useDeleteCouponsMutation();
+  const { currency, setCurrency } = useAppContext();
+  const [openEditModal, setOpenEditModal] = useState(false);
+  const [selectedCoupon, setSelectedCoupon] = useState("");
+  const {data : getSingleCoupon} = useGetSingleCouponQuery(selectedCoupon);
 
   // table data
   const formattedData = allCoupons?.data?.map((transaction) => {
@@ -36,7 +45,8 @@ const CouponManagement = () => {
       discountAmount: transaction?.coupon?.discount_amount,
       regularAmount: transaction?.coupon?.regular_amount,
       discountPercent: transaction?.coupon?.discount_percentage,
-      date:transaction?.coupon?.start?.split("T")?.[0],
+      date: transaction?.coupon?.start?.split("T")?.[0],
+      mxnAmount: transaction?.coupon?.mxn_amount,
     };
   });
 
@@ -49,7 +59,7 @@ const CouponManagement = () => {
     },
 
     {
-      title: <>{t("userName")}</> ,
+      title: <>{t("userName")}</>,
       dataIndex: "useName",
       key: "useName",
       render: (_, record) => {
@@ -61,12 +71,12 @@ const CouponManagement = () => {
       },
     },
     {
-      title:  <>{t("companyName")}</>,
+      title: <>{t("companyName")}</>,
       dataIndex: "companyName",
       key: "companyName",
     },
     {
-      title:  <>{t("coupon")}</>,
+      title: <>{t("coupon")}</>,
       dataIndex: "coupon",
       key: "coupon",
       render: (_, record) => {
@@ -77,6 +87,7 @@ const CouponManagement = () => {
           discountPercent,
           discountAmount,
           regularAmount,
+          mxnAmount,
         } = record;
 
         let displayText = "";
@@ -86,16 +97,26 @@ const CouponManagement = () => {
         } else if (discountPercent) {
           displayText = `${discountPercent}% Off`;
         } else if (discountAmount) {
-          displayText = `${discountAmount}`;
-          if (regularAmount) {
-            displayText += ` `;
+          if (currency === "us") {
+            displayText = (
+              <div className="flex items-center">
+                <FaDollarSign />
+                {discountAmount}
+              </div>
+            );
+          } else {
+            displayText = (
+              <div className="flex items-center">
+                <TbCurrencyPeso /> {mxnAmount}
+              </div>
+            );
           }
         }
 
         return (
           <div className="border border-dashed px-2 py-2 flex items-center justify-between max-w-[300px]">
             <div>
-              <img src={couponImage} className="h-10 mt-2" alt="Coupon" />
+              <img src={couponImage} className="h-10 w-12 mt-2" alt="Coupon" />
               <p className="mt-1 text-sm text-gray-500">
                 Expires {couponExpire}
               </p>
@@ -115,7 +136,7 @@ const CouponManagement = () => {
       },
     },
     {
-      title:  <>{t("redeemCount")}</>,
+      title: <>{t("redeemCount")}</>,
       dataIndex: "download",
       key: "download",
     },
@@ -131,23 +152,31 @@ const CouponManagement = () => {
     },
 
     {
-      title:<>{t("action")}</>,
+      title: <>{t("action")}</>,
       dataIndex: "action",
       key: "action",
       render: (_, record) => (
-        <Popconfirm
-          title="Are you sure delete this coupon?"
-          okText="Yes"
-          cancelText="No"
-          onConfirm={() => handleDeleteCoupon(record?.key)}
-        >
+        <div className="flex items-center gap-2 ]">
           <p
-            // onClick={() => handleDeleteCoupon(record?.key)}
-            className="cursor-pointer text-red-600"
+            onClick={() => {
+              setOpenEditModal(true);
+              setSelectedCoupon(record?.key)
+            }}
+            className="cursor-pointer  text-[#CD9B3A] "
           >
-            <RiDeleteBin6Line size={25} />
+            <CiEdit size={25} />
           </p>
-        </Popconfirm>
+          <Popconfirm
+            title="Are you sure delete this coupon?"
+            okText="Yes"
+            cancelText="No"
+            onConfirm={() => handleDeleteCoupon(record?.key)}
+          >
+            <p className="cursor-pointer text-red-600">
+              <RiDeleteBin6Line size={25} />
+            </p>
+          </Popconfirm>
+        </div>
       ),
     },
   ];
@@ -172,7 +201,7 @@ const CouponManagement = () => {
             <FaArrowLeft size={18} className="text-[var(--secondary-color)] " />
           </Link>
           <span className="md:font-semibold text-sm md:text-[20px]">
-            {t('coupon_management')}
+            {t("coupon_management")}
           </span>
         </div>
         <button
@@ -206,6 +235,12 @@ const CouponManagement = () => {
       <AddCouponModal
         openCouponModal={openCouponModal}
         setOpenCouponModal={setOpenCouponModal}
+        category={getCategory?.data}
+      />
+      <EditCouponModal
+        open={openEditModal}
+        setOpen={setOpenEditModal}
+        couponData={getSingleCoupon?.data}
         category={getCategory?.data}
       />
     </div>
