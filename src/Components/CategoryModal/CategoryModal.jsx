@@ -35,6 +35,12 @@ const CategoryModal = ({
         <Form.Item name={"categoryName"} label="Category Name">
           <Input />
         </Form.Item>
+        <Form.Item name={"es"} label="Spanish Category Name">
+          <Input />
+        </Form.Item>
+        <Form.Item name={"fr"} label="Francis Category Name">
+          <Input />
+        </Form.Item>
         <Form.Item
           name="categoryIcon"
           label="Upload Category Icon"

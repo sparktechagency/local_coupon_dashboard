@@ -16,11 +16,11 @@ import { useAppContext } from "../../context/AppContext";
 const ToolsCategory = () => {
   const { language } = useAppContext();
 
-  console.log(language);
 
   const { t } = useTranslation();
 
   const { data: getAllCategory } = useGetAllCategoryQuery();
+  console.log(getAllCategory?.data);
   const [createCategory, { isLoading: createLoading }] =
     useAddCategoryMutation();
   const [updateCategory, { isLoading: updateLoading }] =
@@ -29,10 +29,19 @@ const ToolsCategory = () => {
   const [selectedCategory, setSelectedCategory] = useState(null);
   const [openModal, setOpenModal] = useState(false);
 
-  console.log(getAllCategory?.data);
+  // console.log(getAllCategory?.data);
   const handleUploadCategory = (value) => {
+     const translations = Object.entries(value)
+    .filter(([key]) => key !== "categoryName" && key !== "categoryIcon")
+    .map(([language_code, name]) => ({
+      language_code,
+      name
+    }));
+
+
     const formData = new FormData();
     formData.append("name", value?.categoryName);
+    formData.append('translations' ,JSON.stringify(translations))
     if (value.categoryIcon && value.categoryIcon.length > 0) {
       const file = value.categoryIcon[0].originFileObj;
       formData.append("icon", file);
