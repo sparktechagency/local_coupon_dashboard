@@ -9,15 +9,24 @@ const CategoryModal = ({
   isLoading,
   title = "Add Category",
   submitText = "Add",
-  selectedCategory
+  selectedCategory,
 }) => {
   const [form] = Form.useForm();
 
   useEffect(() => {
     if (selectedCategory) {
+      const translationValues = selectedCategory.translations?.reduce(
+        (acc, curr) => {
+          acc[curr.language_code] = curr.name;
+          return acc;
+        },
+        {}
+      );
+      console.log("language",selectedCategory);
       form.setFieldsValue({
         categoryName: selectedCategory?.categoryName,
         categoryIcon: selectedCategory?.icon,
+        ...translationValues,
       });
     } else {
       form.resetFields();

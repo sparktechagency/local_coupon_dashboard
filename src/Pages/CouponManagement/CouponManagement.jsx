@@ -7,7 +7,7 @@ import {
 } from "../../redux/api/couponManagement";
 import { Pagination, Popconfirm, Table } from "antd";
 import { MdAdd } from "react-icons/md";
-import { useGetAllCategoryQuery } from "../../redux/api/categoryApi";
+import { useGetAllCategoryQuery, useGetNewCategoryQuery } from "../../redux/api/categoryApi";
 import { useState } from "react";
 import AddCouponModal from "../../Components/AddCouponModal/AddCouponModal";
 import { RiDeleteBin6Line } from "react-icons/ri";
@@ -23,7 +23,7 @@ const CouponManagement = () => {
   const [page, setPage] = useState(1);
   const [openCouponModal, setOpenCouponModal] = useState(false);
   const { data: allCoupons } = useGetAllCouponQuery(page);
-  const { data: getCategory } = useGetAllCategoryQuery();
+  const { data: getCategory } = useGetNewCategoryQuery();
   const [deleteCoupon] = useDeleteCouponsMutation();
   const { currency, setCurrency } = useAppContext();
   const [openEditModal, setOpenEditModal] = useState(false);
@@ -31,6 +31,7 @@ const CouponManagement = () => {
   const {data : getSingleCoupon} = useGetSingleCouponQuery(selectedCoupon);
 
   // table data
+
   const formattedData = allCoupons?.data?.map((transaction) => {
     // console.log(transaction?.coupon?.createdBy?.companyName);
     return {

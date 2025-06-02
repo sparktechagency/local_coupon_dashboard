@@ -6,7 +6,7 @@ import {
   DatePicker,
   Switch,
   Upload,
-  Checkbox,
+  message,
 } from "antd";
 import { UploadOutlined } from "@ant-design/icons";
 import { useState } from "react";
@@ -161,7 +161,12 @@ const AddCouponModal = ({ openCouponModal, setOpenCouponModal, category }) => {
             return e?.fileList?.[0] ? e : null;
           }}
         >
-          <Upload accept=".jpg,.jpeg,.png" listType="picture" maxCount={1} beforeUpload={() => false}>
+          <Upload
+            accept=".jpg,.jpeg,.png"
+            listType="picture"
+            maxCount={1}
+            beforeUpload={() => false}
+          >
             <button
               type="button"
               className="border border-[#cd9b3a] text-[#cd9b3a] px-4 py-1 rounded-sm"
@@ -169,9 +174,10 @@ const AddCouponModal = ({ openCouponModal, setOpenCouponModal, category }) => {
               <UploadOutlined /> Select File
             </button>
           </Upload>
-          <span className="text-gray-500 text-sm">Note: Please upload JPG or PNG JPEG files only.</span>
         </Form.Item>
-        {/* <Form.Item
+
+        {/*         
+         <Form.Item
           label="Upload Photo"
           name="photo"
           valuePropName="fileList"

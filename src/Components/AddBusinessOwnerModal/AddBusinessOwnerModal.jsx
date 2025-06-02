@@ -14,7 +14,7 @@ import dayjs from "dayjs";
 import { useAddNewBusinessOwnerMutation } from "../../redux/api/usersApi";
 import { toast } from "sonner";
 const { Option } = Select;
-const AddBusinessOwnerModal = ({ addModalOpen, setAddModal, role }) => {
+const AddBusinessOwnerModal = ({ addModalOpen, setAddModal, role, title }) => {
   const [addUser, { isLoading }] = useAddNewBusinessOwnerMutation();
   const [form] = useForm();
 
@@ -40,7 +40,6 @@ const AddBusinessOwnerModal = ({ addModalOpen, setAddModal, role }) => {
         formData.append(field, values[field][0].originFileObj);
       }
     });
-    console.log("FormData:", Array.from(formData.entries()));
     addUser(formData)
       .unwrap()
       .then((payload) => {
@@ -56,11 +55,14 @@ const AddBusinessOwnerModal = ({ addModalOpen, setAddModal, role }) => {
       onCancel={() => setAddModal(false)}
       open={addModalOpen}
       centered
+     
       width={700}
       footer={null}
     >
-      <p className="text-center text-xl">Add Business Owner</p>
-      <Form layout="vertical" form={form} onFinish={handleSubmit}>
+      <p className="text-center text-xl">{title}</p>
+      <Form layout="vertical" form={form} onFinish={handleSubmit}  initialValues={{
+        isSubscribed: false,
+      }}>
         <Form.Item label="Name" name="name">
           <Input placeholder="Enter Name" />
         </Form.Item>
@@ -142,8 +144,8 @@ const AddBusinessOwnerModal = ({ addModalOpen, setAddModal, role }) => {
           <Switch />
         </Form.Item>
 
-        <Form.Item label="Subscription Expiry" name="subscriptionExpiry">
-          <DatePicker className="w-full" placeholder="Select expiry date" />
+        <Form.Item label="Subscription Expiry" name="subscriptionExpiry" rules={[{ required: true, message: 'Please select a subscription expiry date' }]}>
+          <DatePicker className="w-full" placeholder="Select expiry date"  />
         </Form.Item>
 
         <Form.Item label="Free Downloads" name="free_downloads">

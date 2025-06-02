@@ -16,11 +16,10 @@ import { useAppContext } from "../../context/AppContext";
 const ToolsCategory = () => {
   const { language } = useAppContext();
 
-
   const { t } = useTranslation();
 
   const { data: getAllCategory } = useGetAllCategoryQuery();
-  console.log(getAllCategory?.data);
+  // console.log(getAllCategory?.data);
   const [createCategory, { isLoading: createLoading }] =
     useAddCategoryMutation();
   const [updateCategory, { isLoading: updateLoading }] =
@@ -31,17 +30,16 @@ const ToolsCategory = () => {
 
   // console.log(getAllCategory?.data);
   const handleUploadCategory = (value) => {
-     const translations = Object.entries(value)
-    .filter(([key]) => key !== "categoryName" && key !== "categoryIcon")
-    .map(([language_code, name]) => ({
-      language_code,
-      name
-    }));
-
+    const translations = Object.entries(value)
+      .filter(([key]) => key !== "categoryName" && key !== "categoryIcon")
+      .map(([language_code, name]) => ({
+        language_code,
+        name,
+      }));
 
     const formData = new FormData();
     formData.append("name", value?.categoryName);
-    formData.append('translations' ,JSON.stringify(translations))
+    formData.append("translations", JSON.stringify(translations));
     if (value.categoryIcon && value.categoryIcon.length > 0) {
       const file = value.categoryIcon[0].originFileObj;
       formData.append("icon", file);
@@ -98,6 +96,7 @@ const ToolsCategory = () => {
 
       <div className="grid grid-cols-1 md:grid-cols-6 gap-5 mt-10">
         {getAllCategory?.data?.map((category, i) => {
+          console.log(category , typeof(i));
           return (
             <div
               key={i + 1}
@@ -121,13 +120,12 @@ const ToolsCategory = () => {
               <div className="space-x-4">
                 <Popconfirm
                   title={
-                    i === 0
-                      ? "You can only edit first category!"
-                      : "Are you sure you want to delete this category?"
+                  
+                      "Are you sure you want to delete this category?"
                   }
                   okText="Yes"
                   cancelText="No"
-                  disabled={i === 0}
+                  // disabled={i === 0}
                   onConfirm={() => handleDeleteCategory(category?.id)}
                 >
                   <button className="border-[#CD9B3A] border px-3 py-2 rounded-lg bg-[#E6F0FF]">
@@ -148,6 +146,7 @@ const ToolsCategory = () => {
                         },
                       ],
                       _id: category?._id,
+                      translations : category?.translations
                     });
                     setOpenModal(true);
                   }}

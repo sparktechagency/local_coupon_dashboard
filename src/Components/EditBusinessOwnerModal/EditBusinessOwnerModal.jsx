@@ -1,13 +1,82 @@
-import { Button, DatePicker, Form, Input, Modal, Select, Switch, Upload } from "antd";
+import {
+  Button,
+  DatePicker,
+  Form,
+  Input,
+  Modal,
+  Select,
+  Switch,
+  Upload,
+} from "antd";
 const { Option } = Select;
 import { UploadOutlined } from "@ant-design/icons";
+import { useEffect } from "react";
+import dayjs from "dayjs"
 
 const EditBusinessOwnerModal = ({
   openOwnerEditModal,
   setOpenOwnerEditModal,
-  role
+  role,
+  singleUser,
 }) => {
-  const { form } = Form.useForm();
+  const [form] = Form.useForm();
+
+  console.log(singleUser);
+
+  useEffect(() => {
+    if (singleUser) {
+      form.setFieldsValue({
+        name: singleUser.name,
+        email: singleUser.email,
+        countryDialCode: singleUser.countryDialCode,
+        phone: singleUser.phone,
+        dateOfBirth: singleUser.dateOfBirth
+          ? dayjs(singleUser.dateOfBirth)
+          : null,
+        gender: singleUser.gender,
+        location: singleUser.location,
+        role: singleUser.role,
+        companyAddress: singleUser.companyAddress,
+        companyName: singleUser.companyName,
+        isSubscribed: singleUser.isSubscribed,
+        subscriptionExpiry: singleUser.subscriptionExpiry
+          ? dayjs(singleUser.subscriptionExpiry)
+          : null,
+        free_downloads: singleUser.remaining_downloads,
+        free_uploads: singleUser.remaining_uploads,
+        picture: singleUser.picture
+          ? [
+              {
+                uid: "-1",
+                name: "Profile Picture",
+                status: "done",
+                url: singleUser.picture,
+              },
+            ]
+          : [],
+        id_proof: singleUser.id_url
+          ? [
+              {
+                uid: "-2",
+                name: "ID Proof",
+                status: "done",
+                url: singleUser.id_url,
+              },
+            ]
+          : [],
+        verification_id: singleUser.verification_url
+          ? [
+              {
+                uid: "-3",
+                name: "Verification ID",
+                status: "done",
+                url: singleUser.verification_url,
+              },
+            ]
+          : [],
+      });
+    }
+  }, [singleUser, form]);
 
   const handleSubmit = (values) => {
     console.log(values);
@@ -62,9 +131,6 @@ const EditBusinessOwnerModal = ({
         <div className="flex items-center gap-2">
           <Form.Item label="Location" name="location" className="w-full">
             <Input placeholder="Enter location" />
-          </Form.Item>
-          <Form.Item label="Password" name="password" className="w-full">
-            <Input.Password placeholder="*********" />
           </Form.Item>
         </div>
 

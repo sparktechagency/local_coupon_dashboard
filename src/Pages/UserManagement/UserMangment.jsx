@@ -189,7 +189,7 @@ const UserManagement = () => {
           }}
         />
       </div>
-      <AddBusinessOwnerModal  addModalOpen={addModalOpen}   setAddModal={setAddModal} role={"user"} />
+      <AddBusinessOwnerModal  addModalOpen={addModalOpen}   setAddModal={setAddModal} role={"user"} title="Add User" />
 
     </div>
   );
