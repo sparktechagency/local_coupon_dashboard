@@ -191,27 +191,30 @@ const AddBusinessOwnerModal = ({ addModalOpen, setAddModal, role, title }) => {
           </Upload>
         </Form.Item>
 
-        <Form.Item
-          label="ID Proof"
-          name="id_proof"
-          valuePropName="fileList"
-          getValueFromEvent={(e) => e && e.fileList}
-        >
-          <Upload beforeUpload={() => false} maxCount={1}>
-            <Button icon={<UploadOutlined />}>Upload ID Proof</Button>
-          </Upload>
-        </Form.Item>
-
-        <Form.Item
-          label="Verification ID"
-          name="verification_id"
-          valuePropName="fileList"
-          getValueFromEvent={(e) => e && e.fileList}
-        >
-          <Upload beforeUpload={() => false} maxCount={1}>
-            <Button icon={<UploadOutlined />}>Upload Verification ID</Button>
-          </Upload>
-        </Form.Item>
+        {role === "business" && (
+          <Form.Item
+            label="ID Proof"
+            name="id_proof"
+            valuePropName="fileList"
+            getValueFromEvent={(e) => e && e.fileList}
+          >
+            <Upload beforeUpload={() => false} maxCount={1}>
+              <Button icon={<UploadOutlined />}>Upload ID Proof</Button>
+            </Upload>
+          </Form.Item>
+        )}
+        {role === "business" && (
+          <Form.Item
+            label="Verification ID"
+            name="verification_id"
+            valuePropName="fileList"
+            getValueFromEvent={(e) => e && e.fileList}
+          >
+            <Upload beforeUpload={() => false} maxCount={1}>
+              <Button icon={<UploadOutlined />}>Upload Verification ID</Button>
+            </Upload>
+          </Form.Item>
+        )}
 
         <Form.Item>
           <Button

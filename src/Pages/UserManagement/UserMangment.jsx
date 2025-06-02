@@ -1,6 +1,6 @@
 import { Popconfirm, Table } from "antd";
 import React, { useState } from "react";
-import { CiSearch } from "react-icons/ci";
+import { CiEdit, CiSearch } from "react-icons/ci";
 import { FaArrowLeft } from "react-icons/fa";
 import { Link } from "react-router-dom";
 import img1 from "../../assets/images/user1.png";
@@ -10,16 +10,18 @@ import {
   useBlockUnblockUserMutation,
   useDeleteUserMutation,
   useGetBusinessOwnerQuery,
+  useGetSingleUserQuery,
 } from "../../redux/api/usersApi";
 import { placeImage } from "../../redux/api/baseApi";
 import { toast } from "sonner";
 import AddBusinessOwnerModal from "../../Components/AddBusinessOwnerModal/AddBusinessOwnerModal";
 import { RiDeleteBinLine } from "react-icons/ri";
 import { useTranslation } from "react-i18next";
+import EditBusinessOwnerModal from "../../Components/EditBusinessOwnerModal/EditBusinessOwnerModal";
 const UserManagement = () => {
-  const {t} = useTranslation()
-    const [addModalOpen , setAddModal] = useState(false)
-  
+  const { t } = useTranslation();
+  const [addModalOpen, setAddModal] = useState(false);
+
   const [page, setPage] = useState(1);
   const [query, setQuery] = useState("");
   const [blockUnBlockUser] = useBlockUnblockUserMutation();
@@ -28,8 +30,10 @@ const UserManagement = () => {
     query,
     type: "user",
   });
-    const [deleteUser] = useDeleteUserMutation();
-  
+  const [deleteUser] = useDeleteUserMutation();
+  const [openOwnerEditModal, setOpenOwnerEditModal] = useState(false);
+  const [id, setOwnerId] = useState("");
+  const { data: getSingleUser } = useGetSingleUserQuery(id);
 
   const data = getUsers?.data?.map((owner) => {
     return {
@@ -57,13 +61,13 @@ const UserManagement = () => {
       .catch((error) => toast.error(error?.data?.message));
   };
 
-   // Handle delete users
-    const handleDeleteUser = (email) => {
-      deleteUser(email)
-        .unwrap()
-        .then((payload) => toast.success(payload?.message))
-        .catch((error) => toast.error(error?.data?.message));
-    };
+  // Handle delete users
+  const handleDeleteUser = (email) => {
+    deleteUser(email)
+      .unwrap()
+      .then((payload) => toast.success(payload?.message))
+      .catch((error) => toast.error(error?.data?.message));
+  };
 
   const columns = [
     {
@@ -72,7 +76,7 @@ const UserManagement = () => {
       key: "key",
     },
     {
-      title:<>{t("userName")}</>,
+      title: <>{t("userName")}</>,
       dataIndex: "name",
       key: "name",
       render: (_, record) => {
@@ -94,12 +98,12 @@ const UserManagement = () => {
       key: "email",
     },
     {
-      title:<>{t("contactNumber")}</>,
+      title: <>{t("contactNumber")}</>,
       dataIndex: "contact",
       key: "contact",
     },
     {
-      title:<>{t("gender")}</>,
+      title: <>{t("gender")}</>,
       dataIndex: "gender",
       key: "gender",
     },
@@ -110,21 +114,29 @@ const UserManagement = () => {
     },
 
     {
-      title:  <>{t("action")}</>,
+      title: <>{t("action")}</>,
       dataIndex: "action",
       key: "action",
       render: (_, record) => (
-
         <div className="flex items-center gap-2">
-           <p
-          onClick={() => handleBlockOwner(record?.key)}
-          className={`p-1 rounded-sm shadow-sm inline-block text-white cursor-pointer ${
-            record?.isBanned ? "bg-gray-300" : "bg-red-500"
-          }`}
-        >
-          <MdBlockFlipped size={20} />
-        </p>
-        
+          <p
+            onClick={() => {
+              setOwnerId(record?.key);
+              setOpenOwnerEditModal(true);
+            }}
+            className={`p-1 rounded-sm shadow-sm  inline-block text-white cursor-pointer  bg-[#CD9B3A]`}
+          >
+            <CiEdit size={20} />
+          </p>
+          <p
+            onClick={() => handleBlockOwner(record?.key)}
+            className={`p-1 rounded-sm shadow-sm inline-block text-white cursor-pointer ${
+              record?.isBanned ? "bg-gray-300" : "bg-red-500"
+            }`}
+          >
+            <MdBlockFlipped size={20} />
+          </p>
+
           <Popconfirm
             placement="topRight"
             title="Are you sure delete this user!"
@@ -137,7 +149,6 @@ const UserManagement = () => {
             </p>
           </Popconfirm>
         </div>
-     
       ),
     },
   ];
@@ -150,14 +161,14 @@ const UserManagement = () => {
             <FaArrowLeft size={18} className="text-[var(--primary-color)] " />
           </Link>
           <span className="font-semibold md:text-[20px] mb-2 md:mb-0">
-             {t("userManagement")}
+            {t("userManagement")}
           </span>
         </div>
         <div className="flex items-center gap-2">
           <div className="relative">
             <input
               type="text"
-              onChange={(e)=> setQuery(e.target.value)}
+              onChange={(e) => setQuery(e.target.value)}
               placeholder="Search here..."
               className="w-full pl-10 pr-4 py-1 rounded-md border border-gray-300 focus:border-blue-500 focus:outline-none focus:ring-1 "
             />
@@ -165,8 +176,12 @@ const UserManagement = () => {
               <CiSearch />
             </span>
           </div>
-          <button onClick={()=>setAddModal(true)} className="bg-[#CD9B3A] text-white py-2 px-2 rounded-sm">{t("addNewUser")}</button>
-
+          <button
+            onClick={() => setAddModal(true)}
+            className="bg-[#CD9B3A] text-white py-2 px-2 rounded-sm"
+          >
+            {t("addNewUser")}
+          </button>
         </div>
       </div>
 
@@ -189,8 +204,19 @@ const UserManagement = () => {
           }}
         />
       </div>
-      <AddBusinessOwnerModal  addModalOpen={addModalOpen}   setAddModal={setAddModal} role={"user"} title="Add User" />
-
+      <AddBusinessOwnerModal
+        addModalOpen={addModalOpen}
+        setAddModal={setAddModal}
+        role={"user"}
+        title="Add User"
+      />
+      <EditBusinessOwnerModal
+        openOwnerEditModal={openOwnerEditModal}
+        setOpenOwnerEditModal={setOpenOwnerEditModal}
+        singleUser={getSingleUser?.data}
+        role={"user"}
+        title={'Edit User'}
+      />
     </div>
   );
 };

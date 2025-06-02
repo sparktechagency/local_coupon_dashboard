@@ -199,8 +199,8 @@ const ToolsManagement = () => {
       </div>
 
       <AddBusinessOwnerModal  addModalOpen={addModalOpen}   setAddModal={setAddModal} role={"business"} title={"Add business owner"} />
-      <EditBusinessOwnerModal  openOwnerEditModal={openOwnerEditModal} setOpenOwnerEditModal={setOpenOwnerEditModal} singleUser={getSingleUser?.data} role={"business"} />
-    </div>
+      <EditBusinessOwnerModal  openOwnerEditModal={openOwnerEditModal} setOpenOwnerEditModal={setOpenOwnerEditModal} singleUser={getSingleUser?.data} role={"business"} title={"Edit Business Owner"} />
+    </div> 
   );
 };
 

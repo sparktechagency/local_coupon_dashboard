@@ -21,11 +21,11 @@ const EditBusinessOwnerModal = ({
   setOpenOwnerEditModal,
   role,
   singleUser,
+  title,
 }) => {
   const [form] = Form.useForm();
   const isSubscribed = useWatch("isSubscribed", form);
-  const [updateUser , {isLoading}] = useUpdateUserAndBusinessMutation();
-
+  const [updateUser, { isLoading }] = useUpdateUserAndBusinessMutation();
 
   useEffect(() => {
     if (singleUser) {
@@ -114,7 +114,7 @@ const EditBusinessOwnerModal = ({
     // Append numbers if needed
     formData.append("free_uploads", values.free_uploads ?? 0);
     formData.append("free_downloads", values.free_downloads ?? 0);
-  
+
     // Upload: picture, id_proof, verification_id
     const appendFileField = (fieldName, fileList) => {
       if (fileList && Array.isArray(fileList)) {
@@ -139,8 +139,8 @@ const EditBusinessOwnerModal = ({
     updateUser(formData)
       .unwrap()
       .then((payload) => {
-        toast.success(payload?.message)
-        setOpenOwnerEditModal(false)
+        toast.success(payload?.message);
+        setOpenOwnerEditModal(false);
       })
       .catch((error) => toast.error(error?.data?.message));
 
@@ -156,7 +156,7 @@ const EditBusinessOwnerModal = ({
       width={700}
       footer={null}
     >
-      <p className="text-center text-xl">Edit Business Owner</p>
+      <p className="text-center text-xl">{title}</p>
       <Form layout="vertical" form={form} onFinish={handleSubmit}>
         <Form.Item label="Name" name="name">
           <Input placeholder="Enter Name" />
@@ -260,28 +260,31 @@ const EditBusinessOwnerModal = ({
             <Button icon={<UploadOutlined />}>Upload Picture</Button>
           </Upload>
         </Form.Item>
+        {role === "business" && (
+          <Form.Item
+            label="ID Proof"
+            name="id_proof"
+            valuePropName="fileList"
+            getValueFromEvent={(e) => e && e.fileList}
+          >
+            <Upload beforeUpload={() => false} maxCount={1}>
+              <Button icon={<UploadOutlined />}>Upload ID Proof</Button>
+            </Upload>
+          </Form.Item>
+        )}
 
-        <Form.Item
-          label="ID Proof"
-          name="id_proof"
-          valuePropName="fileList"
-          getValueFromEvent={(e) => e && e.fileList}
-        >
-          <Upload beforeUpload={() => false} maxCount={1}>
-            <Button icon={<UploadOutlined />}>Upload ID Proof</Button>
-          </Upload>
-        </Form.Item>
-
-        <Form.Item
-          label="Verification ID"
-          name="verification_id"
-          valuePropName="fileList"
-          getValueFromEvent={(e) => e && e.fileList}
-        >
-          <Upload beforeUpload={() => false} maxCount={1}>
-            <Button icon={<UploadOutlined />}>Upload Verification ID</Button>
-          </Upload>
-        </Form.Item>
+        {role === "business" && (
+          <Form.Item
+            label="Verification ID"
+            name="verification_id"
+            valuePropName="fileList"
+            getValueFromEvent={(e) => e && e.fileList}
+          >
+            <Upload beforeUpload={() => false} maxCount={1}>
+              <Button icon={<UploadOutlined />}>Upload Verification ID</Button>
+            </Upload>
+          </Form.Item>
+        )}
 
         <Form.Item>
           <Button
