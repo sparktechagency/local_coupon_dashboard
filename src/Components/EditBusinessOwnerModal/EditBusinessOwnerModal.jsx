@@ -11,7 +11,10 @@ import {
 const { Option } = Select;
 import { UploadOutlined } from "@ant-design/icons";
 import { useEffect } from "react";
-import dayjs from "dayjs"
+import dayjs from "dayjs";
+import { useWatch } from "antd/es/form/Form";
+import { useUpdateUserAndBusinessMutation } from "../../redux/api/usersApi";
+import { toast } from "sonner";
 
 const EditBusinessOwnerModal = ({
   openOwnerEditModal,
@@ -20,8 +23,9 @@ const EditBusinessOwnerModal = ({
   singleUser,
 }) => {
   const [form] = Form.useForm();
+  const isSubscribed = useWatch("isSubscribed", form);
+  const [updateUser , {isLoading}] = useUpdateUserAndBusinessMutation();
 
-  console.log(singleUser);
 
   useEffect(() => {
     if (singleUser) {
@@ -80,7 +84,70 @@ const EditBusinessOwnerModal = ({
 
   const handleSubmit = (values) => {
     console.log(values);
+    const formData = new FormData();
+
+    // Append simple fields
+    formData.append("name", values.name);
+    formData.append("email", values.email);
+    formData.append("phone", values.phone);
+    formData.append("countryDialCode", values.countryDialCode);
+    formData.append("gender", values.gender);
+    formData.append("location", values.location);
+    formData.append("companyName", values.companyName);
+    formData.append("companyAddress", values.companyAddress);
+    formData.append("role", values.role);
+    formData.append("isSubscribed", values.isSubscribed);
+
+    // Only append subscriptionExpiry if subscribed is true
+    if (values.isSubscribed && values.subscriptionExpiry) {
+      formData.append(
+        "subscriptionExpiry",
+        values.subscriptionExpiry.format("DD/MM/YYYY")
+      );
+    }
+
+    // Date of birth
+    if (values.dateOfBirth) {
+      formData.append("dateOfBirth", values.dateOfBirth.format("DD/MM/YYYY"));
+    }
+
+    // Append numbers if needed
+    formData.append("free_uploads", values.free_uploads ?? 0);
+    formData.append("free_downloads", values.free_downloads ?? 0);
+  
+    // Upload: picture, id_proof, verification_id
+    const appendFileField = (fieldName, fileList) => {
+      if (fileList && Array.isArray(fileList)) {
+        fileList.forEach((file) => {
+          // If coming from upload component and has `originFileObj`, use it
+          if (file.originFileObj) {
+            formData.append(fieldName, file.originFileObj);
+          }
+        });
+      }
+    };
+
+    appendFileField("picture", values.picture);
+    appendFileField("id_proof", values.id_proof);
+    appendFileField("verification_id", values.verification_id);
+
+    // 🔍 Inspect formData
+    // for (let pair of formData.entries()) {
+    //   console.log(pair[0] + ": " + pair[1]);
+    // }
+    console.log(formData);
+    updateUser(formData)
+      .unwrap()
+      .then((payload) => {
+        toast.success(payload?.message)
+        setOpenOwnerEditModal(false)
+      })
+      .catch((error) => toast.error(error?.data?.message));
+
+    // 👉 send formData to your API
+    // dispatch(createUser(formData)); // example
   };
+
   return (
     <Modal
       onCancel={() => setOpenOwnerEditModal(false)}
@@ -95,7 +162,7 @@ const EditBusinessOwnerModal = ({
           <Input placeholder="Enter Name" />
         </Form.Item>
         <Form.Item label="Email" name="email">
-          <Input placeholder="example@gmail.com" />
+          <Input disabled placeholder="example@gmail.com" />
         </Form.Item>
 
         <div className="flex items-center gap-2">
@@ -168,10 +235,12 @@ const EditBusinessOwnerModal = ({
         >
           <Switch />
         </Form.Item>
-
-        <Form.Item label="Subscription Expiry" name="subscriptionExpiry">
-          <DatePicker className="w-full" placeholder="Select expiry date" />
-        </Form.Item>
+        {/* Conditionally render this field */}
+        {isSubscribed && (
+          <Form.Item label="Subscription Expiry" name="subscriptionExpiry">
+            <DatePicker className="w-full" placeholder="Select expiry date" />
+          </Form.Item>
+        )}
 
         <Form.Item label="Free Downloads" name="free_downloads">
           <Input type="number" placeholder="Enter free downloads" />
@@ -222,8 +291,7 @@ const EditBusinessOwnerModal = ({
             htmlType="submit"
             block
           >
-            {/* {isLoading ? "submitting.." : "Submit"} */}
-            submit
+            {isLoading ? "Updating.." : "Update"}
           </Button>
         </Form.Item>
       </Form>

@@ -175,6 +175,9 @@ const AddCouponModal = ({ openCouponModal, setOpenCouponModal, category }) => {
             </button>
           </Upload>
         </Form.Item>
+         <p className="text-gray-500 text-sm mb-5">
+            Note: Please upload JPG or PNG JPEG files only.
+          </p>
 
         {/*         
          <Form.Item

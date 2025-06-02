@@ -203,15 +203,16 @@ const EditCouponModal = ({ open, setOpen, couponData, category }) => {
           >
             <button
               type="button"
-              className="border border-[#cd9b3a] text-[#cd9b3a] px-4 py-1 rounded-sm"
+              className="border border-[#cd9b3a] text-[#cd9b3a] px-4  rounded-sm"
             >
               <UploadOutlined /> Select File
             </button>
           </Upload>
-          <span className="text-gray-500 text-sm">
-            Note: Please upload JPG or PNG JPEG files only.
-          </span>
+         
         </Form.Item>
+         <p className="text-gray-500 text-sm mb-5">
+            Note: Please upload JPG or PNG JPEG files only.
+          </p>
 
         <div className="flex items-center gap-5">
           <button

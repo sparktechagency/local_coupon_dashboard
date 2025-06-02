@@ -42,6 +42,17 @@ const userApi = baseApi.injectEndpoints({
             invalidatesTags : ["owner"]
 
         }),
+        updateUserAndBusiness : builder.mutation({
+            query : (data)=>{
+                return {
+                    url : '/admin/users',
+                    method : 'PATCH',
+                    body : data
+                }
+            },
+            invalidatesTags : ["owner"]
+
+        }),
         getSingleUser : builder.query({
             query : (id)=>{
                 return {
@@ -62,4 +73,4 @@ const userApi = baseApi.injectEndpoints({
     })
 })
 
-export const { useGetBusinessOwnerQuery , useBlockUnblockUserMutation , useDeleteUserMutation  , useAddNewBusinessOwnerMutation , useGetCurrencyQuery , useGetSingleUserQuery } =  userApi;
+export const { useGetBusinessOwnerQuery , useBlockUnblockUserMutation , useDeleteUserMutation  , useAddNewBusinessOwnerMutation , useGetCurrencyQuery , useGetSingleUserQuery , useUpdateUserAndBusinessMutation } =  userApi;
