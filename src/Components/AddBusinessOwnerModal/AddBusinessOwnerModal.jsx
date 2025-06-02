@@ -55,14 +55,18 @@ const AddBusinessOwnerModal = ({ addModalOpen, setAddModal, role, title }) => {
       onCancel={() => setAddModal(false)}
       open={addModalOpen}
       centered
-     
       width={700}
       footer={null}
     >
       <p className="text-center text-xl">{title}</p>
-      <Form layout="vertical" form={form} onFinish={handleSubmit}  initialValues={{
-        isSubscribed: false,
-      }}>
+      <Form
+        layout="vertical"
+        form={form}
+        onFinish={handleSubmit}
+        initialValues={{
+          isSubscribed: false,
+        }}
+      >
         <Form.Item label="Name" name="name">
           <Input placeholder="Enter Name" />
         </Form.Item>
@@ -144,8 +148,28 @@ const AddBusinessOwnerModal = ({ addModalOpen, setAddModal, role, title }) => {
           <Switch />
         </Form.Item>
 
-        <Form.Item label="Subscription Expiry" name="subscriptionExpiry" rules={[{ required: true, message: 'Please select a subscription expiry date' }]}>
-          <DatePicker className="w-full" placeholder="Select expiry date"  />
+        <Form.Item
+          shouldUpdate={(prev, curr) => prev.isSubscribed !== curr.isSubscribed}
+        >
+          {({ getFieldValue }) =>
+            getFieldValue("isSubscribed") ? (
+              <Form.Item
+                label="Subscription Expiry"
+                name="subscriptionExpiry"
+                rules={[
+                  {
+                    required: true,
+                    message: "Please select a subscription expiry date",
+                  },
+                ]}
+              >
+                <DatePicker
+                  className="w-full"
+                  placeholder="Select expiry date"
+                />
+              </Form.Item>
+            ) : null
+          }
         </Form.Item>
 
         <Form.Item label="Free Downloads" name="free_downloads">
