@@ -9,6 +9,7 @@ import { toast } from "sonner";
 import { useTranslation } from "react-i18next";
 const { TextArea } = Input;
 const FAQ = () => {
+  const [form] = Form.useForm()
   const {t} = useTranslation()
   const [isModalOpen, setIsModalOpen] = useState(false);
   const { data: getFaq } = useGetFaqQuery();
@@ -28,6 +29,8 @@ const FAQ = () => {
       .then((payload) => {
         toast.success(payload?.message);
         setIsModalOpen(false);
+      form.resetFields()
+
       })
       .catch((error) => toast.error(error?.data?.message));
   };
@@ -37,7 +40,9 @@ const FAQ = () => {
       id :  id
     }
     deleteFaq(data).unwrap()
-    .then((payload) => toast.success(payload?.message))
+    .then((payload) => {
+      toast.success(payload?.message)
+    })
     .catch((error) => toast.error(error?.data?.message));
   }
   return (
@@ -90,10 +95,13 @@ const FAQ = () => {
         centered
         open={isModalOpen}
         footer={false}
-        onCancel={() => setIsModalOpen(false)}
+        onCancel={() =>{
+           setIsModalOpen(false)
+           form.resetFields()
+        }}
       >
         <p className="text-center font-semibold pb-5 text-xl">{t('addFAQ')}</p>
-        <Form onFinish={onFinish}>
+        <Form onFinish={onFinish} form={form}>
           <Form.Item name={"question"}>
             <Input placeholder="Type Answer Here.." variant="filled" />
           </Form.Item>

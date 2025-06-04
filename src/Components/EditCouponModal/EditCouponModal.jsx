@@ -28,20 +28,24 @@ const EditCouponModal = ({ open, setOpen, couponData, category }) => {
     value: cat?.id,
   }));
 
-
   // Prefill form when modal opens
   useEffect(() => {
-    if (couponData?.photo_url) {
-      setFileList([
-        {
-          uid: "-1",
-          name: "coupon-image.jpg",
-          status: "done",
-          url: couponData?.photo_url,
-        },
-      ]);
-    }
-    if (couponData) {
+    if (open && couponData) {
+      // Set file list
+      if (couponData?.photo_url) {
+        setFileList([
+          {
+            uid: "-1",
+            name: "coupon-image.jpg",
+            status: "done",
+            url: couponData?.photo_url,
+          },
+        ]);
+      } else {
+        setFileList([]); // Reset if no photo
+      }
+
+      // Determine type and set form values
       setSelectedType(
         couponData.discount_percentage
           ? "discount_percentage"
@@ -57,7 +61,9 @@ const EditCouponModal = ({ open, setOpen, couponData, category }) => {
         end: couponData.end ? dayjs(couponData.end) : null,
       });
     }
-  }, [couponData, category, form]);
+  }, [open, couponData, form]);
+
+  console.log(couponData);
 
   const handleFormSubmit = (values) => {
     const formData = new FormData();
@@ -209,11 +215,10 @@ const EditCouponModal = ({ open, setOpen, couponData, category }) => {
               <UploadOutlined /> Select File
             </button>
           </Upload>
-         
         </Form.Item>
-         <p className="text-gray-500 text-sm mb-5">
-            Note: Please upload JPG or PNG JPEG files only.
-          </p>
+        <p className="text-gray-500 text-sm mb-5">
+          Note: Please upload JPG or PNG JPEG files only.
+        </p>
 
         <div className="flex items-center gap-5">
           <button

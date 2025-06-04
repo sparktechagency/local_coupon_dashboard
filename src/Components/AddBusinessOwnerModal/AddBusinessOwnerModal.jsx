@@ -80,7 +80,7 @@ const AddBusinessOwnerModal = ({ addModalOpen, setAddModal, role, title }) => {
             name="countryDialCode"
             className="w-full"
           >
-            <Input placeholder="Enter Code" />
+            <Input  placeholder="Enter Code" />
           </Form.Item>
           <Form.Item label="Phone" name="phone" className="w-full">
             <Input placeholder="Enter phone number" />
