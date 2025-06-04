@@ -35,7 +35,6 @@ const ToolsManagement = () => {
   const {data :  getSingleUser} = useGetSingleUserQuery(id)
 
 
-  // console.log(getSingleUser?.data);
 
   const handleBlockOwner = (id) => {
     const data = {

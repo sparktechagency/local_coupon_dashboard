@@ -7,7 +7,10 @@ import {
 } from "../../redux/api/couponManagement";
 import { Pagination, Popconfirm, Table } from "antd";
 import { MdAdd } from "react-icons/md";
-import { useGetAllCategoryQuery, useGetNewCategoryQuery } from "../../redux/api/categoryApi";
+import {
+  useGetAllCategoryQuery,
+  useGetNewCategoryQuery,
+} from "../../redux/api/categoryApi";
 import { useState } from "react";
 import AddCouponModal from "../../Components/AddCouponModal/AddCouponModal";
 import { RiDeleteBin6Line } from "react-icons/ri";
@@ -28,7 +31,10 @@ const CouponManagement = () => {
   const { currency, setCurrency } = useAppContext();
   const [openEditModal, setOpenEditModal] = useState(false);
   const [selectedCoupon, setSelectedCoupon] = useState("");
-  const {data : getSingleCoupon} = useGetSingleCouponQuery(selectedCoupon);
+  const { data: getSingleCoupon, refetch } =
+    useGetSingleCouponQuery(selectedCoupon);
+
+  // console.log(getSingleCoupon?.data);
 
   // table data
 
@@ -160,8 +166,9 @@ const CouponManagement = () => {
         <div className="flex items-center gap-2 ]">
           <p
             onClick={() => {
+              refetch();
               setOpenEditModal(true);
-              setSelectedCoupon(record?.key)
+              setSelectedCoupon(record?.key);
             }}
             className="cursor-pointer  text-[#CD9B3A] "
           >

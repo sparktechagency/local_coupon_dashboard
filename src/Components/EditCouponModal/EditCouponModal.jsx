@@ -28,6 +28,7 @@ const EditCouponModal = ({ open, setOpen, couponData, category }) => {
     value: cat?.id,
   }));
 
+
   // Prefill form when modal opens
   useEffect(() => {
     if (couponData?.photo_url) {
