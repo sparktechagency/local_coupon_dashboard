@@ -14,7 +14,6 @@ const SubscriptionModal = ({
   const editor = useRef(null);
   const [content, setContent] = useState("");
 
-
   useEffect(() => {
     if (initialValues) {
       form.setFieldsValue(initialValues);
@@ -69,7 +68,19 @@ const SubscriptionModal = ({
         <Form.Item
           name="priceInCents"
           label="Price"
-          rules={[{ required: true, message: "Please enter price" }]}
+          rules={[
+            { required: true, message: "Please enter price" },
+            {
+              validator: (_, value) => {
+                if (value && value > 0) {
+                  return Promise.resolve();
+                }
+                return Promise.reject(
+                  new Error("Price must be greater than 0")
+                );
+              },
+            },
+          ]}
         >
           <Input type="number" />
         </Form.Item>

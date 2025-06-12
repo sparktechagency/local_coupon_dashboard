@@ -95,7 +95,7 @@ const Sidebar = () => {
         { path: "/faq", label: t("faq"), icon: <></>, roles: ["admin"] },
         {
           path: "/terms-condition",
-          label:t("privacy"),
+        label:t("terms"),
           icon: <></>,
           roles: ["admin"],
         },
