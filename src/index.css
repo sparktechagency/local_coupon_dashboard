@@ -21,3 +21,49 @@
   .ant-upload-wrapper .ant-upload-select {
     display: block !important;
 }
+
+/* GoogleTranslateFix.css */
+
+.goog-te-gadget-simple {
+display:  flex !important;
+}
+
+.goog-te-gadget-simple .VIpgJd-ZVi9od-xl07Ob-lTBxed {
+    color: #000;
+    display: flex !important
+;
+}
+
+/* Hide Google Translate top banner */
+.goog-te-banner-frame.skiptranslate {
+  display: none !important;
+}
+
+body {
+  top: 0 !important; /* Remove body top margin added by Google Translate */
+}
+
+/* Hide the Google Translate banner */
+.goog-te-banner-frame.skiptranslate {
+  display: none !important;
+}
+
+/* Remove the top margin added to body by Google Translate */
+body {
+  top: 0 !important;
+  position: static !important;
+}
+
+.VIpgJd-ZVi9od-ORHb-OEVmcd {
+    left: 0;
+    top: 0;
+    height: 39px;
+    width: 100%;
+    z-index: 10000001;
+    position: fixed;
+    border: none;
+    /* border-bottom: 1px solid #6B90DA; */
+    margin: 0;
+    box-shadow: 0 0 8px 1px #999;
+    display: none !important;
+}

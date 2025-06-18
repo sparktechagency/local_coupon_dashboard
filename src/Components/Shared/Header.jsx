@@ -8,9 +8,9 @@ import {
   useGetProfileQuery,
 } from "../../redux/api/authApi";
 import { useAppContext } from "../../context/AppContext";
+import GoogleTranslate from "../GoogleTranslate";
 const Header = () => {
-  const {currency , setCurrency , setLanguage} = useAppContext()
-
+  const { currency, setCurrency, setLanguage } = useAppContext();
 
   const navigate = useNavigate();
   const { data: getAdminProfile } = useGetProfileQuery();
@@ -21,20 +21,19 @@ const Header = () => {
   const changeLanguage = (lang) => {
     i18n.changeLanguage(lang);
     localStorage.setItem("lang", lang);
-    setLanguage(lang)
+    setLanguage(lang);
   };
-
 
   return (
     <div className="w-full py-4 bg-[var(--primary-color)] flex justify-end items-center  gap-4">
-
-      <select 
-      onChange={(e)=> setCurrency(e.target.value)}
-      className="bg-white border px-2 py-1 rounded">
+      <select
+        onChange={(e) => setCurrency(e.target.value)}
+        className="bg-white border px-2 py-1 rounded"
+      >
         <option value={"us"}>Dollar</option>
         <option value={"peso"}>Mexican Peso</option>
       </select>
-
+{/* 
       <select
         onChange={(e) => changeLanguage(e.target.value)}
         value={i18n.language}
@@ -43,9 +42,9 @@ const Header = () => {
         <option value="en">English</option>
         <option value="fr">Français</option>
         <option value="es">Español</option>
-      </select>
+      </select> */}
 
-
+      <GoogleTranslate />
 
       {getAdminProfile?.data?.role === "admin" && (
         <div className="relative">

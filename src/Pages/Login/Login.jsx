@@ -2,34 +2,58 @@ import { Button, Checkbox, Form, Input } from "antd";
 import { Link, useNavigate } from "react-router-dom";
 import { useLoginAdminMutation } from "../../redux/api/authApi";
 import { toast } from "sonner";
+import { useEffect } from "react";
 
 const Login = () => {
-  const [loginAdmin , {isLoading}] = useLoginAdminMutation();
-const navigate = useNavigate()
+  const [loginAdmin, {  isLoading, isSuccess, data: loginData  }] = useLoginAdminMutation();
+  const navigate = useNavigate();
   // handle loging data
   const onFinish = (values) => {
     const data = {
       ...values,
     };
     loginAdmin(data)
-      .unwrap()
-      .then((payload) => {
-        console.log(payload?.data);
-        if(payload?.data && (payload?.data?.role === "admin" || payload?.data?.role === "business")){
-          toast.success(payload?.message)
-            localStorage.setItem('coupon_token' ,JSON.stringify( payload?.data?.accessToken))
-            navigate("/")
-        }else{
-          toast.error("You are not authorized for dashboard")
-        }
-      })
-      .catch((error) => toast.error(error?.data?.message));
+      // .unwrap()
+      // .then((payload) => {
+      //   console.log(payload);
+      //   if (
+      //     payload?.data &&
+      //     (payload?.data?.role === "admin" ||
+      //       payload?.data?.role === "business")
+      //   ) {
+      //     toast.success(payload?.message);
+      //     localStorage.setItem(
+      //       "coupon_token",
+      //       JSON.stringify(payload?.data?.accessToken)
+      //     );
+      //     navigate("/");
+      //   } else {
+      //     toast.error("You are not authorized for dashboard");
+      //   }
+      // })
+      // .catch((error) => toast.error(error?.data?.message));
   };
+
+
+    useEffect(() => {
+    if (
+      loginData?.data?.accessToken &&
+      (loginData?.data?.role === "admin" || loginData?.data?.role === "business")
+    ) {
+      // Save token first
+      localStorage.setItem("coupon_token", JSON.stringify(loginData?.data?.accessToken));
+      toast.success(loginData?.message);
+
+      // Delay navigate just slightly so PrivateRoutes can read token
+      setTimeout(() => {
+        navigate("/");
+      }, 100); // 👈 small delay to ensure everything is synced
+    } else if (loginData && !loginData?.data?.accessToken) {
+      toast.error("You are not authorized for dashboard");
+    }
+  }, [loginData, navigate]);
   return (
-    <div
-      className=" flex justify-center items-center min-h-[100vh] bg-[#E7E7E7] px-2 md:px-0"
-    
-    >
+    <div className=" flex justify-center items-center min-h-[100vh] bg-[#E7E7E7] px-2 md:px-0">
       <div className="bg-white md:w-[600px] flex justify-center items-center rounded-lg">
         <Form
           initialValues={{
@@ -160,9 +184,7 @@ const navigate = useNavigate()
                 marginTop: "56px",
               }}
             >
-            
-               { isLoading ? "Sign In..." : "Sign In"}
-                
+              {isLoading ? "Sign In..." : "Sign In"}
             </Button>
           </Form.Item>
         </Form>
