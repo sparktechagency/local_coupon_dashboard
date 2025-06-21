@@ -26,13 +26,13 @@ const Header = () => {
 
   return (
     <div className="w-full py-4 bg-[var(--primary-color)] flex justify-end items-center  gap-4">
-      <select
+      {/* <select
         onChange={(e) => setCurrency(e.target.value)}
         className="bg-white border px-2 py-1 rounded"
       >
         <option value={"us"}>Dollar</option>
         <option value={"peso"}>Mexican Peso</option>
-      </select>
+      </select> */}
 {/* 
       <select
         onChange={(e) => changeLanguage(e.target.value)}

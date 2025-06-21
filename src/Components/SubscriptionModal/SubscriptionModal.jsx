@@ -67,7 +67,7 @@ const SubscriptionModal = ({
         </Form.Item>
         <Form.Item
           name="priceInCents"
-          label="Price"
+          label="Price Mexican Peso (MXN)"
           rules={[
             { required: true, message: "Please enter price" },
             {
@@ -86,7 +86,7 @@ const SubscriptionModal = ({
         </Form.Item>
         <Form.Item
           name="durationInMonths"
-          label="Duration"
+          label="Duration In Month"
           rules={[{ required: true, message: "Please enter duration" }]}
         >
           <Input type="number" />

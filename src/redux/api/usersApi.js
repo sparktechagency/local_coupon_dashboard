@@ -70,7 +70,15 @@ const userApi = baseApi.injectEndpoints({
                 }
             },
         }),
+      getDollar : builder.query({
+            query : ()=>{
+                return {
+                    url : `https://api.frankfurter.app/latest?from=MXN&to=USD`,
+                    method : 'GET'
+                }
+            },
+        }),
     })
 })
 
-export const { useGetBusinessOwnerQuery , useBlockUnblockUserMutation , useDeleteUserMutation  , useAddNewBusinessOwnerMutation , useGetCurrencyQuery , useGetSingleUserQuery , useUpdateUserAndBusinessMutation } =  userApi;
+export const { useGetBusinessOwnerQuery , useBlockUnblockUserMutation , useDeleteUserMutation  , useAddNewBusinessOwnerMutation , useGetCurrencyQuery , useGetSingleUserQuery , useUpdateUserAndBusinessMutation , useGetDollarQuery } =  userApi;

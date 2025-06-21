@@ -14,19 +14,33 @@ import SubscriptionModal from "../../Components/SubscriptionModal/SubscriptionMo
 import { AiOutlineDelete } from "react-icons/ai";
 import { useTranslation } from "react-i18next";
 import { useAppContext } from "../../context/AppContext";
-import { useGetCurrencyQuery } from "../../redux/api/usersApi";
+import { useGetCurrencyQuery, useGetDollarQuery } from "../../redux/api/usersApi";
 import { TbCurrencyPeso } from "react-icons/tb";
 
 const ReferralCommission = () => {
   const { currency, setCurrency } = useAppContext();
   const { data: getCurrency } = useGetCurrencyQuery();
-  // console.log(getCurrency?.rates?.MXN);
 
-  const mexicanCurrency = (amount) => {
-    const mexicanRate = getCurrency?.rates?.MXN;
-    const res = amount * mexicanRate;
-    return res.toFixed(2);
-  };
+  const {data : getDollar } = useGetDollarQuery()
+  // console.log(getDollar?.rates?.USD * 20);
+  // console.log(getDollar?.rates?.USD);
+
+const convertDollarToPeso = (amount) => {
+  const mxnRate = getCurrency?.rates?.MXN;
+  if (!mxnRate) return 0;
+  return Number((amount * mxnRate));
+};
+
+const convertPesoToDollar = (amount) => {
+  const mxnRate = getCurrency?.rates?.MXN;
+  if (!mxnRate) return 0;
+  return Number((amount / mxnRate)); 
+};
+
+// const roundUpIfDecimal = (value) => {
+//   const intVal = Math.floor(value);
+//   return value > intVal ? intVal + 1 : intVal;
+// };
 
   const { t } = useTranslation();
   const { data: getSubscription } = useGetSubscriptionQuery();
@@ -94,7 +108,7 @@ const ReferralCommission = () => {
 
         return (
           <p className="flex items-center gap-2">
-            {currency === "us" ? (
+            {/* {currency === "us" ? (
               <>
                 <FaDollarSign />
                 {price}
@@ -105,7 +119,8 @@ const ReferralCommission = () => {
                 {price}{" "}
                 
               </>
-            )}
+            )} */}
+           <span className="text-[10px]">MXN$</span>{price}
           </p>
         );
       },
@@ -173,9 +188,10 @@ const ReferralCommission = () => {
       slNo: i + 1,
       name: subscription?.name,
       priceInCents:
-        currency === "us"
-          ? `${subscription?.priceInCents}`
-          : `${mexicanCurrency(subscription?.priceInCents)}`,
+        // currency === "us"
+        //   ? `${subscription?.priceInCents}`
+          // : 
+          `${convertDollarToPeso(subscription?.priceInCents)}`,
       durationInMonths: subscription?.durationInMonths,
       info: subscription?.info,
       type: subscription?.type || "N/A",
@@ -183,7 +199,13 @@ const ReferralCommission = () => {
   });
 
   const handleCreate = (values) => {
-    createSubscription(values)
+
+    const data= {
+      ...values,
+      priceInCents : convertPesoToDollar(values?.priceInCents)
+    }
+
+    createSubscription(data)
       .unwrap()
       .then((payload) => {
         toast.success(payload?.message);
@@ -194,7 +216,12 @@ const ReferralCommission = () => {
   };
 
   // for update
-  const handleUpdate = (data) => {
+  const handleUpdate = (values) => {
+
+    const data = {
+      ...values,
+       priceInCents : convertPesoToDollar(values?.priceInCents)
+    }
     updateSubscription({ id: selectedSubscription?.key, ...data })
       .unwrap()
       .then((res) => {
