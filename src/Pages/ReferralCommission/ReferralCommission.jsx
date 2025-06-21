@@ -95,7 +95,7 @@ const convertPesoToDollar = (amount) => {
       key: "name",
     },
     {
-      title: <>{t("duration")}</>,
+      title: <>{"Duration In Month"}</>,
       dataIndex: "durationInMonths",
       key: "durationInMonths",
     },
